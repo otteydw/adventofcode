@@ -19,7 +19,18 @@
 def fuel_for_module(mass_of_module):
     return int(mass_of_module / 3) - 2
 
-print(fuel_for_module(12))
-print(fuel_for_module(14))
-print(fuel_for_module(1969))
-print(fuel_for_module(100756))
+# print(fuel_for_module(12))
+# print(fuel_for_module(14))
+# print(fuel_for_module(1969))
+# print(fuel_for_module(100756))
+
+module_mass_inputs_path = 'input.txt'
+total_fuel = 0
+
+with open(module_mass_inputs_path) as module_mass_file:
+    for module_mass in module_mass_file:
+        total_fuel += fuel_for_module(int(module_mass))
+
+module_mass_file.close()
+
+print(total_fuel)
