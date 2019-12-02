@@ -36,18 +36,18 @@ def calculate_fuel_needed(mass):
         return 0
     return fuel_needed + calculate_fuel_needed(fuel_needed)
 
-print(calculate_fuel_needed(12))
-print(calculate_fuel_needed(14))
-print(calculate_fuel_needed(1969))
-print(calculate_fuel_needed(100756))
+# print(calculate_fuel_needed(12))
+# print(calculate_fuel_needed(14))
+# print(calculate_fuel_needed(1969))
+# print(calculate_fuel_needed(100756))
 
-# module_mass_inputs_path = 'input.txt'
-# total_fuel = 0
+module_mass_inputs_path = 'input.txt'
+total_fuel = 0
 
-# with open(module_mass_inputs_path) as module_mass_file:
-#     for module_mass in module_mass_file:
-#         total_fuel += calculate_fuel_needed(int(module_mass))
+with open(module_mass_inputs_path) as module_mass_file:
+    for module_mass in module_mass_file:
+        total_fuel += calculate_fuel_needed(int(module_mass))
 
-# module_mass_file.close()
+module_mass_file.close()
 
-# print(total_fuel)
+print(total_fuel)
