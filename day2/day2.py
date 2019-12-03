@@ -70,30 +70,37 @@
 # the value 12 and replace position 2 with the value 2. What value is left at
 # position 0 after the program halts?
 
-def intcode(input_list):
+def intcode(input_program):
+    input_list = input_program.split(",")
     # length = len(input_list)
     # print(str(length))
 
-    for i in input_list[::4]:
-        print('i = ' + i)
-        if int(i) == 1:
-            # print('It is 1')
+    # for i in input_list[::4]:
+    # for index, item in zip(range(0, len(input_list), 4), input_list):
+    for index, item in enumerate(input_list[::4]):
+        # print(index, item)
+        minicode = input_list[index*4:(index*4)+4]
+        print(minicode)
+        if int(minicode[0]) == 1:
+            # Opcode 1 adds together numbers read from two positions and stores the result in a third position
+            print('It is 1')
             continue
-        elif int(i) == 2:
-            # print('It is 2')
+        elif int(minicode[0]) == 2:
+            # Opcode 2 works exactly like opcode 1, except it multiplies the two inputs instead of adding them.
+            print('It is 2')
             continue
-        elif int(i) == 99:
-            # print('It is 99')
-            continue
+        elif int(minicode[0]) == 99:
+            print('It is 99')
+            break
         else:
             print('Unknown op code!')
 
 
 intcode_program = '1,9,10,70,2,3,11,0,99,30,40,50'
 
-intcode_list = intcode_program.split(",")
+# intcode_list = intcode_program.split(",")
 
-intcode(intcode_list)
+intcode(intcode_program)
 
 # print(fuel_for_module(12))
 # print(fuel_for_module(14))
