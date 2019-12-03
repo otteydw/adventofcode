@@ -71,9 +71,11 @@
 # position 0 after the program halts?
 
 def intcode(input_program):
-    input_list = input_program.split(",")
+    # input_list = input_program.split(",")
+    # input_list = [int(x) for x in input_program.split(',')]
     # length = len(input_list)
     # print(str(length))
+    input_list=input_program
 
     # for i in input_list[::4]:
     # for index, item in zip(range(0, len(input_list), 4), input_list):
@@ -108,28 +110,22 @@ def intcode(input_program):
                 print('Unknown op code!')
         # print()
 
-    print(input_list)
+    return input_list
 
 
-intcode_program = '1,9,10,3,2,3,11,0,99,30,40,50'
+# print(intcode('1,9,10,3,2,3,11,0,99,30,40,50'))
+# print(intcode('1,0,0,0,99'))
+# print(intcode('2,3,0,3,99'))
+# print(intcode('2,4,4,5,99,0'))
+# print(intcode('1,1,1,4,99,5,6,0,99'))
 
-# intcode_list = intcode_program.split(",")
-# print(intcode_program)
-# print()
-intcode(intcode_program)
+inputs_path = 'input.txt'
 
-# print(fuel_for_module(12))
-# print(fuel_for_module(14))
-# print(fuel_for_module(1969))
-# print(fuel_for_module(100756))
+with open(inputs_path) as input_file:
+    # input_program = input_file.readline().rstrip()
+    input_program = [int(x) for x in input_file.readline().rstrip().split(',')]
 
-# module_mass_inputs_path = 'input.txt'
-# total_fuel = 0
-
-# with open(module_mass_inputs_path) as module_mass_file:
-#     for module_mass in module_mass_file:
-#         total_fuel += fuel_for_module(int(module_mass))
-
-# module_mass_file.close()
-
-# print(total_fuel)
+# print(input_program)
+input_program[1] = 12
+input_program[2] = 2
+print(intcode(input_program)[0])
