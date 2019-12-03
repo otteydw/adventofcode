@@ -70,26 +70,13 @@
 # the value 12 and replace position 2 with the value 2. What value is left at
 # position 0 after the program halts?
 
-def intcode(input_program):
-    # input_list = input_program.split(",")
-    # input_list = [int(x) for x in input_program.split(',')]
-    # length = len(input_list)
-    # print(str(length))
-    input_list=input_program
+def intcode(input_list):
 
-    # for i in input_list[::4]:
-    # for index, item in zip(range(0, len(input_list), 4), input_list):
-    # for index, item in enumerate(input_list[::4]):
     for index in range(int((len(input_list))/4)):
-        # print(input_list)
-        # print(index, item)
         minicode = input_list[index*4:(index*4)+4]
-        # print(minicode)
         opcode = int(minicode[0])
-        # print('Pos: ' + str(result_position) + ' | Op1: ' + str(operand1) + ' | Op2: ' + str(operand2))
-        # print(minicode)
+
         if opcode == 99:
-            # print('It is 99')
             break
         else:
             operand1 = int(input_list[int(minicode[1])])
@@ -98,20 +85,15 @@ def intcode(input_program):
 
             if opcode == 1:
                 # Opcode 1 adds together numbers read from two positions and stores the result in a third position
-                # print('It is 1')
-                # input_list[int(minicode[3])] = input_list[int(minicode[1])] + input_list[int(minicode[2])]
                 input_list[result_position] = operand1 + operand2
             elif opcode == 2:
                 # Opcode 2 works exactly like opcode 1, except it multiplies the two inputs instead of adding them.
-                # print('It is 2')
-                # input_list[int(minicode[3])] = input_list[int(minicode[1])] * input_list[int(minicode[2])]
                 input_list[result_position] = operand1 * operand2
             else:
                 print('Unknown op code!')
         # print()
 
     return input_list
-
 
 # print(intcode('1,9,10,3,2,3,11,0,99,30,40,50'))
 # print(intcode('1,0,0,0,99'))
@@ -122,10 +104,8 @@ def intcode(input_program):
 inputs_path = 'input.txt'
 
 with open(inputs_path) as input_file:
-    # input_program = input_file.readline().rstrip()
     input_program = [int(x) for x in input_file.readline().rstrip().split(',')]
 
-# print(input_program)
 input_program[1] = 12
 input_program[2] = 2
 print(intcode(input_program)[0])
