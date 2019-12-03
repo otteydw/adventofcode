@@ -77,29 +77,45 @@ def intcode(input_program):
 
     # for i in input_list[::4]:
     # for index, item in zip(range(0, len(input_list), 4), input_list):
-    for index, item in enumerate(input_list[::4]):
+    # for index, item in enumerate(input_list[::4]):
+    for index in range(int((len(input_list))/4)):
+        # print(input_list)
         # print(index, item)
         minicode = input_list[index*4:(index*4)+4]
-        print(minicode)
-        if int(minicode[0]) == 1:
-            # Opcode 1 adds together numbers read from two positions and stores the result in a third position
-            print('It is 1')
-            continue
-        elif int(minicode[0]) == 2:
-            # Opcode 2 works exactly like opcode 1, except it multiplies the two inputs instead of adding them.
-            print('It is 2')
-            continue
-        elif int(minicode[0]) == 99:
-            print('It is 99')
+        # print(minicode)
+        opcode = int(minicode[0])
+        # print('Pos: ' + str(result_position) + ' | Op1: ' + str(operand1) + ' | Op2: ' + str(operand2))
+        # print(minicode)
+        if opcode == 99:
+            # print('It is 99')
             break
         else:
-            print('Unknown op code!')
+            operand1 = int(input_list[int(minicode[1])])
+            operand2 = int(input_list[int(minicode[2])])
+            result_position = int(minicode[3])
+
+            if opcode == 1:
+                # Opcode 1 adds together numbers read from two positions and stores the result in a third position
+                # print('It is 1')
+                # input_list[int(minicode[3])] = input_list[int(minicode[1])] + input_list[int(minicode[2])]
+                input_list[result_position] = operand1 + operand2
+            elif opcode == 2:
+                # Opcode 2 works exactly like opcode 1, except it multiplies the two inputs instead of adding them.
+                # print('It is 2')
+                # input_list[int(minicode[3])] = input_list[int(minicode[1])] * input_list[int(minicode[2])]
+                input_list[result_position] = operand1 * operand2
+            else:
+                print('Unknown op code!')
+        # print()
+
+    print(input_list)
 
 
-intcode_program = '1,9,10,70,2,3,11,0,99,30,40,50'
+intcode_program = '1,9,10,3,2,3,11,0,99,30,40,50'
 
 # intcode_list = intcode_program.split(",")
-
+# print(intcode_program)
+# print()
 intcode(intcode_program)
 
 # print(fuel_for_module(12))
