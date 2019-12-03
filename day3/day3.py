@@ -1,5 +1,7 @@
 #!/usr/bin/python3
 
+# https://adventofcode.com/2019/day/3
+
 # --- Day 3: Crossed Wires ---
 # The gravity assist was successful, and you're well on your way to the Venus
 # refuelling station. During the rush back on Earth, the fuel management system
@@ -16,6 +18,11 @@
 # measurement. While the wires do technically cross right at the central port
 # where they both start, this point does not count, nor does a wire count as
 # crossing with itself.
+
+## A taxicab geometry is a form of geometry in which the usual distance function
+## or metric of Euclidean geometry is replaced by a new metric in which the
+## distance between two points is the sum of the absolute differences of their
+## Cartesian coordinates.
 
 # For example, if the first wire's path is R8,U5,L5,D3, then starting from the
 # central port (o), it goes right 8, up 5, left 5, and finally down 3:
@@ -48,6 +55,8 @@
 
 # R75,D30,R83,U83,L12,D49,R71,U7,L72
 # U62,R66,U55,R34,D71,R55,D58,R83 = distance 159
+
 # R98,U47,R26,D63,R33,U87,L62,D20,R33,U53,R51
 # U98,R91,D20,R16,D67,R40,U7,R15,U6,R7 = distance 135
+
 # What is the Manhattan distance from the central port to the closest intersection?
