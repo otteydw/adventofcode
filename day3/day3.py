@@ -60,3 +60,35 @@
 # U98,R91,D20,R16,D67,R40,U7,R15,U6,R7 = distance 135
 
 # What is the Manhattan distance from the central port to the closest intersection?
+
+class Wire():
+
+    def __init__(self):
+        self.coordinates = {'x': 0, 'y': 0}
+
+
+    def alter_path(self, request):
+        direction = request[0]
+        distance = int(request[1:])
+
+        if direction == 'U':
+            self.coordinates['y'] += distance
+        elif direction == 'D':
+            self.coordinates['y'] -= distance
+        elif direction == 'L':
+            self.coordinates['x'] -= distance
+        elif direction == 'R':
+            self.coordinates['x'] += distance
+        else:
+            print('Invalid direction!')
+            exit(1)
+
+    def print_coordinate(self):
+        print(self.coordinates)
+
+wire1 = Wire()
+wire2 = Wire()
+
+wire1.print_coordinate()
+wire1.alter_path('D20')
+wire1.print_coordinate()
