@@ -66,7 +66,6 @@ class Wire():
     def __init__(self):
         self.coordinates = {'x': 0, 'y': 0}
 
-
     def alter_path(self, request):
         direction = request[0]
         distance = int(request[1:])
@@ -83,12 +82,14 @@ class Wire():
             print('Invalid direction!')
             exit(1)
 
-    def print_coordinate(self):
-        print(self.coordinates)
+    def get_coordinates(self):
+        return self.coordinates
+
+
 
 wire1 = Wire()
 wire2 = Wire()
 
-wire1.print_coordinate()
+print(wire1.get_coordinates())
 wire1.alter_path('D20')
-wire1.print_coordinate()
+print(wire1.get_coordinates())
