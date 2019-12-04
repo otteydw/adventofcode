@@ -66,30 +66,38 @@ class Wire():
     def __init__(self):
         self.coordinates = {'x': 0, 'y': 0}
 
-    def alter_path(self, request):
-        direction = request[0]
-        distance = int(request[1:])
+    def alter_path(self, path):
+        SEQUENCE = path.rstrip().split(',')
 
-        if direction == 'U':
-            self.coordinates['y'] += distance
-        elif direction == 'D':
-            self.coordinates['y'] -= distance
-        elif direction == 'L':
-            self.coordinates['x'] -= distance
-        elif direction == 'R':
-            self.coordinates['x'] += distance
-        else:
-            print('Invalid direction!')
-            exit(1)
+        for request in SEQUENCE:
+            direction = request[0]
+            distance = int(request[1:])
+
+            if direction == 'U':
+                self.coordinates['y'] += distance
+            elif direction == 'D':
+                self.coordinates['y'] -= distance
+            elif direction == 'L':
+                self.coordinates['x'] -= distance
+            elif direction == 'R':
+                self.coordinates['x'] += distance
+            else:
+                print('Invalid direction!')
+                exit(1)
 
     def get_coordinates(self):
         return self.coordinates
-
 
 
 wire1 = Wire()
 wire2 = Wire()
 
 print(wire1.get_coordinates())
-wire1.alter_path('D20')
+print(wire2.get_coordinates())
+
+wire1.alter_path('R75,D30,R83,U83,L12,D49,R71,U7,L72')
+wire2.alter_path('U62,R66,U55,R34,D71,R55,D58,R83')
+
+print()
 print(wire1.get_coordinates())
+print(wire2.get_coordinates())
