@@ -88,12 +88,25 @@ class Wire():
     def get_coordinates(self):
         return self.coordinates
 
+    def getX(self):
+        return self.coordinates['x']
 
+    def getY(self):
+        return self.coordinates['y']
+
+def manhattan_distance(coordinateA, coordinateB):
+    # Calculates the manhattan distance between two coordinates
+    return abs(coordinateA.getX() - coordinateB.getX()) + abs(coordinateA.getY() - coordinateB.getY())
+
+
+wireStart = Wire()
 wire1 = Wire()
 wire2 = Wire()
 
 print(wire1.get_coordinates())
 print(wire2.get_coordinates())
+
+print(manhattan_distance(wire1, wire2))
 
 wire1.alter_path('R75,D30,R83,U83,L12,D49,R71,U7,L72')
 wire2.alter_path('U62,R66,U55,R34,D71,R55,D58,R83')
@@ -101,3 +114,7 @@ wire2.alter_path('U62,R66,U55,R34,D71,R55,D58,R83')
 print()
 print(wire1.get_coordinates())
 print(wire2.get_coordinates())
+
+print()
+print(manhattan_distance(wireStart, wire1))
+print(manhattan_distance(wireStart, wire2))
