@@ -68,16 +68,20 @@ class Wire():
         self.history = []
 
     def alter_path(self, path):
+        # Take a sequence of comma-separated requests and process them one at a time
         SEQUENCE = path.rstrip().split(',')
 
-        for request in SEQUENCE:
+        for count, request in enumerate(SEQUENCE):
+            print(str(count) + '/' + str(len(SEQUENCE)) + ' = ' + str(request))
             direction = request[0]
             distance = int(request[1:])
 
             for i in range(distance):
                 self.move_one(direction)
 
+
     def move_one(self, direction):
+        # Extend the path by 1 space in the given direction.  Also log that new coordinate in the history.
         if direction == 'U':
             self.coordinates['y'] += 1
         elif direction == 'D':
@@ -92,10 +96,9 @@ class Wire():
         self.log_coordinates()
 
     def log_coordinates(self):
+        # Keep a history of where we have been
         if self.coordinates not in self.history:
             self.history.append(self.coordinates.copy())
-        # print()
-        # print(self.history)
 
     def get_coordinates(self):
         return self.coordinates
@@ -118,8 +121,8 @@ def find_overlaps(historyA, historyB):
     # print(historyA)
     # print(historyB)
     overlaps = []
-    for value in historyA:
-        # print(value)
+    for count, value in enumerate(historyA):
+        print('Checking ' + str(count) + ' / ' + str(len(historyA)))
         if value in historyB:
             overlaps.append(value)
     return overlaps
@@ -138,8 +141,8 @@ wire2 = Wire()
 # wire1.alter_path('R75,D30,R83,U83,L12,D49,R71,U7,L72')
 # wire2.alter_path('U62,R66,U55,R34,D71,R55,D58,R83')
 
-wire1.alter_path('R98,U47,R26,D63,R33,U87,L62,D20,R33,U53,R51')
-wire2.alter_path('U98,R91,D20,R16,D67,R40,U7,R15,U6,R7')
+# wire1.alter_path('R98,U47,R26,D63,R33,U87,L62,D20,R33,U53,R51')
+# wire2.alter_path('U98,R91,D20,R16,D67,R40,U7,R15,U6,R7')
 
 
 # print()
@@ -155,10 +158,22 @@ wire2.alter_path('U98,R91,D20,R16,D67,R40,U7,R15,U6,R7')
 # print(manhattan_distance(CENTRAL_PORT, wire1))
 # print(manhattan_distance(CENTRAL_PORT, wire2))
 
+inputs_path = 'input.txt'
+
+with open(inputs_path) as input_file:
+    PATH1=input_file.readline().rstrip()
+    PATH2=input_file.readline().rstrip()
+
+print('Applying path1')
+wire1.alter_path(PATH1)
+print('Applying path2')
+wire2.alter_path(PATH2)
+
+print('Finding overlaps')
 overlap_distances = []
 for overlap in find_overlaps(wire1.get_history(), wire2.get_history()):
-    distance = manhattan_distance(CENTRAL_PORT.get_coordinates(), overlap)
-    print(str(distance) + ' to ' + str(overlap))
-    overlap_distances.append(distance)
+    this_distance = manhattan_distance(CENTRAL_PORT.get_coordinates(), overlap)
+    print(str(this_distance) + ' to ' + str(overlap))
+    overlap_distances.append(this_distance)
 
 print('Manhattan distance from CENTRAL_PORT to the closest intersection is ' + str(min(overlap_distances)))
