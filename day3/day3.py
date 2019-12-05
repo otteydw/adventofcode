@@ -111,7 +111,8 @@ class Wire():
 
 def manhattan_distance(coordinateA, coordinateB):
     # Calculates the manhattan distance between two coordinates
-    return abs(coordinateA.getX() - coordinateB.getX()) + abs(coordinateA.getY() - coordinateB.getY())
+    # return abs(coordinateA.getX() - coordinateB.getX()) + abs(coordinateA.getY() - coordinateB.getY())
+    return abs(coordinateA['x'] - coordinateB['x']) + abs(coordinateA['y'] - coordinateB['y'])
 
 def find_overlaps(historyA, historyB):
     # print(historyA)
@@ -129,18 +130,22 @@ wire2 = Wire()
 
 # print(wire1.get_coordinates())
 # print(wire2.get_coordinates())
+# print(manhattan_distance(wire1.get_coordinates(), wire2.get_coordinates()))
 
-# print(manhattan_distance(wire1, wire2))
-
-wire1.alter_path('R8,U5,L5,D3')
-wire2.alter_path('U7,R6,D4,L4')
+# wire1.alter_path('R8,U5,L5,D3')
+# wire2.alter_path('U7,R6,D4,L4')
 
 # wire1.alter_path('R75,D30,R83,U83,L12,D49,R71,U7,L72')
 # wire2.alter_path('U62,R66,U55,R34,D71,R55,D58,R83')
 
+wire1.alter_path('R98,U47,R26,D63,R33,U87,L62,D20,R33,U53,R51')
+wire2.alter_path('U98,R91,D20,R16,D67,R40,U7,R15,U6,R7')
+
+
 # print()
 # print(wire1.get_coordinates())
 # print(wire2.get_coordinates())
+# print(manhattan_distance(wire1.get_coordinates(), wire2.get_coordinates()))
 
 # print()
 # print(wire1.get_history())
@@ -150,7 +155,10 @@ wire2.alter_path('U7,R6,D4,L4')
 # print(manhattan_distance(CENTRAL_PORT, wire1))
 # print(manhattan_distance(CENTRAL_PORT, wire2))
 
-# print()
+overlap_distances = []
 for overlap in find_overlaps(wire1.get_history(), wire2.get_history()):
-    distance = manhattan_distance(CENTRAL_PORT, overlap)
-    print(distance + ' to ' + overlap)
+    distance = manhattan_distance(CENTRAL_PORT.get_coordinates(), overlap)
+    print(str(distance) + ' to ' + str(overlap))
+    overlap_distances.append(distance)
+
+print('Manhattan distance from CENTRAL_PORT to the closest intersection is ' + str(min(overlap_distances)))
