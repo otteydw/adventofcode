@@ -65,6 +65,7 @@ class Wire():
 
     def __init__(self):
         self.coordinates = {'x': 0, 'y': 0}
+        self.history = []
 
     def alter_path(self, path):
         SEQUENCE = path.rstrip().split(',')
@@ -73,17 +74,28 @@ class Wire():
             direction = request[0]
             distance = int(request[1:])
 
-            if direction == 'U':
-                self.coordinates['y'] += distance
-            elif direction == 'D':
-                self.coordinates['y'] -= distance
-            elif direction == 'L':
-                self.coordinates['x'] -= distance
-            elif direction == 'R':
-                self.coordinates['x'] += distance
-            else:
-                print('Invalid direction!')
-                exit(1)
+            for i in range(distance):
+                self.move_one(direction)
+
+    def move_one(self, direction):
+        if direction == 'U':
+            self.coordinates['y'] += 1
+        elif direction == 'D':
+            self.coordinates['y'] -= 1
+        elif direction == 'L':
+            self.coordinates['x'] -= 1
+        elif direction == 'R':
+            self.coordinates['x'] += 1
+        else:
+            print('Invalid direction!')
+            exit(1)
+        self.log_coordinates()
+
+    def log_coordinates(self):
+        if self.coordinates not in self.history:
+            self.history.append(self.coordinates.copy())
+        # print()
+        # print(self.history)
 
     def get_coordinates(self):
         return self.coordinates
@@ -94,27 +106,51 @@ class Wire():
     def getY(self):
         return self.coordinates['y']
 
+    def get_history(self):
+        return self.history
+
 def manhattan_distance(coordinateA, coordinateB):
     # Calculates the manhattan distance between two coordinates
     return abs(coordinateA.getX() - coordinateB.getX()) + abs(coordinateA.getY() - coordinateB.getY())
 
+def find_overlaps(historyA, historyB):
+    # print(historyA)
+    # print(historyB)
+    overlaps = []
+    for value in historyA:
+        # print(value)
+        if value in historyB:
+            overlaps.append(value)
+    return overlaps
 
-wireStart = Wire()
+CENTRAL_PORT = Wire()
 wire1 = Wire()
 wire2 = Wire()
 
-print(wire1.get_coordinates())
-print(wire2.get_coordinates())
+# print(wire1.get_coordinates())
+# print(wire2.get_coordinates())
 
-print(manhattan_distance(wire1, wire2))
+# print(manhattan_distance(wire1, wire2))
 
-wire1.alter_path('R75,D30,R83,U83,L12,D49,R71,U7,L72')
-wire2.alter_path('U62,R66,U55,R34,D71,R55,D58,R83')
+wire1.alter_path('R8,U5,L5,D3')
+wire2.alter_path('U7,R6,D4,L4')
 
-print()
-print(wire1.get_coordinates())
-print(wire2.get_coordinates())
+# wire1.alter_path('R75,D30,R83,U83,L12,D49,R71,U7,L72')
+# wire2.alter_path('U62,R66,U55,R34,D71,R55,D58,R83')
 
-print()
-print(manhattan_distance(wireStart, wire1))
-print(manhattan_distance(wireStart, wire2))
+# print()
+# print(wire1.get_coordinates())
+# print(wire2.get_coordinates())
+
+# print()
+# print(wire1.get_history())
+# print(wire2.get_history())
+
+# print()
+# print(manhattan_distance(CENTRAL_PORT, wire1))
+# print(manhattan_distance(CENTRAL_PORT, wire2))
+
+# print()
+for overlap in find_overlaps(wire1.get_history(), wire2.get_history()):
+    distance = manhattan_distance(CENTRAL_PORT, overlap)
+    print(distance + ' to ' + overlap)
