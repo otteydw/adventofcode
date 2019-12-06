@@ -47,9 +47,9 @@ class Wire():
 
     def __init__(self):
         self.coordinates = [0, 0]   # Use a list because tuples cannot be modified.
-        self.steps = 0
+        self.steps = 0              # The total steps this wire has taken.
         self.history = set()        # Use a set because we do not care about duplicates, and sets are much faster to parse than lists.
-        self.history_with_steps = {}
+        self.history_with_steps = {}    # A dictionary containing the shortest step count to reach a specific coordinate
 
     def alter_path(self, path):
         # Take a sequence of comma-separated requests and process them one at a time
