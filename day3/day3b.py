@@ -47,6 +47,7 @@ class Wire():
 
     def __init__(self):
         self.coordinates = [0, 0]   # Use a list because tuples cannot be modified.
+        self.steps = 0
         self.history = set()        # Use a set because we do not care about duplicates, and sets are much faster to parse than lists.
 
     def alter_path(self, path):
@@ -74,6 +75,7 @@ class Wire():
         else:
             print('Invalid direction!')
             exit(1)
+        self.steps += 1
         self.log_coordinates()
 
     def log_coordinates(self):
@@ -109,8 +111,8 @@ wire2 = Wire()
 # print(wire2.get_coordinates())
 # print(manhattan_distance(wire1.get_coordinates(), wire2.get_coordinates()))
 
-# wire1.alter_path('R8,U5,L5,D3')
-# wire2.alter_path('U7,R6,D4,L4')
+wire1.alter_path('R8,U5,L5,D3')
+wire2.alter_path('U7,R6,D4,L4')
 
 # wire1.alter_path('R75,D30,R83,U83,L12,D49,R71,U7,L72')
 # wire2.alter_path('U62,R66,U55,R34,D71,R55,D58,R83')
@@ -132,16 +134,18 @@ wire2 = Wire()
 # print(manhattan_distance(CENTRAL_PORT, wire1))
 # print(manhattan_distance(CENTRAL_PORT, wire2))
 
-inputs_path = 'input.txt'
 
-with open(inputs_path) as input_file:
-    PATH1=input_file.readline().rstrip()
-    PATH2=input_file.readline().rstrip()
+# inputs_path = 'input.txt'
 
-print('Applying path1')
-wire1.alter_path(PATH1)
-print('Applying path2')
-wire2.alter_path(PATH2)
+# with open(inputs_path) as input_file:
+#     PATH1=input_file.readline().rstrip()
+#     PATH2=input_file.readline().rstrip()
+
+# print('Applying path1')
+# wire1.alter_path(PATH1)
+# print('Applying path2')
+# wire2.alter_path(PATH2)
+
 
 print('Finding overlaps')
 overlap_distances = []
