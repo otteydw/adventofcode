@@ -49,6 +49,7 @@ class Wire():
         self.coordinates = [0, 0]   # Use a list because tuples cannot be modified.
         self.steps = 0
         self.history = set()        # Use a set because we do not care about duplicates, and sets are much faster to parse than lists.
+        self.history_with_steps = {}
 
     def alter_path(self, path):
         # Take a sequence of comma-separated requests and process them one at a time
@@ -80,8 +81,12 @@ class Wire():
 
     def log_coordinates(self):
         # Keep a history of where we have been
-        # Convet the current coordinate list to a tuple which can then be saved into the set.
-        self.history.add(tuple(self.coordinates))
+        # Convert the current coordinate list to a tuple which can then be saved into the set.
+        if tuple(self.coordinates) not in self.history:
+            # Record the shortest number of steps to get to this coordinate.
+            self.history_with_steps[tuple(self.coordinates)] = self.steps
+            # Add this coordinate to the history.  Might be redundant to above, but it works from part 1.
+            self.history.add(tuple(self.coordinates))
 
     def get_coordinates(self):
         return self.coordinates
@@ -95,9 +100,21 @@ class Wire():
     def get_history(self):
         return self.history
 
+    def get_history_with_steps(self):
+        return self.history_with_steps
+
+    def signal_delay(self, coordinate):
+        # Report the "signal delay" for the wire to get to a specific coordinate
+        return self.get_history_with_steps()[coordinate]
+
+
 def manhattan_distance(coordinateA, coordinateB):
     # Calculates the manhattan distance between two coordinates
     return abs(coordinateA[0] - coordinateB[0]) + abs(coordinateA[1] - coordinateB[1])
+
+def total_signal_delay(wireA, wireB, coordinate):
+    # Given two wires and a coordinate, return the combined signal delay.
+    return wireA.signal_delay(coordinate) + wireB.signal_delay(coordinate)
 
 def find_overlaps(historyA, historyB):
     # Find the overlap (intersection) in two history sets.
@@ -111,8 +128,8 @@ wire2 = Wire()
 # print(wire2.get_coordinates())
 # print(manhattan_distance(wire1.get_coordinates(), wire2.get_coordinates()))
 
-wire1.alter_path('R8,U5,L5,D3')
-wire2.alter_path('U7,R6,D4,L4')
+# wire1.alter_path('R8,U5,L5,D3')
+# wire2.alter_path('U7,R6,D4,L4')
 
 # wire1.alter_path('R75,D30,R83,U83,L12,D49,R71,U7,L72')
 # wire2.alter_path('U62,R66,U55,R34,D71,R55,D58,R83')
@@ -135,23 +152,31 @@ wire2.alter_path('U7,R6,D4,L4')
 # print(manhattan_distance(CENTRAL_PORT, wire2))
 
 
-# inputs_path = 'input.txt'
+inputs_path = 'input.txt'
 
-# with open(inputs_path) as input_file:
-#     PATH1=input_file.readline().rstrip()
-#     PATH2=input_file.readline().rstrip()
+with open(inputs_path) as input_file:
+    PATH1=input_file.readline().rstrip()
+    PATH2=input_file.readline().rstrip()
 
-# print('Applying path1')
-# wire1.alter_path(PATH1)
-# print('Applying path2')
-# wire2.alter_path(PATH2)
+print('Applying path1')
+wire1.alter_path(PATH1)
+print('Applying path2')
+wire2.alter_path(PATH2)
 
 
 print('Finding overlaps')
 overlap_distances = []
+overlap_signal_delays = []
 for overlap in find_overlaps(wire1.get_history(), wire2.get_history()):
     this_distance = manhattan_distance(CENTRAL_PORT.get_coordinates(), overlap)
-    print(str(this_distance) + ' to ' + str(overlap))
+    this_delay = total_signal_delay(wire1, wire2, overlap)
+    print(str(overlap) + ': Manhattan = ' + str(this_distance) + ', Signal Delay = ' + str(this_delay))
     overlap_distances.append(this_distance)
+    overlap_signal_delays.append(this_delay)
 
-print('Manhattan distance from CENTRAL_PORT to the closest intersection is ' + str(min(overlap_distances)))
+print()
+print('Shortest manhattan distance from CENTRAL_PORT to the closest intersection is ' + str(min(overlap_distances)))
+print('Shortest signal delay from CENTRAL_PORT is ' + str(min(overlap_signal_delays)))
+
+# print(wire1.get_history_with_steps())
+# print(wire1.signal_delay((8, 2)))
