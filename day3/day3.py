@@ -64,8 +64,8 @@
 class Wire():
 
     def __init__(self):
-        self.coordinates = {'x': 0, 'y': 0}
-        self.history = []
+        self.coordinates = [0, 0]
+        self.history = set()
 
     def alter_path(self, path):
         # Take a sequence of comma-separated requests and process them one at a time
@@ -83,13 +83,13 @@ class Wire():
     def move_one(self, direction):
         # Extend the path by 1 space in the given direction.  Also log that new coordinate in the history.
         if direction == 'U':
-            self.coordinates['y'] += 1
+            self.coordinates[1] += 1
         elif direction == 'D':
-            self.coordinates['y'] -= 1
+            self.coordinates[1] -= 1
         elif direction == 'L':
-            self.coordinates['x'] -= 1
+            self.coordinates[0] -= 1
         elif direction == 'R':
-            self.coordinates['x'] += 1
+            self.coordinates[0] += 1
         else:
             print('Invalid direction!')
             exit(1)
@@ -97,25 +97,26 @@ class Wire():
 
     def log_coordinates(self):
         # Keep a history of where we have been
-        if self.coordinates not in self.history:
-            self.history.append(self.coordinates.copy())
+        # if self.coordinates not in self.history:
+        #     self.history.append(self.coordinates.copy())
+        # self.history.add(self.coordinates.copy())
+        self.history.add(self.coordinates)
 
     def get_coordinates(self):
         return self.coordinates
 
     def getX(self):
-        return self.coordinates['x']
+        return self.coordinates[0]
 
     def getY(self):
-        return self.coordinates['y']
+        return self.coordinates[1]
 
     def get_history(self):
         return self.history
 
 def manhattan_distance(coordinateA, coordinateB):
     # Calculates the manhattan distance between two coordinates
-    # return abs(coordinateA.getX() - coordinateB.getX()) + abs(coordinateA.getY() - coordinateB.getY())
-    return abs(coordinateA['x'] - coordinateB['x']) + abs(coordinateA['y'] - coordinateB['y'])
+    return abs(coordinateA[0] - coordinateB[0]) + abs(coordinateA[1] - coordinateB[1])
 
 def find_overlaps(historyA, historyB):
     # print(historyA)
