@@ -116,13 +116,8 @@ def manhattan_distance(coordinateA, coordinateB):
     return abs(coordinateA[0] - coordinateB[0]) + abs(coordinateA[1] - coordinateB[1])
 
 def find_overlaps(historyA, historyB):
-    # Find the overlap in two history sets.  Might be able to steamline this.
-    overlaps = []
-    for count, value in enumerate(historyA):
-        print('Checking ' + str(count) + ' / ' + str(len(historyA)))
-        if value in historyB:
-            overlaps.append(value)
-    return overlaps
+    # Find the overlap (intersection) in two history sets.
+    return historyA.intersection(historyB)
 
 CENTRAL_PORT = Wire()
 wire1 = Wire()
