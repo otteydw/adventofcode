@@ -75,7 +75,6 @@ class Wire():
             print(str(count) + '/' + str(len(SEQUENCE)) + ' = ' + str(request))
             direction = request[0]
             distance = int(request[1:])
-
             for i in range(distance):
                 self.move_one(direction)
 
@@ -97,10 +96,8 @@ class Wire():
 
     def log_coordinates(self):
         # Keep a history of where we have been
-        # if self.coordinates not in self.history:
-        #     self.history.append(self.coordinates.copy())
-        # self.history.add(self.coordinates.copy())
-        self.history.add(self.coordinates)
+        # Convet the current coordinate list to a tuple which can then be saved into the set.
+        self.history.add(tuple(self.coordinates))
 
     def get_coordinates(self):
         return self.coordinates
@@ -119,8 +116,7 @@ def manhattan_distance(coordinateA, coordinateB):
     return abs(coordinateA[0] - coordinateB[0]) + abs(coordinateA[1] - coordinateB[1])
 
 def find_overlaps(historyA, historyB):
-    # print(historyA)
-    # print(historyB)
+    # Find the overlap in two history sets.  Might be able to steamline this.
     overlaps = []
     for count, value in enumerate(historyA):
         print('Checking ' + str(count) + ' / ' + str(len(historyA)))
