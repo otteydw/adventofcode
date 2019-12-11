@@ -33,11 +33,15 @@
 
 def check_two_adjacent_same(password):
     """ For a given input, return true if two adjacent digits are equal AND the two adjacent matching digits are not part of a larger group of matching digits """
+    ## 012345
+    ## xxxx
     strPassword=str(password)
-    count_doubles=0 # Count the number of times two digits are the same
-    count_triples=0 # Count the number of times three digits are the same
-    for i in range(0, len(strPassword)-1):
-        if strPassword[i] == strPassword[i+1]:
+    for i in range(0, len(strPassword)-2):
+        if i == 0 and strPassword[i] == strPassword[i+1] != strPassword[i+2]:
+            return True
+        if 1 <= i <= len(strPassword)-3 and strPassword[i-1] != strPassword[i] and strPassword[i] == strPassword[i+1] and strPassword[i] != strPassword[i+2]:
+            return True
+        if 1 == len(strPassword)-2 and strPassword[i-1] != strPassword[i] and strPassword[i] == strPassword[i+1]:
             return True
     return False
 
@@ -46,13 +50,13 @@ def check_two_adjacent_same(password):
 # print(check_two_adjacent_same(101010))  # False
 # print(check_two_adjacent_same(123455))  # True
 
-def check_digits_decrease(password):
-    """ For a given input, return true if the digits decrease from left ro right """
-    strPassword=str(password)
-    for i in range(0, len(strPassword)-1):
-        if strPassword[i] > strPassword[i+1]:
-            return True
-    return False
+# def check_digits_decrease(password):
+#     """ For a given input, return true if the digits decrease from left ro right """
+#     strPassword=str(password)
+#     for i in range(0, len(strPassword)-1):
+#         if strPassword[i] > strPassword[i+1]:
+#             return True
+#     return False
 
 # print(check_digits_decrease(111111))  # False
 # print(check_digits_decrease(101010))  # True
@@ -80,8 +84,8 @@ myRangeStop=649729
 counter=0
 # for myPass in range(myRangeStart, myRangeStop):
 for myPass in generate_non_decreasing_integer(myRangeStart, myRangeStop):
-    # print(myPass)
-    if check_two_adjacent_same(myPass) and not check_digits_decrease(myPass):
+    if check_two_adjacent_same(myPass):
+        print(myPass)
         counter+=1
 
 print(counter)
