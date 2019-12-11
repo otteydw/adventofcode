@@ -32,3 +32,15 @@ def check_two_adjacent_same(password):
 # print(check_two_adjacent_same(111111))  # True
 # print(check_two_adjacent_same(101010))  # False
 # print(check_two_adjacent_same(123455))  # True
+
+def check_digits_decrease(password):
+    """ For a given input, return true if the digits decrease from left ro right """
+    strPassword=str(password)
+    for i in range(0, len(strPassword)-1):
+        if strPassword[i] > strPassword[i+1]:
+            return True
+    return False
+
+# print(check_digits_decrease(111111))  # False
+# print(check_digits_decrease(101010))  # True
+# print(check_digits_decrease(123455))  # False
