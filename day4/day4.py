@@ -44,3 +44,14 @@ def check_digits_decrease(password):
 # print(check_digits_decrease(111111))  # False
 # print(check_digits_decrease(101010))  # True
 # print(check_digits_decrease(123455))  # False
+
+myRangeStart=193651
+myRangeStop=649729
+
+counter=0
+for myPass in range(myRangeStart, myRangeStop):
+    # print(myPass)
+    if check_two_adjacent_same(myPass) and not check_digits_decrease(myPass):
+        counter+=1
+
+print(counter)
