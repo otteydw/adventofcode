@@ -19,3 +19,16 @@
 # How many different passwords within the range given in your puzzle input meet these criteria?
 
 # Your puzzle input is 193651-649729.
+
+def check_two_adjacent_same(password):
+    """ For a given input, return true if two adjacent digits are equal """
+    strPassword=str(password)
+    for i in range(0, len(strPassword)-1):
+        if strPassword[i] == strPassword[i+1]:
+            return True
+    return False
+
+
+# print(check_two_adjacent_same(111111))  # True
+# print(check_two_adjacent_same(101010))  # False
+# print(check_two_adjacent_same(123455))  # True
