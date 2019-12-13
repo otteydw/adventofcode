@@ -92,7 +92,6 @@ def intcode(input_list):
     """ The intcode program """
 
     next_instruction = 0
-    # for index in range(int((len(input_list))/4)):
     for index in range(int((len(input_list)))):
         # print()
         # print(input_list)
@@ -158,32 +157,12 @@ def intcode(input_list):
                 next_instruction += 2
             else:
                 print('Unknown op code!')
-        # print()
 
     return input_list
 
 inputs_path = 'input.txt'
-# inputs_path = 'day2_input.txt'
-# DESIRED_OUTPUT = 19690720
 
 with open(inputs_path) as input_file:
     input_program = [int(x) for x in input_file.readline().rstrip().split(',')]
 
-# for noun in range(0, 99):
-#     for verb in range(0, 99):
-#         input_program = original_input_program.copy()
-#         input_program[1] = noun
-#         input_program[2] = verb
-
-#         if intcode(input_program)[0] == DESIRED_OUTPUT:
-#             print('Noun = ' + str(noun))
-#             print('Verb = ' + str(verb))
-#             print('Answer = ' + str(100 * noun + verb))
-#             break
-
-# original_input_program[1] = 12
-# original_input_program[2] = 2
-# print(intcode(original_input_program)[0])
 intcode(input_program)
-
-# testid = int(input('ID of System to test? '))
