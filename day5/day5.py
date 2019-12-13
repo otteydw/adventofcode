@@ -107,6 +107,12 @@ def intcode(input_list):
             elif opcode == 2:
                 # Opcode 2 works exactly like opcode 1, except it multiplies the two inputs instead of adding them.
                 input_list[result_position] = operand1 * operand2
+            elif opcode == 3:
+                # Opcode 3 takes a single integer as input and saves it to the position given by its only parameter. For example, the instruction 3,50 would take an input value and store it at address 50.
+                continue
+            elif opcode == 4:
+                # Opcode 4 outputs the value of its only parameter. For example, the instruction 4,50 would output the value at address 50.
+                continue
             else:
                 print('Unknown op code!')
         # print()
