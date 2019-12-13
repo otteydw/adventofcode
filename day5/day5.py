@@ -93,22 +93,16 @@ def intcode(input_list):
 
     next_instruction = 0
     for index in range(int((len(input_list)))):
-        # print()
-        # print(input_list)
-        # print('Index = ' + str(index))
         if index < next_instruction:
-            # print('Skipping instruction.')
+            # Skip this instruction
             continue
-        # instruction = input_list[index*4:(index*4)+4]
-        # print(str(input_list[index])[-1])
 
         instruction = input_list[index]
-        # print(instruction)
 
         # opcode is the right-most digit
-        # opcode = int(str(instruction)[-1])
         opcode = int(instruction % 100)
         # print('Index: ' + str(index) + '   Opcode: ' + str(opcode))
+
         if opcode == 99:
             break
         else:
@@ -130,14 +124,12 @@ def intcode(input_list):
                     operand2 = int(input_list[index+2])
 
                 if mode3 == 0:
-                    # result_position = int(input_list[int(input_list[index+3])])
                     result_position = int(input_list[index+3])
                 elif mode3 == 1:
-                    # result_position = int(input_list[index+3])
                     result_position = int(input_list[int(input_list[index+3])])
 
-                # print('Operands: ' + str(operand1) + ' ' + str(operand2))
-                # print('Result position: ' + str(result_position))
+                # print('Operands: ' + str(operand1) + ' ' + str(operand2) + '   Result Position: ' + str(result_position))
+
                 if opcode == 1:
                     # Opcode 1 adds together numbers read from two positions and stores the result in a third position
                     input_list[result_position] = operand1 + operand2
@@ -163,6 +155,6 @@ def intcode(input_list):
 inputs_path = 'input.txt'
 
 with open(inputs_path) as input_file:
-    input_program = [int(x) for x in input_file.readline().rstrip().split(',')]
+    INPUT_PROGRAM = [int(x) for x in input_file.readline().rstrip().split(',')]
 
-intcode(input_program)
+intcode(INPUT_PROGRAM)
