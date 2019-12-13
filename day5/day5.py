@@ -87,3 +87,46 @@
 
 # After providing 1 to the only input instruction and passing all the tests,
 # what diagnostic code does the program produce?
+
+def intcode(input_list):
+
+    for index in range(int((len(input_list))/4)):
+        minicode = input_list[index*4:(index*4)+4]
+        opcode = int(minicode[0])
+
+        if opcode == 99:
+            break
+        else:
+            operand1 = int(input_list[int(minicode[1])])
+            operand2 = int(input_list[int(minicode[2])])
+            result_position = int(minicode[3])
+
+            if opcode == 1:
+                # Opcode 1 adds together numbers read from two positions and stores the result in a third position
+                input_list[result_position] = operand1 + operand2
+            elif opcode == 2:
+                # Opcode 2 works exactly like opcode 1, except it multiplies the two inputs instead of adding them.
+                input_list[result_position] = operand1 * operand2
+            else:
+                print('Unknown op code!')
+        # print()
+
+    return input_list
+
+inputs_path = 'input.txt'
+DESIRED_OUTPUT = 19690720
+
+with open(inputs_path) as input_file:
+    original_input_program = [int(x) for x in input_file.readline().rstrip().split(',')]
+
+for noun in range(0, 99):
+    for verb in range(0, 99):
+        input_program = original_input_program.copy()
+        input_program[1] = noun
+        input_program[2] = verb
+
+        if intcode(input_program)[0] == DESIRED_OUTPUT:
+            print('Noun = ' + str(noun))
+            print('Verb = ' + str(verb))
+            print('Answer = ' + str(100 * noun + verb))
+            break
