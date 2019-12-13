@@ -91,15 +91,15 @@
 def intcode(input_list):
 
     for index in range(int((len(input_list))/4)):
-        minicode = input_list[index*4:(index*4)+4]
-        opcode = int(minicode[0])
+        instruction = input_list[index*4:(index*4)+4]
+        opcode = int(instruction[0])
 
         if opcode == 99:
             break
         else:
-            operand1 = int(input_list[int(minicode[1])])
-            operand2 = int(input_list[int(minicode[2])])
-            result_position = int(minicode[3])
+            operand1 = int(input_list[int(instruction[1])])
+            operand2 = int(input_list[int(instruction[2])])
+            result_position = int(instruction[3])
 
             if opcode == 1:
                 # Opcode 1 adds together numbers read from two positions and stores the result in a third position
@@ -120,6 +120,7 @@ def intcode(input_list):
     return input_list
 
 inputs_path = 'input.txt'
+# inputs_path = 'day2_input.txt'
 DESIRED_OUTPUT = 19690720
 
 with open(inputs_path) as input_file:
