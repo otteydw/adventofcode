@@ -33,17 +33,18 @@
 
 def check_two_adjacent_same(password):
     """ For a given input, return true if two adjacent digits are equal AND the two adjacent matching digits are not part of a larger group of matching digits """
-    ## 012345
-    ## xxxx
     strPassword=str(password)
-    for i in range(0, len(strPassword)-2):
-        if i == 0 and strPassword[i] == strPassword[i+1] != strPassword[i+2]:
-            return True
-        if 1 <= i <= len(strPassword)-3 and strPassword[i-1] != strPassword[i] and strPassword[i] == strPassword[i+1] and strPassword[i] != strPassword[i+2]:
-            return True
-        if 1 == len(strPassword)-2 and strPassword[i-1] != strPassword[i] and strPassword[i] == strPassword[i+1]:
+    for i in range(0, 10):
+        if strPassword.count(str(i)*2) >= 1 and strPassword.count(str(i)*3) == 0:
             return True
     return False
+
+def number_of_times_adjacent(myDigit, myInteger):
+    """ Return the number of times a specific digit is adjacent within an integer """
+    strDigit = str(myDigit)
+    strInteger = str(myInteger)
+    for i in range(0, len(strInteger)-2):
+        dupe_counter = 0
 
 
 # print(check_two_adjacent_same(111111))  # False
@@ -85,6 +86,7 @@ counter=0
 # for myPass in range(myRangeStart, myRangeStop):
 for myPass in generate_non_decreasing_integer(myRangeStart, myRangeStop):
     if check_two_adjacent_same(myPass):
+        # Since the input number has digits in increasing order AND the input has at least one "double" digit that is not a "triple" digit - we know it is valid.
         print(myPass)
         counter+=1
 
