@@ -89,30 +89,73 @@
 # what diagnostic code does the program produce?
 
 def intcode(input_list):
+    """ The intcode program """
 
-    for index in range(int((len(input_list))/4)):
-        instruction = input_list[index*4:(index*4)+4]
-        opcode = int(instruction[0])
+    next_instruction = 0
+    # for index in range(int((len(input_list))/4)):
+    for index in range(int((len(input_list)))):
+        # print()
+        # print(input_list)
+        # print('Index = ' + str(index))
+        if index < next_instruction:
+            # print('Skipping instruction.')
+            continue
+        # instruction = input_list[index*4:(index*4)+4]
+        # print(str(input_list[index])[-1])
 
+        instruction = input_list[index]
+        # print(instruction)
+
+        # opcode is the right-most digit
+        # opcode = int(str(instruction)[-1])
+        opcode = int(instruction % 100)
+        # print('Index: ' + str(index) + '   Opcode: ' + str(opcode))
         if opcode == 99:
             break
         else:
-            operand1 = int(input_list[int(instruction[1])])
-            operand2 = int(input_list[int(instruction[2])])
-            result_position = int(instruction[3])
+            if opcode in (1, 2):
 
-            if opcode == 1:
-                # Opcode 1 adds together numbers read from two positions and stores the result in a third position
-                input_list[result_position] = operand1 + operand2
-            elif opcode == 2:
-                # Opcode 2 works exactly like opcode 1, except it multiplies the two inputs instead of adding them.
-                input_list[result_position] = operand1 * operand2
+                mode1 = int(instruction % 1000 / 100)
+                mode2 = int(instruction % 10000 / 1000)
+                mode3 = int(instruction % 100000 / 10000)
+
+                # print('Modes: ' + str(mode1) + ' ' + str(mode2) + ' ' + str(mode3))
+                if mode1 == 0:
+                    operand1 = int(input_list[int(input_list[index+1])])
+                elif mode1 == 1:
+                    operand1 = int(input_list[index+1])
+
+                if mode2 == 0:
+                    operand2 = int(input_list[int(input_list[index+2])])
+                elif mode2 == 1:
+                    operand2 = int(input_list[index+2])
+
+                if mode3 == 0:
+                    # result_position = int(input_list[int(input_list[index+3])])
+                    result_position = int(input_list[index+3])
+                elif mode3 == 1:
+                    # result_position = int(input_list[index+3])
+                    result_position = int(input_list[int(input_list[index+3])])
+
+                # print('Operands: ' + str(operand1) + ' ' + str(operand2))
+                # print('Result position: ' + str(result_position))
+                if opcode == 1:
+                    # Opcode 1 adds together numbers read from two positions and stores the result in a third position
+                    input_list[result_position] = operand1 + operand2
+                elif opcode == 2:
+                    # Opcode 2 works exactly like opcode 1, except it multiplies the two inputs instead of adding them.
+                    input_list[result_position] = operand1 * operand2
+
+                next_instruction += 4
             elif opcode == 3:
-                # Opcode 3 takes a single integer as input and saves it to the position given by its only parameter. For example, the instruction 3,50 would take an input value and store it at address 50.
-                continue
+                # Opcode 3 takes a single integer as input and saves it to the position given by its only parameter.
+                # or example, the instruction 3,50 would take an input value and store it at address 50.
+                input_list[int(input_list[index+1])] = int(input("Input a single integer: "))
+                next_instruction += 2
             elif opcode == 4:
                 # Opcode 4 outputs the value of its only parameter. For example, the instruction 4,50 would output the value at address 50.
-                continue
+                print(input_list[int(input_list[index+1])])
+                next_instruction += 2
             else:
                 print('Unknown op code!')
         # print()
@@ -121,19 +164,26 @@ def intcode(input_list):
 
 inputs_path = 'input.txt'
 # inputs_path = 'day2_input.txt'
-DESIRED_OUTPUT = 19690720
+# DESIRED_OUTPUT = 19690720
 
 with open(inputs_path) as input_file:
-    original_input_program = [int(x) for x in input_file.readline().rstrip().split(',')]
+    input_program = [int(x) for x in input_file.readline().rstrip().split(',')]
 
-for noun in range(0, 99):
-    for verb in range(0, 99):
-        input_program = original_input_program.copy()
-        input_program[1] = noun
-        input_program[2] = verb
+# for noun in range(0, 99):
+#     for verb in range(0, 99):
+#         input_program = original_input_program.copy()
+#         input_program[1] = noun
+#         input_program[2] = verb
 
-        if intcode(input_program)[0] == DESIRED_OUTPUT:
-            print('Noun = ' + str(noun))
-            print('Verb = ' + str(verb))
-            print('Answer = ' + str(100 * noun + verb))
-            break
+#         if intcode(input_program)[0] == DESIRED_OUTPUT:
+#             print('Noun = ' + str(noun))
+#             print('Verb = ' + str(verb))
+#             print('Answer = ' + str(100 * noun + verb))
+#             break
+
+# original_input_program[1] = 12
+# original_input_program[2] = 2
+# print(intcode(original_input_program)[0])
+intcode(input_program)
+
+# testid = int(input('ID of System to test? '))
