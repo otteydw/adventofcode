@@ -132,15 +132,18 @@ def intcode(input_list):
 
     next_instruction = 0
     for index in range(int((len(input_list)))):
+        print()
+        print('Index is ' + str(index))
         if index < next_instruction:
             # Skip this instruction
             continue
 
         instruction = input_list[index]
+        print('Instruction is ' + str(instruction))
 
         # opcode is the right-most digit
         opcode = int(instruction % 100)
-        # print('Index: ' + str(index) + '   Opcode: ' + str(opcode))
+        print('Index: ' + str(index) + '   Opcode: ' + str(opcode))
 
         if opcode == 99:
             break
@@ -188,16 +191,36 @@ def intcode(input_list):
                 next_instruction += 2
             elif opcode == 5:
                 # Opcode 5 is jump-if-true: if the first parameter is non-zero, it sets the instruction pointer to the value from the second parameter. Otherwise, it does nothing.
-                continue
+                # if input_list[int(input_list[index+1])] != 0:
+                if int(input_list[index+1]) != 0:
+                    # next_instruction = input_list[int(input_list[index+2])]
+                    next_instruction = int(input_list[index+2])
+                # else:
+                #     next_instruction += 3
             elif opcode == 6:
                 # Opcode 6 is jump-if-false: if the first parameter is zero, it sets the instruction pointer to the value from the second parameter. Otherwise, it does nothing.
-                continue
+                # if input_list[int(input_list[index+1])] == 0:
+                if int(input_list[index+1]) == 0:
+                    # next_instruction = input_list[int(input_list[index+2])]
+                    next_instruction = int(input_list[index+2])
+                # else:
+                #     next_instruction += 3
             elif opcode == 7:
                 # Opcode 7 is less than: if the first parameter is less than the second parameter, it stores 1 in the position given by the third parameter. Otherwise, it stores 0.
-                continue
+                # if input_list[int(input_list[index+1])] < input_list[int(input_list[index+2])]:
+                if int(input_list[index+1]) < int(input_list[index+2]):
+                    input_list[int(input_list[index+3])] = 1
+                else:
+                    input_list[int(input_list[index+3])] = 0
+                next_instruction += 4
             elif opcode == 8:
                 # Opcode 8 is equals: if the first parameter is equal to the second parameter, it stores 1 in the position given by the third parameter. Otherwise, it stores 0.
-                continue
+                # if input_list[int(input_list[index+1])] == input_list[int(input_list[index+2])]:
+                if int(input_list[index+1]) == int(input_list[index+2]):
+                    input_list[int(input_list[index+3])] = 1
+                else:
+                    input_list[int(input_list[index+3])] = 0
+                next_instruction += 4
             else:
                 print('Unknown op code!')
 
@@ -207,5 +230,23 @@ inputs_path = 'input.txt'
 
 with open(inputs_path) as input_file:
     INPUT_PROGRAM = [int(x) for x in input_file.readline().rstrip().split(',')]
+
+# Using position mode, consider whether the input is equal to 8; output 1 (if it is) or 0 (if it is not).
+# INPUT_PROGRAM = [3,9,8,9,10,9,4,9,99,-1,8]
+
+# Using position mode, consider whether the input is less than 8; output 1 (if it is) or 0 (if it is not).
+INPUT_PROGRAM = [3,9,7,9,10,9,4,9,99,-1,8]
+
+# Using immediate mode, consider whether the input is equal to 8; output 1 (if it is) or 0 (if it is not).
+# INPUT_PROGRAM = [3,3,1108,-1,8,3,4,3,99]
+
+# Using immediate mode, consider whether the input is less than 8; output 1 (if it is) or 0 (if it is not).
+# INPUT_PROGRAM = [3,3,1107,-1,8,3,4,3,99]
+
+# Here are some jump tests that take an input, then output 0 if the input was zero or 1 if the input was non-zero:
+# Position mode
+# INPUT_PROGRAM = [3,12,6,12,15,1,13,14,13,4,13,99,-1,0,1,9]
+# Immediate mode
+# INPUT_PROGRAM = [3, 3, 1105, -1, 9, 1101, 0, 0, 12, 4, 12, 99, 1]
 
 intcode(INPUT_PROGRAM)
