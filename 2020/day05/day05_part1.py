@@ -8,15 +8,18 @@ def get_passes_from_file(filename):
         lines = inputs_file.readlines()
 
     passes = [x.strip() for x in lines]
-    # print(passes)
     return passes
 
 def get_seat_id(row, column):
     return row*8 + column
 
-def get_seat_id_from_decoded_pass(decoded_pass):
+def get_row_column_from_decoded_pass(decoded_pass):
     row = get_row_from_decoded_pass(decoded_pass)
     column = get_column_from_decoded_pass(decoded_pass)
+    return row, column
+
+def get_seat_id_from_decoded_pass(decoded_pass):
+    row, column = get_row_column_from_decoded_pass(decoded_pass)
     return row*8 + column
 
 def get_row_from_decoded_pass(decoded_pass):
@@ -26,11 +29,7 @@ def get_column_from_decoded_pass(decoded_pass):
     return decoded_pass[1]
 
 def display_pass(decoded_pass):
-    row = get_row_from_decoded_pass(decoded_pass)
-    column = get_column_from_decoded_pass(decoded_pass)
-    # row = decoded_pass[0]
-    # column = decoded_pass[1]
-    # print("row " + str(row) + ", column " + str(column) + ", seat ID " + str(get_seat_id(row, column)))
+    row, column = get_row_column_from_decoded_pass(decoded_pass)
     print("row " + str(row) + ", column " + str(column) + ", seat ID " + str(get_seat_id_from_decoded_pass(decoded_pass)))
 
 def decode_boarding_pass(encoded_boarding_pass):
@@ -50,18 +49,14 @@ def convert_lr_to_binary(some_string):
 def get_row(boarding_pass):
 
     row_binary = convert_fb_to_binary(boarding_pass[0:7])
-    # print(row_binary)
     return int(row_binary, 2)
 
 def get_column(boarding_pass):
 
     column_binary = convert_lr_to_binary(boarding_pass[7:10])
-    # print(column_binary)
     return int(column_binary, 2)
 
 def main():
-    # FILENAME='invalids.txt'
-    # FILENAME='valids.txt'
     FILENAME='input.txt'
     passes = get_passes_from_file(FILENAME)
 
@@ -73,7 +68,6 @@ def main():
 
     for encoded_boarding_pass in passes:
         decoded_pass = decode_boarding_pass(encoded_boarding_pass)
-        # print(decoded_pass)
         display_pass(decoded_pass)
         this_seat_id = get_seat_id_from_decoded_pass(decoded_pass)
         if this_seat_id > highest_seat_id:
@@ -81,14 +75,5 @@ def main():
 
     print()
     print("Highest seat ID: " + str(highest_seat_id))
-
-    # print(get_row(boarding_pass))
-    # print(get_column(boarding_pass))
-    # valid_batch_count = 0
-    # for batch in batches:
-    #     if isValidBatch(batch):
-    #         valid_batch_count += 1
-
-    # print(valid_batch_count)
 
 main()
