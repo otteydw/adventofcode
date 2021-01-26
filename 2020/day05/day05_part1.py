@@ -10,9 +10,6 @@ def get_passes_from_file(filename):
     passes = [x.strip() for x in lines]
     return passes
 
-def get_seat_id(row, column):
-    return row*8 + column
-
 def get_row_column_from_decoded_pass(decoded_pass):
     row = get_row_from_decoded_pass(decoded_pass)
     column = get_column_from_decoded_pass(decoded_pass)
