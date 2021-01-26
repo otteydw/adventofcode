@@ -14,22 +14,28 @@ def get_passes_from_file(filename):
 def get_seat_id(row, column):
     return row*8 + column
 
-# def get_row(decoded_pass):
-#     return decoded_pass[0]
+def get_seat_id_from_decoded_pass(decoded_pass):
+    row = get_row_from_decoded_pass(decoded_pass)
+    column = get_column_from_decoded_pass(decoded_pass)
+    return row*8 + column
 
-# def get_column(decoded_pass):
-#     return decoded_pass[1]
+def get_row_from_decoded_pass(decoded_pass):
+    return decoded_pass[0]
+
+def get_column_from_decoded_pass(decoded_pass):
+    return decoded_pass[1]
 
 def display_pass(decoded_pass):
-    # row = get_row(decoded_pass)
-    # column = get_column(decoded_pass)
-    row = decoded_pass[0]
-    column = decoded_pass[1]
-    print("row " + str(row) + ", column " + str(column) + ", seat ID " + str(get_seat_id(row, column)))
+    row = get_row_from_decoded_pass(decoded_pass)
+    column = get_column_from_decoded_pass(decoded_pass)
+    # row = decoded_pass[0]
+    # column = decoded_pass[1]
+    # print("row " + str(row) + ", column " + str(column) + ", seat ID " + str(get_seat_id(row, column)))
+    print("row " + str(row) + ", column " + str(column) + ", seat ID " + str(get_seat_id_from_decoded_pass(decoded_pass)))
 
-def decode_boarding_pass(boarding_pass):
-    row = get_row(boarding_pass)
-    column = get_column(boarding_pass)
+def decode_boarding_pass(encoded_boarding_pass):
+    row = get_row(encoded_boarding_pass)
+    column = get_column(encoded_boarding_pass)
     return (row, column)
 
 def decode_front_back(letter):
@@ -67,14 +73,14 @@ def main():
 
     for encoded_boarding_pass in passes:
         decoded_pass = decode_boarding_pass(encoded_boarding_pass)
-        print(decoded_pass)
+        # print(decoded_pass)
         display_pass(decoded_pass)
-    #     this_seat_id = get_seat_id(decoded_pass)
-    #     if this_seat_id > highest_seat_id:
-    #         highest_seat_id = this_seat_id
+        this_seat_id = get_seat_id_from_decoded_pass(decoded_pass)
+        if this_seat_id > highest_seat_id:
+            highest_seat_id = this_seat_id
 
-    # print()
-    # print("Highest seat ID: " + str(highest_seat_id))
+    print()
+    print("Highest seat ID: " + str(highest_seat_id))
 
     # print(get_row(boarding_pass))
     # print(get_column(boarding_pass))
