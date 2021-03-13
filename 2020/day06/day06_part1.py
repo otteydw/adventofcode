@@ -5,14 +5,6 @@
 def isBlank(myString):
     return not (myString and myString.strip())
 
-# def get_fields_from_line(line):
-#     fields_in_line = []
-#     key_values = line.split(' ')
-#     for key_value in key_values:
-#         key, value = key_value.strip().split(':')
-#         fields_in_line.append([key, value])
-#     return fields_in_line
-
 def get_batches_from_file(filename):
     INPUTS_PATH = filename
 
@@ -38,7 +30,6 @@ def main():
     # batches = get_batches_from_file('input_small.txt')
     # batches = get_batches_from_file('examples.txt')
 
-    # print(batches)
     all_response = []
     for batch in batches:
         for response in batch:
