@@ -1,4 +1,4 @@
-
+import os
 
 def find_floor(directions):
     floor = 0
@@ -13,7 +13,7 @@ def find_floor(directions):
 
 if __name__ == "__main__":
 
-    input_path = "2015/day01/input.txt"
+    input_path = os.path.join(os.path.dirname(__file__),"input.txt")
 
     with open(input_path) as input_file:
         INPUT = input_file.readline()
