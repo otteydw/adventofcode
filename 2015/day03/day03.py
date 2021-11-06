@@ -29,11 +29,24 @@ def deliver_present(presents_tracker, position):
 
 def go_santa(presents, santa, directions):
 
-    deliver_present(presents, santa.get_position())
+    deliver_present(presents, (santa.get_position()))
 
     for direction in directions:
        santa.move(direction)
        deliver_present(presents, santa.get_position())
+
+def go_multi_santa(presents, santa, robot, directions):
+
+    deliver_present(presents, (santa.get_position()))
+    deliver_present(presents, (robot.get_position()))
+
+    for index, direction in enumerate(directions):
+        if index % 2 == 0:
+            santa.move(direction)
+            deliver_present(presents, santa.get_position())
+        else:
+            robot.move(direction)
+            deliver_present(presents, robot.get_position())
 
 
 if __name__ == "__main__":
@@ -46,5 +59,12 @@ if __name__ == "__main__":
     presents = {}
     santa = Santa()
     go_santa(presents, santa, DIRECTIONS)
+
+    print(len(presents))
+
+    presents = {}
+    santa = Santa()
+    robot = Santa()
+    go_multi_santa(presents, santa, robot, DIRECTIONS)
 
     print(len(presents))
