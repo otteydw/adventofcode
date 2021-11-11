@@ -1,6 +1,6 @@
 import os
 import sys
-
+import copy
 
 class Circuit:
     def __init__(self):
@@ -89,4 +89,17 @@ if __name__ == "__main__":
             this_direction = line.rstrip()
             circuit.store_direction(this_direction)
 
-    print(circuit.get_signal('a'))
+    # Backup the circuit before processing any inputs
+    circuit_backup = copy.deepcopy(circuit)
+
+    first_run_a = circuit.get_signal('a')
+    print(f"Value of a: {first_run_a}")
+
+    # Reset the circuit from backup
+    circuit = copy.deepcopy(circuit_backup)
+
+    # Override b with the value of a from the first run
+    circuit.store_direction(f"{first_run_a} -> b")
+
+    second_run_a = circuit.get_signal('a')
+    print(f"Value of a: {second_run_a}")
