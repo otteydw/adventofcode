@@ -11,16 +11,24 @@ class Circuit:
         return str(self.gate)
 
     def get_signal(self, wire):
+
+        # If the input "wire" is actually a number, just return that number directly.
         if wire.isnumeric():
             return int(wire)
+
+        # If the wire has an integer value, return that.
         value = self.gate[wire]
         if isinstance(value, int):
             return value
-        else:
-            return(self.get_signal_from_direction(value))
+
+        # Otherwise this wire is storing a direction, so we will process that.
+        # then store the returned (integer) value onto the wire to reduce future recursion.
+        return_value = self.get_signal_from_direction(value)
+        self.set_signal(wire, return_value)
+        return return_value
 
     def get_signal_from_direction(self, direction):
-        print(f"Parsing direction: {direction}")
+        # print(f"Parsing direction: {direction}")
         if "AND" in direction:
             # x AND y
             wire_a, wire_b = direction.split(' AND ')
@@ -70,65 +78,6 @@ class Circuit:
         self.set_signal(wire, operation)
 
 
-
-
-
-    # def parse_and_or(self, direction, verb):
-    #     # Common parser for AND, OR
-    #     operation, wire = direction.split(' -> ')
-    #     wire_a, wire_b = operation.split(f' {verb} ')
-    #     value_a = self.get_signal(wire_a)
-    #     value_b = self.get_signal(wire_b)
-
-    #     return wire, value_a, value_b
-
-    # def parse_shift(self, direction, verb):
-    #     # Common parser for LSHIFT and RSHIFT
-    #     operation, wire = direction.split(' -> ')
-    #     wire_a, shift_distance = operation.split(f' {verb} ')
-    #     value_a = self.get_signal(wire_a)
-
-    #     return wire, value_a, int(shift_distance)
-
-    # def go(self, direction):
-
-    #     bit_mask = 0xFFFF
-
-    #     if "AND" in direction:
-    #         # x AND y -> d
-    #         wire, value_a, value_b = self.parse_and_or(direction, 'AND')
-    #         value = (value_a & value_b) & bit_mask
-    #         self.set_signal(wire, value)
-    #     elif "OR" in direction:
-    #         # x OR y -> d
-    #         wire, value_a, value_b = self.parse_and_or(direction, 'OR')
-    #         value = (value_a | value_b) & bit_mask
-    #         self.set_signal(wire, value)
-    #     elif "LSHIFT" in direction:
-    #         # x LSHIFT 2 -> f
-    #         wire, value_a, shift_distance = self.parse_shift(direction, 'LSHIFT')
-    #         value = (value_a << shift_distance) & bit_mask
-    #         self.set_signal(wire, value)
-    #     elif "RSHIFT" in direction:
-    #         # y RSHIFT 2 -> g
-    #         wire, value_a, shift_distance = self.parse_shift(direction, 'RSHIFT')
-    #         value = (value_a >> shift_distance) & bit_mask
-    #         self.set_signal(wire, value)
-    #     elif "NOT" in direction:
-    #         # NOT x -> h
-    #         operation = direction.split()
-    #         wire_a, wire_b = operation[1], operation[3]
-    #         value_a = self.get_signal(wire_a)
-    #         value = ~ value_a & bit_mask
-    #         # value = 65535 - self.get_signal(wire_a)
-    #         self.set_signal(wire_b, value)
-    #     else:
-    #         # assignment
-    #         # 123 -> x
-    #         value, wire = direction.split(' -> ')
-    #         self.set_signal(wire, value)
-
-
 if __name__ == "__main__":
 
     input_path = os.path.join(os.path.dirname(__file__),"input.txt")
@@ -138,9 +87,6 @@ if __name__ == "__main__":
     with open(input_path) as input_file:
         for index, line in enumerate(input_file):
             this_direction = line.rstrip()
-            # print(index, this_direction)
-            # circuit.go(this_direction)
             circuit.store_direction(this_direction)
 
-    circuit.get_signal('a')
-    # print(circuit)
+    print(circuit.get_signal('a'))
