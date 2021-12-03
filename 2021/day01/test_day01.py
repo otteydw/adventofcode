@@ -1,4 +1,3 @@
-import hashlib
 import unittest
 
 from day01 import load_ints_from_file, count_depth_increases, count_sum_of_sliding_window_increases
