@@ -1,13 +1,13 @@
-
 import os
 
-class Submarine():
+
+class Submarine:
     def __init__(self):
         self.depth = 0
         self.horizontal_position = 0
 
     def move(self, instruction):
-        direction, distance = instruction.split(' ')
+        direction, distance = instruction.split(" ")
         distance = int(distance)
 
         if direction == "forward":
@@ -17,16 +17,17 @@ class Submarine():
         elif direction == "up":
             self.depth -= distance
         else:
-            raise Exception(f'Invalid direction {direction}!')
+            raise Exception(f"Invalid direction {direction}!")
 
-class Submarine2():
+
+class Submarine2:
     def __init__(self):
         self.depth = 0
         self.horizontal_position = 0
         self.aim = 0
 
     def move(self, instruction):
-        direction, distance = instruction.split(' ')
+        direction, distance = instruction.split(" ")
         distance = int(distance)
 
         if direction == "forward":
@@ -37,16 +38,18 @@ class Submarine2():
         elif direction == "up":
             self.aim -= distance
         else:
-            raise Exception(f'Invalid direction {direction}!')
+            raise Exception(f"Invalid direction {direction}!")
+
 
 def load_from_file(filename):
-    input_path = os.path.join(os.path.dirname(__file__),filename)
+    input_path = os.path.join(os.path.dirname(__file__), filename)
 
-    with open(input_path, 'r') as input_file:
+    with open(input_path, "r") as input_file:
         lines = input_file.readlines()
         lines = [line.rstrip() for line in lines]
 
     return lines
+
 
 if __name__ == "__main__":
 
@@ -56,10 +59,10 @@ if __name__ == "__main__":
     for instruction in instructions:
         sub.move(instruction)
 
-    print(f'Part 1 answer is: {sub.depth * sub.horizontal_position}')
+    print(f"Part 1 answer is: {sub.depth * sub.horizontal_position}")
 
     sub = Submarine2()
     for instruction in instructions:
         sub.move(instruction)
 
-    print(f'Part 2 answer is: {sub.depth * sub.horizontal_position}')
+    print(f"Part 2 answer is: {sub.depth * sub.horizontal_position}")

@@ -2,6 +2,7 @@ import unittest
 
 import day02
 
+
 class TestSanta(unittest.TestCase):
     def test_sub(self):
 
@@ -25,5 +26,6 @@ class TestSanta(unittest.TestCase):
         self.assertAlmostEqual(sub.depth, 60)
         self.assertAlmostEqual(sub.horizontal_position, 15)
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     unittest.main()
