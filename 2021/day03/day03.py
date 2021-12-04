@@ -5,10 +5,13 @@ class DiagnosticReport:
     def __init__(self, values):
         self.values = values
 
-    def _find_common_bit_at_position(self, position):
+    def _find_common_bit_at_position(self, position, values=None):
+        if not values:
+            values = self.values
+
         counts = {}
 
-        for value in self.values:
+        for value in values:
             bit_value = value[position]
             if bit_value in counts.keys():
                 counts[bit_value] += 1
@@ -16,10 +19,13 @@ class DiagnosticReport:
                 counts[bit_value] = 1
         return max(counts, key=counts.get)
 
-    def _find_least_common_bit_at_position(self, position):
+    def _find_least_common_bit_at_position(self, position, values=None):
+        if not values:
+            values = self.values
+
         counts = {}
 
-        for value in self.values:
+        for value in values:
             bit_value = value[position]
             if bit_value in counts.keys():
                 counts[bit_value] += 1
