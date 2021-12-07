@@ -62,7 +62,15 @@ class TestSanta(unittest.TestCase):
                     continue
             break
 
+    def first_winning_score(self):
 
+        drawn_numbers, boards = day04.load_bingo('example.txt')
+        self.assertEqual(day04.find_first_winning_board(drawn_numbers, boards), 4512)
+
+    def lqast_winning_score(self):
+
+        drawn_numbers, boards = day04.load_bingo('example.txt')
+        self.assertEqual(day04.find_first_winning_board(drawn_numbers, boards), 1924)
 
 if __name__ == "__main__":
     unittest.main()

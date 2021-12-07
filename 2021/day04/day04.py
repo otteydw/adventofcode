@@ -140,25 +140,28 @@ def load_bingo(filename):
 
     return drawn_numbers, boards
 
-if __name__ == "__main__":
+def find_first_winning_board(drawn_numbers, boards):
 
-    drawn_numbers, boards = load_bingo('input.txt')
-    # print(drawn_numbers)
     for drawn_number in drawn_numbers:
         for board in boards:
             if board.call_and_check(drawn_number):
-                print("Bingo!")
-                board.print_board()
-                print(f"Score: {board.score(drawn_number)}")
-                sys.exit()
+                return board.score(drawn_number)
 
-    # for board in boards:
-    #     board.print_board()
-    #     print()
-    # boards[0].print_board()
-    # boards[0].call(27)
-    # boards[0].call(11)
-    # boards[0].call(12)
-    # boards[0].print_board()
-    # print(boards[0].call(80))
-    # boards[0].print_board()
+def find_last_winning_board(drawn_numbers, boards):
+
+    most_recent_score = -1
+
+    for drawn_number in drawn_numbers:
+        for board in boards:
+            if not board.check_for_bingo() and board.call_and_check(drawn_number):
+                most_recent_score = board.score(drawn_number)
+
+    return most_recent_score
+
+if __name__ == "__main__":
+
+    drawn_numbers, boards = load_bingo('input.txt')
+    print(f"Score of first winning board: {find_first_winning_board(drawn_numbers, boards)}")
+
+    drawn_numbers, boards = load_bingo('input.txt')
+    print(f"Score of last winning board: {find_last_winning_board(drawn_numbers, boards)}")
