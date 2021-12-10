@@ -2,8 +2,10 @@ import os
 import numpy as np
 import parse
 
+
 class VentField:
-    def __init__(self, data_from_file):
+    def __init__(self, data_from_file, draw_diagonals=True):
+        self.draw_diagonals = draw_diagonals
         self.parse_data(data_from_file)
         # print(self.array)
 
@@ -33,28 +35,55 @@ class VentField:
             self.draw_line(vent_line)
 
     def draw_line(self, line):
-        line_start = (line["x1"], line["y1"])
-        line_end = (line["x2"], line["y2"])
+        x1, x2 = line["x1"], line["x2"]
+        y1, y2 = line["y1"], line["y2"]
+
+        # line_start = (x1, y1)
+        # line_end = (x2, y2)
         # print(f"Draw a line from {line_start} to {line_end}.")
 
-        if line["x1"] == line["x2"]:
-            self.draw_vertical_line(x=line["x1"], y1=line["y1"], y2=line["y2"])
-        elif line["y1"] == line["y2"]:
-            self.draw_horizontal_line(y=line["y1"], x1=line["x1"], x2=line["x2"])
+        if x1 == x2:
+            self.draw_vertical_line(x=x1, y1=y1, y2=y2)
+        elif y1 == y2:
+            self.draw_horizontal_line(y=y1, x1=x1, x2=x2)
+        elif self.draw_diagonals:
+            self.draw_diagonal_line(x1=x1, x2=x2, y1=y1, y2=y2)
 
     def draw_vertical_line(self, x, y1, y2):
         start_y = min(y1, y2)
         end_y = max(y1, y2)
         for y in range(start_y, end_y + 1):
             # print(f"Drawing point at x={x}, y={y}")
-            self.array[y][x] += 1
+            self.add_point(x, y)
 
     def draw_horizontal_line(self, y, x1, x2):
         start_x = min(x1, x2)
         end_x = max(x1, x2)
         for x in range(start_x, end_x + 1):
             # print(f"Drawing point at x={x}, y={y}")
-            self.array[y][x] += 1
+            self.add_point(x, y)
+
+    def draw_diagonal_line(self, x1, x2, y1, y2):
+        if not self.is_line_45_degrees(x1, x2, y1, y2):
+            pass
+
+        x_direction = 1 if x1 < x2 else -1
+        y_direction = 1 if y1 < y2 else -1
+
+        x_positions = range(x1, x2 + x_direction, x_direction)
+        y_positions = range(y1, y2 + y_direction, y_direction)
+
+        diagonal_positions = zip(x_positions, y_positions)
+
+        for x, y in diagonal_positions:
+            self.add_point(x, y)
+
+    def is_line_45_degrees(self, x1, x2, y1, y2):
+        # Checking that the line's slope is 45 degrees
+        return abs(x1 - x2) == abs(y1 - y2)
+
+    def add_point(self, x, y):
+        self.array[y][x] += 1
 
     def number_of_lines_covering_point(self, point):
         x, y = point
@@ -95,7 +124,13 @@ def load_from_file(filename):
 if __name__ == "__main__":
 
     data = load_from_file("input.txt")
-    vent = VentField(data)
-    print(f"Number of points with overlap: {vent.number_of_points_with_overlap()}")
+    vent_without_diagonals = VentField(data, draw_diagonals=False)
+    print(
+        f"Number of points with overlap (without diagonals): {vent_without_diagonals.number_of_points_with_overlap()}"
+    )
+    vent_with_diagonals = VentField(data, draw_diagonals=True)
+    print(
+        f"Number of points with overlap (with diagonals): {vent_with_diagonals.number_of_points_with_overlap()}"
+    )
     # vent.printme()
     # print(vent.array)
