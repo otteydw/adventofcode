@@ -1,6 +1,5 @@
 import os
 
-
 class LanternFish:
     def __init__(self, internal_timer):
         self.internal_timer = internal_timer
@@ -37,7 +36,8 @@ def load_lanternfish_data(filename):
     return data_as_ints
 
 
-def number_of_lanternfish(lanternfish_data, days):
+def number_of_lanternfish_orig(lanternfish_data, days):
+    # Original version using the LanternFish class
 
     fishes = []
     for initial_fish_timer in lanternfish_data:
@@ -46,7 +46,7 @@ def number_of_lanternfish(lanternfish_data, days):
 
     for day in range(days):
         print(f"At day {day} there are {len(fishes)} fish.")
-        # print(fishes)
+        print(fishes)
 
         fishes_to_add = []
         for fish in fishes:
@@ -58,6 +58,25 @@ def number_of_lanternfish(lanternfish_data, days):
 
     return len(fishes)
 
+def number_of_lanternfish_unclassed(fish_timers, days):
+    # Un-classed version is faster, but still not efficient.
+    # Ref: https://github.com/womogenes/AoC-2021-Solutions/tree/main/day_06
+    # https://www.youtube.com/watch?v=yJjpXJm7x0o
+
+    for day in range(days):
+        print(f"At day {day} there are {len(fish_timers)} fish.")
+        # print(fishes)
+
+        next_fish_timers = []
+        for fish_timer in fish_timers:
+            if fish_timer == 0:
+                next_fish_timers.append(6)
+                next_fish_timers.append(8)
+            else:
+                next_fish_timers.append(fish_timer - 1)
+        fish_timers = next_fish_timers
+
+    return len(fish_timers)
 
 if __name__ == "__main__":
 
