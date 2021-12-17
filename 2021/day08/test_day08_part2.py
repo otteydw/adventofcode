@@ -31,13 +31,29 @@ class TestSanta(unittest.TestCase):
 
     def test_decode_list_example2(self):
         input_values, output_values = day08_part2.parse_input("example2.txt")
-        expected_outputs = ["8394", "9781", "1197", "9361", "4873", "8418", "4548", "1625", "8717", "4315"]
-        for input_value, output_value, expected_output in zip(input_values, output_values, expected_outputs):
+        expected_outputs = [
+            "8394",
+            "9781",
+            "1197",
+            "9361",
+            "4873",
+            "8418",
+            "4548",
+            "1625",
+            "8717",
+            "4315",
+        ]
+        for input_value, output_value, expected_output in zip(
+            input_values, output_values, expected_outputs
+        ):
             mycode = day08_part2.ClockDecoder(input_value)
             self.assertEqual(mycode.decode_list(output_value), expected_output)
 
     def test_sum_decoded_values_from_input(self):
-        self.assertEqual(day08_part2.sum_decoded_values_from_input('example2.txt'), 61229)
+        self.assertEqual(
+            day08_part2.sum_decoded_values_from_input("example2.txt"), 61229
+        )
+
 
 if __name__ == "__main__":
     unittest.main()
