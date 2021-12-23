@@ -1,3 +1,4 @@
+import statistics
 import os
 
 # import numpy as np
@@ -57,6 +58,63 @@ def total_syntax_error_score(filename):
     return total_score
 
 
+def is_incomplete(chunk):
+    return first_illegal_character(chunk) == None
+
+
+def autocomplete_score(completion_string):
+
+    total_score = 0
+
+    for character in completion_string:
+        if character == ")":
+            score = 1
+        elif character == "]":
+            score = 2
+        elif character == "}":
+            score = 3
+        elif character == ">":
+            score = 4
+        else:
+            score = 0
+
+        total_score = (total_score * 5) + score
+
+    return total_score
+
+
+def middle_autocomplete_score(filename):
+    lines = load_from_file(filename)
+
+    autocomplete_scores = []
+
+    for line in lines:
+
+        if is_incomplete(line):
+            autocomplete_scores.append(autocomplete_score(find_completion_string(line)))
+
+    return statistics.median(autocomplete_scores)
+
+
+def find_completion_string(chunk):
+    opener_stack = []
+    expected_closer_stack = []
+
+    for character in chunk:
+        if character in VALID_OPENING_CHARACTERS:
+            opener_stack.append(character)
+            expected_closer_stack.append(EXPECTED_CLOSERS[character])
+        elif character == expected_closer_stack[-1]:
+            opener_stack.pop()
+            expected_closer_stack.pop()
+
+    closer_string = ""
+    for character in reversed(expected_closer_stack):
+        closer_string += character
+    return closer_string
+
+
 if __name__ == "__main__":
 
     print(f"Part 1: {total_syntax_error_score('input.txt')}")
+    print(f"Part 2: {middle_autocomplete_score('input.txt')}")
