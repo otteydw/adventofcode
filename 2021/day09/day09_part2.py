@@ -1,5 +1,6 @@
 import os
 import numpy as np
+from scipy import ndimage
 
 
 class LavaTube:
@@ -10,20 +11,44 @@ class LavaTube:
 
     def find_lows(self):
         low_values = []
-        for (x, y), value in np.ndenumerate(self.array):
-            if x > 0 and self.array[x - 1, y] <= value:
+        for (row, column), value in np.ndenumerate(self.array):
+            row_above, row_below = row - 1, row + 1
+            column_left, column_right = column - 1, column + 1
+
+            # Compare to row above
+            if row > 0 and self.array[row_above, column] <= value:
                 continue
-            elif x < self.array.shape[0] - 1 and self.array[x + 1, y] <= value:
+            # Compare to row below
+            elif (
+                row < self.array.shape[0] - 1 and self.array[row_below, column] <= value
+            ):
                 continue
-            elif y > 0 and self.array[x, y - 1] <= value:
+            # Compare to column left
+            elif column > 0 and self.array[row, column_left] <= value:
                 continue
-            elif y < self.array.shape[1] - 1 and self.array[x, y + 1] <= value:
+            # Compare to column right
+            elif (
+                column < self.array.shape[1] - 1
+                and self.array[row, column_right] <= value
+            ):
                 continue
 
             low_values.append(value)
-            self.array_basin[x][y] = True
 
         return low_values
+
+    def product_largest_basins(self, number_of_basins=None):
+        basin_sizes = self.find_size_of_basins()
+
+        if number_of_basins is not None:
+            basin_sizes = sorted(basin_sizes, reverse=True)[0:number_of_basins]
+
+        return np.prod(basin_sizes)
+
+    def find_size_of_basins(self):
+        label, _ = ndimage.label(self.array < 9)
+        basin_sizes = np.bincount(label.ravel())
+        return list(basin_sizes)[1:]
 
     def risk_level(self, height):
         return 1 + height
@@ -34,6 +59,9 @@ class LavaTube:
             risk += self.risk_level(height)
 
         return risk
+
+    def found_low(self, row, column):
+        return self.array_basin[row][column]
 
 
 def load_from_file(filename):
@@ -53,7 +81,7 @@ def load_into_array(filename):
     lines = load_from_file(filename)
 
     for line in lines:
-        array.append([int(letter) for letter in line])
+        array.append([int(character) for character in line])
 
     nparray = np.array(array)
     return nparray
@@ -65,3 +93,4 @@ if __name__ == "__main__":
     tube = LavaTube(array)
 
     print(f"Part 1 - Risk Levels of Low Points: {tube.risk_level_sums()}")
+    print(f"Part 2: Product of largest 3 basins: {tube.product_largest_basins(3)}")

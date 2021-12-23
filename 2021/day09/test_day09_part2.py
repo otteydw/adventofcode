@@ -24,6 +24,13 @@ class TestSanta(unittest.TestCase):
         self.assertEqual(self.tube0.risk_level_sums(), 0)
         self.assertEqual(self.tube9.risk_level_sums(), 0)
 
+    def test_find_size_of_basins(self):
+        self.assertEqual(self.tube.find_size_of_basins(), [3, 9, 14, 9])
+
+    def test_product_largest_basins_largest_basins(self):
+        self.assertEqual(self.tube.product_largest_basins(3), 1134)
+        self.assertEqual(self.tube.product_largest_basins(), 3402)
+
 
 if __name__ == "__main__":
     unittest.main()
