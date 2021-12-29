@@ -44,20 +44,10 @@ def one_step(npa):
     npa += 1
 
     # Flash all >9
-    coordinates_greater_than_nine_array = np.where(npa > 9)
-    coordinates_greater_than_nine_set = set(
-        zip(
-            coordinates_greater_than_nine_array[0],
-            coordinates_greater_than_nine_array[1],
-        )
-    )
-    coordinates_to_flash = coordinates_greater_than_nine_set - flashed_this_step
+    coordinates_to_flash_count = float('inf')
 
-    while len(coordinates_to_flash) > 0:
-        for coordinate_to_flash in coordinates_to_flash:
-            flash(npa, coordinate_to_flash)
-            flashed_this_step.add(coordinate_to_flash)
-            flash_count += 1
+    while coordinates_to_flash_count > 0:
+
         coordinates_greater_than_nine_array = np.where(npa > 9)
         coordinates_greater_than_nine_set = set(
             zip(
@@ -66,8 +56,15 @@ def one_step(npa):
             )
         )
         coordinates_to_flash = coordinates_greater_than_nine_set - flashed_this_step
+        coordinates_to_flash_count = len(coordinates_to_flash)
 
-    # Reset to 0
+        for coordinate_to_flash in coordinates_to_flash:
+            flash(npa, coordinate_to_flash)
+            flashed_this_step.add(coordinate_to_flash)
+            flash_count += 1
+
+
+    # Reset all >9 to 0
     np.place(npa, npa > 9, 0)
 
     return flash_count
