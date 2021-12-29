@@ -104,10 +104,25 @@ def step(npa, steps):
 
     for step in range(steps):
         flash_count += one_step(npa)
-        print(f"After step {step+1}")
-        print(npa)
+        # print(f"After step {step+1}")
+        # print(npa)
 
     return flash_count
+
+def check_simultaneous_flash(npa):
+    # Simultaneous flash is where all values are 0 after flashing
+    return np.all(npa == 0)
+
+
+def get_simultaneous_flash_step(npa):
+
+    step_count = 0
+
+    while not check_simultaneous_flash(npa):
+        step_count += 1
+        one_step(npa)
+
+    return step_count
 
 # def one_step(npa):
 
@@ -158,3 +173,6 @@ if __name__ == "__main__":
 
     octopus_array = load_into_array("input.txt")
     print(f"Part 1: {step(octopus_array, 100)}")
+
+    octopus_array = load_into_array("input.txt")
+    print(f"Part 2: {get_simultaneous_flash_step(octopus_array)}")

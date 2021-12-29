@@ -47,5 +47,18 @@ class TestSanta(unittest.TestCase):
         octopus_array = day11.load_into_array("example_large/example.txt")
         self.assertEqual(day11.step(octopus_array, 100), 1656)
 
+    def test_check_simultaneous_flash(self):
+        octopus_array = day11.load_into_array("example3/example_true.txt")
+        self.assertTrue(day11.check_simultaneous_flash(octopus_array))
+
+        octopus_array = day11.load_into_array("example3/example_false1.txt")
+        self.assertFalse(day11.check_simultaneous_flash(octopus_array))
+
+        octopus_array = day11.load_into_array("example3/example_false2.txt")
+        self.assertFalse(day11.check_simultaneous_flash(octopus_array))
+
+    def test_get_simultaneous_flash_step(self):
+        octopus_array = day11.load_into_array("example_large/example.txt")
+        self.assertEqual(day11.get_simultaneous_flash_step(octopus_array), 195)
 if __name__ == "__main__":
     unittest.main()
