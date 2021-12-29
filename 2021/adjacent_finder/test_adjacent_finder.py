@@ -4,7 +4,7 @@ import adjacent_finder
 
 
 class TestAdjacent(unittest.TestCase):
-    def test_adjacent_findger(self):
+    def test_adjacent_finder(self):
         npa = adjacent_finder.np.array([[5, 6, 4], [2, 1, 3], [7, 9, 8]])
         self.assertEqual(
             adjacent_finder.adjacent_finder(npa, (1, 1)),
