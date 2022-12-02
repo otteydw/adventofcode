@@ -31,9 +31,17 @@ def most_calorie_elf(list_of_elves):
     return max(list_of_elves)
 
 
+def total_calories_of_top_elves(list_of_elves, number_of_elves):
+    list_of_elves.sort(reverse=True)
+    return sum(list_of_elves[:number_of_elves])
+
+
 if __name__ == "__main__":
 
     input_filename = "input.txt"
     calorie_list = load_from_file(input_filename)
     these_calories = elves_calories(calorie_list)
     print(f"Most calories in a single elf: {most_calorie_elf(these_calories)}")
+    print(
+        f"Most calories of top 3 elves: {total_calories_of_top_elves(these_calories, 3)}"
+    )
