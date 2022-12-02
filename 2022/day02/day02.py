@@ -16,22 +16,15 @@ def load_from_file(filename):
 class RPSGame:
     def __init__(self, input_filename):
         rounds_as_text = load_from_file(input_filename)
-        # self.player1_moves = []
-        # self.player2_moves = []
-        # self.rounds = []
         self.player1_score = 0
         self.player2_score = 0
 
         self.rounds = self.process_moves(rounds_as_text)
 
-        # self.run_games()
-
     def process_moves(self, rounds_as_text):
         rounds = []
         for round_as_text in rounds_as_text:
             player1_move, player2_move = round_as_text.split(" ")
-            # self.player1_moves.append(player1_move)
-            # self.player2_moves.append(player2_move)
             rounds.append((player1_move, player2_move))
 
         return rounds
