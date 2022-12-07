@@ -29,18 +29,24 @@ def parse_section_assignments(raw_data):
     return section_assignments
 
 
-def check_overlap(assignment1, assignment2):
-    if assignment1[0] <= assignment2[0] and assignment1[1] >= assignment2[1]:
-        return True
-    elif assignment2[0] <= assignment1[0] and assignment2[1] >= assignment1[1]:
-        return True
+def check_overlap(assignment1, assignment2, any_overlap=False):
+    if any_overlap:
+        if assignment1[0] <= assignment2[0] and assignment1[1] >= assignment2[0]:
+            return True
+        elif assignment2[0] <= assignment1[0] and assignment2[1] >= assignment1[0]:
+            return True
+    else:
+        if assignment1[0] <= assignment2[0] and assignment1[1] >= assignment2[1]:
+            return True
+        elif assignment2[0] <= assignment1[0] and assignment2[1] >= assignment1[1]:
+            return True
     return False
 
 
-def count_overlaps(assignments):
+def count_overlaps(assignments, any_overlap=False):
     overlap_count = 0
     for assignment in assignments:
-        if check_overlap(assignment[0], assignment[1]):
+        if check_overlap(assignment[0], assignment[1], any_overlap=any_overlap):
             overlap_count += 1
     return overlap_count
 
@@ -53,3 +59,6 @@ if __name__ == "__main__":
 
     assignments = parse_section_assignments(data)
     print(f"Number of overlaps is {count_overlaps(assignments)}")
+    print(
+        f"Number of overlaps (any) is {count_overlaps(assignments, any_overlap=True)}"
+    )
