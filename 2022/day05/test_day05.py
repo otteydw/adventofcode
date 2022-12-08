@@ -1,8 +1,6 @@
 import unittest
 
-from day05 import (
-    Supplies
-)
+from day05 import Supplies
 
 
 class TestSanta(unittest.TestCase):
@@ -17,6 +15,7 @@ class TestSanta(unittest.TestCase):
     def test_top_crates_9001(self):
         self.my_supplies.process_moves(crane=9001)
         self.assertEqual(self.my_supplies.see_top_crates(), "MCD")
+
 
 if __name__ == "__main__":
     unittest.main()
