@@ -7,7 +7,7 @@ class Supplies:
     def __init__(self, filename):
         self.boxes, self.moves = self.load_from_file(filename)
         # print(self.boxes)
-        self.process_moves()
+        # self.process_moves()
         # print(self.boxes)
 
     def load_from_file(self, filename):
@@ -45,7 +45,7 @@ class Supplies:
             stripped_boxes.append(new_column)
         return stripped_boxes, moves
 
-    def process_moves(self):
+    def process_moves(self, crane=9000):
         # move_pattern = "move" + pp.Word(pp.nums) + "from" + pp.Word(pp.nums) + "to" + pp.Word(pp.nums)
         for move in self.moves:
             # print(move)
@@ -57,8 +57,31 @@ class Supplies:
             to_stack = int(move[5]) - 1
             # print(quantity_to_move, from_stack, to_stack)
 
+            # if crane == 9000:
+            #     for _ in range(0, quantity_to_move):
+            #         crate = self.boxes[from_stack].pop()
+            #         self.boxes[to_stack].append(crate)
+            # elif crane == 9001:
+            #     crates_to_move = []
+            #     for _ in range(0, quantity_to_move):
+            #         crate = self.boxes[from_stack].pop()
+            #         crates_to_move.append(crate)
+            #     crates_to_move.reverse()
+            #     for crate in crates_to_move:
+            #         self.boxes[to_stack].append(crate)
+
+            # if crane == 9000:
+                # for _ in range(0, quantity_to_move):
+                #     crate = self.boxes[from_stack].pop()
+                #     self.boxes[to_stack].append(crate)
+            # elif crane == 9001:
+            crates_to_move = []
             for _ in range(0, quantity_to_move):
                 crate = self.boxes[from_stack].pop()
+                crates_to_move.append(crate)
+            if crane == 9001:
+                crates_to_move.reverse()
+            for crate in crates_to_move:
                 self.boxes[to_stack].append(crate)
 
     def see_top_crates(self):
@@ -73,7 +96,12 @@ if __name__ == "__main__":
     # input_filename = "example.txt"
 
     my_supplies = Supplies(input_filename)
+    my_supplies.process_moves()
     print(f"Top crates: {my_supplies.see_top_crates()}")
+
+    my_supplies = Supplies(input_filename)
+    my_supplies.process_moves(crane=9001)
+    print(f"Top crates (crane 9001): {my_supplies.see_top_crates()}")
     # boxes, moves = load_from_file(input_filename)
 
     # # boxes.reverse()
