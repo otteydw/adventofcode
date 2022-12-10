@@ -28,27 +28,68 @@ class Directory(Node):
 class File(Node):
     def __init__(self, name, parent, size=0):
         super().__init__(name, parent)
+        self.size=size
 
-def tree(root, indent=0):
-    print(' '*indent + '- ' + root.name)
+def print_tree(root, indent=0):
+    # print(' '*indent + '- ' + root.name)
     if hasattr(root, 'children'):
+        print(' '*indent + '- ' + root.name + ' (dir)')
         for child in root.children:
-            tree(child, indent+2)
+            print_tree(child, indent+2)
+    else:
+        print(' '*indent + '- ' + root.name + ' (file, size=' + root.size + ')')
+
+def parse_terminal_output(terminal_output, current_dir=None):
+
+    if current_dir == None:
+        # current_directory = None
+        root = Directory('/', None)
+        current_directory = root
+    else:
+        current_directory=current_dir
+
+    for line in terminal_output:
+        if line.startswith('$ cd'):
+            dir_name = line.split(' ')[2]
+            if dir_name == '..':
+                current_directory = current_directory.parent
+            for child in current_directory.children:
+                if child.name == dir_name:
+                    current_directory = child
+        elif line.startswith('$ ls'):
+            pass
+        elif line.startswith('dir '):
+            new_dir_name = line.split(' ')[1]
+            # print('new dir ' + new_dir_name)
+            new_dir = Directory(new_dir_name, current_directory)
+            current_directory.add(new_dir)
+        else:
+            file_size, file_name = line.split(' ')
+            # print(file_size, file_name)
+            new_file = File(file_name, current_directory, file_size)
+            current_directory.add(new_file)
+        # print(f'Currently in dir {current_directory.name}')
+
+    return root
 
 if __name__ == "__main__":
 
-    input_filename = "input.txt"
+    input_filename = "example.txt"
 
     data = load_from_file(input_filename)
 
-    root = Directory('/', None)
-    dir = Directory('a', root)
+    # root = Directory('/', None)
+    # dir = Directory('a', root)
 
-    root.add(dir)
+    # root.add(dir)
 
-    file = File(name='a.txt', parent=dir)
-    dir.add(file)
-    file = File(name='b.txt', parent=dir)
-    dir.add(file)
+    # file = File(name='a.txt', parent=dir)
+    # dir.add(file)
+    # file = File(name='b.txt', parent=dir)
+    # dir.add(file)
 
-    tree(root)
+    # print_tree(root)
+
+    filesystem = parse_terminal_output(data)
+
+    print_tree(filesystem)
