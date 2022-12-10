@@ -21,6 +21,7 @@ class Directory(Node):
     def __init__(self, name, parent):
         super().__init__(name, parent)
         self.children = []
+        # self.size = 0
 
     def add(self, child):
         self.children.append(child)
@@ -29,6 +30,7 @@ class File(Node):
     def __init__(self, name, parent, size=0):
         super().__init__(name, parent)
         self.size=size
+        # self.parent.size += self.size
 
 def print_tree(root, indent=0):
     # print(' '*indent + '- ' + root.name)
@@ -37,7 +39,7 @@ def print_tree(root, indent=0):
         for child in root.children:
             print_tree(child, indent+2)
     else:
-        print(' '*indent + '- ' + root.name + ' (file, size=' + root.size + ')')
+        print(' '*indent + '- ' + root.name + ' (file, size=' + str(root.size) + ')')
 
 def parse_terminal_output(terminal_output, current_dir=None):
 
@@ -66,11 +68,39 @@ def parse_terminal_output(terminal_output, current_dir=None):
         else:
             file_size, file_name = line.split(' ')
             # print(file_size, file_name)
-            new_file = File(file_name, current_directory, file_size)
+            new_file = File(file_name, current_directory, int(file_size))
             current_directory.add(new_file)
         # print(f'Currently in dir {current_directory.name}')
 
     return root
+
+def find_dirs_above_size(root, min_size):
+    total_size = 0
+
+    if hasattr(root, 'children'):
+        for child in root.children:
+            total_size += find_dirs_above_size(child, min_size)
+    else:
+        total_size += root.size
+
+    # if total_size > min_size:
+    #     total_size = 0
+    return total_size
+
+def find_dirs_above_size2(root, min_size):
+    # total_size = 0
+
+    if hasattr(root, 'children'):
+        children_size = 0
+        for child in root.children:
+            children_size += find_dirs_above_size2(child, min_size)
+
+    else:
+        total_size += root.size
+
+    # if total_size > min_size:
+    #     total_size = 0
+    return total_size
 
 if __name__ == "__main__":
 
@@ -93,3 +123,5 @@ if __name__ == "__main__":
     filesystem = parse_terminal_output(data)
 
     print_tree(filesystem)
+
+    print(find_dirs_above_size(filesystem, 100000))
