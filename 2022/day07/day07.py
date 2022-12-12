@@ -105,6 +105,26 @@ def parse_terminal_output(terminal_output, current_dir=None):
     return root
 
 
+def get_unused_space(root, total_disk_space=70000000):
+    return total_disk_space - root.size
+
+
+def get_space_to_free(root, total_space_needed=30000000):
+    return total_space_needed - get_unused_space(root)
+
+
+def size_of_dir_to_delete(
+    root: Node, total_disk_space=70000000, total_space_needed=30000000
+):
+    space_to_free = get_space_to_free(root)
+    smallest_size_found = total_disk_space + 1  # some large number
+    for dir in root.get_directories():
+        if dir.size >= space_to_free and dir.size < smallest_size_found:
+            smallest_size_found = dir.size
+
+    return smallest_size_found
+
+
 if __name__ == "__main__":
 
     # input_filename = "example.txt"
@@ -114,4 +134,5 @@ if __name__ == "__main__":
 
     filesystem = parse_terminal_output(data)
     filesystem.print_tree()
-    print(filesystem.sum_dirs_under_size(100000))
+    print(f"Sum of dirs under size: {filesystem.sum_dirs_under_size(100000)}")
+    print(f"Size of directory to delete: {size_of_dir_to_delete(filesystem)}")
