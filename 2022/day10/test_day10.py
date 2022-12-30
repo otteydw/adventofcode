@@ -4,7 +4,6 @@ from day10 import Tube
 
 
 class TestSanta(unittest.TestCase):
-
     def test_X_history(self):
         input_filename = "small_program.txt"
         self.tube = Tube(input_filename)
@@ -23,8 +22,9 @@ class TestSanta(unittest.TestCase):
     def test_sum_of_signal_strengths(self):
         input_filename = "larger_program.txt"
         self.tube = Tube(input_filename)
-        interesting_signals=[20, 60, 100, 140, 180, 220]
+        interesting_signals = [20, 60, 100, 140, 180, 220]
         self.assertEqual(self.tube.sum_of_signal_strengths(interesting_signals), 13140)
+
 
 if __name__ == "__main__":
     unittest.main()

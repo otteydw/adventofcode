@@ -1,5 +1,4 @@
 import os
-import pprint
 
 
 def load_from_file(filename):
@@ -13,6 +12,7 @@ def load_from_file(filename):
 
     return data
 
+
 class Tube:
     def __init__(self, filename):
         self.program = load_from_file(filename)
@@ -20,9 +20,7 @@ class Tube:
         self.X_history = {}
         self.cycles = 0
         self.update_register()
-        # self.status_report()
         self.process_program()
-        # self.status_report()
 
     def process_program(self):
         for instruction in self.program:
@@ -40,12 +38,9 @@ class Tube:
     def update_register(self):
         self.X_history[self.cycles] = self.X
 
-    def status_report(self):
-        pprint.pprint(self.X_history)
-
     def signal_strength(self, cycle):
         # "During" means the value at the end of the previous cycle
-        return cycle * self.X_history[cycle-1]
+        return cycle * self.X_history[cycle - 1]
 
     def sum_of_signal_strengths(self, signals):
         sum = 0
@@ -53,17 +48,34 @@ class Tube:
             sum += self.signal_strength(signal)
         return sum
 
+    def draw(self):
+        width = 40
+        height = 6
+        screen = [["."] * width for i in range(height)]
+
+        for cycle in range(240):
+            row = cycle // width
+            column = cycle % width
+            sprite_middle = self.X_history[cycle]
+
+            if column in [sprite_middle - 1, sprite_middle, sprite_middle + 1]:
+                screen[row][column] = "#"
+
+        for row in screen:
+            for column in row:
+                print(column, end="")
+            print()
+
+
 if __name__ == "__main__":
 
     # input_filename = "small_program.txt"
+    # input_filename = "larger_program.txt"
     input_filename = "input.txt"
 
     tube = Tube(input_filename)
-    # for knots in [2, 10]:
-    #     rope = Rope(input_filename, knots=knots)
-    #     print(
-    #         f"Rope with {knots} knots: Tail visited {rope.count_tail_visited_positions()} positions."
-    #     )
-    # tube.status_report()
-    interesting_signals=[20, 60, 100, 140, 180, 220]
+
+    interesting_signals = [20, 60, 100, 140, 180, 220]
     print(f"Sum of signals: {tube.sum_of_signal_strengths(interesting_signals)}")
+    print()
+    tube.draw()
