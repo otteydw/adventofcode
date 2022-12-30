@@ -81,25 +81,21 @@ class Forest:
         left_values = self.trees[row][0:column]
 
         for check_value in reversed(left_values):
+            viewing_distance += 1
             if check_value >= current_value:
-                viewing_distance += 1
                 break
-            else:
-                viewing_distance += 1
 
         return viewing_distance
 
     def viewing_distance_right(self, row, column):
         viewing_distance = 0
         current_value = self.trees[row][column]
-        right_values = self.trees[row][column+1:]
+        right_values = self.trees[row][column + 1 :]
 
         for check_value in right_values:
+            viewing_distance += 1
             if check_value >= current_value:
-                viewing_distance += 1
                 break
-            else:
-                viewing_distance += 1
 
         return viewing_distance
 
@@ -109,11 +105,9 @@ class Forest:
         up_values = self.trees_transposed[column][0:row]
 
         for check_value in reversed(up_values):
+            viewing_distance += 1
             if check_value >= current_value:
-                viewing_distance += 1
                 break
-            else:
-                viewing_distance += 1
 
         return viewing_distance
 
@@ -123,16 +117,19 @@ class Forest:
         down_values = self.trees_transposed[column][row + 1 :]
 
         for check_value in down_values:
+            viewing_distance += 1
             if check_value >= current_value:
-                viewing_distance += 1
                 break
-            else:
-                viewing_distance += 1
 
         return viewing_distance
 
     def scenic_score(self, row, column):
-        return self.viewing_distance_left(row, column) * self.viewing_distance_right(row, column) * self.viewing_distance_up(row, column) * self.viewing_distance_down(row, column)
+        return (
+            self.viewing_distance_left(row, column)
+            * self.viewing_distance_right(row, column)
+            * self.viewing_distance_up(row, column)
+            * self.viewing_distance_down(row, column)
+        )
 
     def highest_scenic_score(self):
         highest_scenic_score = 0
@@ -142,6 +139,7 @@ class Forest:
                 if scenic_score > highest_scenic_score:
                     highest_scenic_score = scenic_score
         return highest_scenic_score
+
 
 if __name__ == "__main__":
 

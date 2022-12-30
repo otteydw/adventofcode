@@ -62,5 +62,6 @@ class TestSanta(unittest.TestCase):
     def test_highest_scenic_score(self):
         self.assertEqual(self.forest.highest_scenic_score(), 8)
 
+
 if __name__ == "__main__":
     unittest.main()
