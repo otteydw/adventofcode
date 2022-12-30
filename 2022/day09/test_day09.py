@@ -4,27 +4,22 @@ from day09 import Rope
 
 
 class TestSanta(unittest.TestCase):
-    def setUp(self):
-        input_filename = "example.txt"
-        self.rope = Rope(input_filename)
-
-    def test_check_head_tail_touching(self):
-        self.rope.head_position = (0, 0)
-        self.rope.tail_position = (0, 0)
-        self.assertTrue(self.rope.check_head_tail_touching())
-        self.rope.head_position = (0, 0)
-        self.rope.tail_position = (1, 1)
-        self.assertTrue(self.rope.check_head_tail_touching())
-        self.rope.head_position = (0, 0)
-        self.rope.tail_position = (1, 2)
-        self.assertFalse(self.rope.check_head_tail_touching())
-        self.rope.head_position = (0, 0)
-        self.rope.tail_position = (2, 1)
-        self.assertFalse(self.rope.check_head_tail_touching())
+    # def setUp(self):
+    #     input_filename = "example.txt"
+    #     self.rope = Rope(input_filename)
 
     def test_count_tail_visited_positions(self):
+        input_filename = "example.txt"
+
+        self.rope = Rope(input_filename, knots=2)
         self.assertEqual(self.rope.count_tail_visited_positions(), 13)
 
+        self.rope = Rope(input_filename, knots=10)
+        self.assertEqual(self.rope.count_tail_visited_positions(), 1)
+
+        input_filename = "example2.txt"
+        self.rope = Rope(input_filename, knots=10)
+        self.assertEqual(self.rope.count_tail_visited_positions(), 36)
 
 if __name__ == "__main__":
     unittest.main()
