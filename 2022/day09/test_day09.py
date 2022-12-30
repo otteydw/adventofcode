@@ -21,5 +21,6 @@ class TestSanta(unittest.TestCase):
         self.rope = Rope(input_filename, knots=10)
         self.assertEqual(self.rope.count_tail_visited_positions(), 36)
 
+
 if __name__ == "__main__":
     unittest.main()
