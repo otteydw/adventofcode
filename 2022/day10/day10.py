@@ -19,6 +19,7 @@ class Tube:
         self.X = 1
         self.X_history = {}
         self.cycles = 0
+        self.update_register()
         # self.status_report()
         self.process_program()
         # self.status_report()
@@ -43,7 +44,8 @@ class Tube:
         pprint.pprint(self.X_history)
 
     def signal_strength(self, cycle):
-        return cycle * self.X_history[cycle]
+        # "During" means the value at the end of the previous cycle
+        return cycle * self.X_history[cycle-1]
 
     def sum_of_signal_strengths(self, signals):
         sum = 0

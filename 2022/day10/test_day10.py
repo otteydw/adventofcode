@@ -5,11 +5,12 @@ from day10 import Tube
 
 class TestSanta(unittest.TestCase):
 
-    def test_signal_strength(self):
+    def test_X_history(self):
         input_filename = "small_program.txt"
         self.tube = Tube(input_filename)
-        self.assertEqual(self.tube.signal_strength(5), -5)
+        self.assertEqual(self.tube.X_history[5], -1)
 
+    def test_signal_strength(self):
         input_filename = "larger_program.txt"
         self.tube = Tube(input_filename)
         self.assertEqual(self.tube.signal_strength(20), 420)
