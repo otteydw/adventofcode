@@ -1,7 +1,7 @@
+import logging
 import os
 
-DEBUG = 0
-
+logging.basicConfig(level=logging.INFO)
 
 def load_from_file(filename):
     input_path = os.path.join(os.path.dirname(__file__), filename)
@@ -22,15 +22,14 @@ class Rope:
         self.tail_position = (0, 0)
         self.tail_visited_positions = set()
         self.record_tail_visit()
-        if DEBUG == 1:
-            self.status_report()
+        self.status_report()
         self.process_motions()
 
     def status_report(self):
-        print(f"Current head: {self.head_position}")
-        print(f"Current tail: {self.tail_position}")
-        print(f"Visited: {self.tail_visited_positions}")
-        print(f"-------------------------------------------------")
+        logging.debug(f"Current head: {self.head_position}")
+        logging.debug(f"Current tail: {self.tail_position}")
+        logging.debug(f"Visited: {self.tail_visited_positions}")
+        logging.debug(f"-------------------------------------------------")
 
     def record_tail_visit(self):
         self.tail_visited_positions.add(self.tail_position)
@@ -39,9 +38,7 @@ class Rope:
         return len(self.tail_visited_positions)
 
     def move_head(self, direction, distance):
-        if DEBUG == 1:
-            print(f"Move head {direction} {distance}")
-        # head_x, head_y = self.head_position[0], self.head_position[1]
+        logging.debug(f"Move head {direction} {distance}")
 
         for _ in range(distance):
             if direction == "L":
@@ -56,20 +53,13 @@ class Rope:
             self.update_tail()
 
     def check_head_tail_touching(self):
-        # head_x = self.head_position[0]
-        # head_y = self.head_position[1]
-        # tail_x = self.tail_position[0]
-        # tail_y = self.tail_position[1]
-        # print(f"Head: {head_x}, {head_y} | Tail: {tail_x}, {tail_y}")
         return (
             abs(self.head_position[0] - self.tail_position[0]) <= 1
             and abs(self.head_position[1] - self.tail_position[1]) <= 1
         )
 
     def move_tail(self, direction, distance):
-        if DEBUG == 1:
-            print(f"Move tail {direction} {distance}")
-        # tail_x, tail_y = self.tail_position[0], self.tail_position[1]
+        logging.debug(f"Move tail {direction} {distance}")
 
         for _ in range(distance):
             if direction == "L":
@@ -105,8 +95,7 @@ class Rope:
                 else:
                     self.move_tail("D", 1)
         self.record_tail_visit()
-        if DEBUG == 1:
-            self.status_report()
+        self.status_report()
 
     def process_motions(self):
         for motion in self.motions:
@@ -121,8 +110,7 @@ if __name__ == "__main__":
     input_filename = "input.txt"
 
     rope = Rope(input_filename)
-    if DEBUG == 1:
-        rope.status_report()
+    rope.status_report()
     print(f"Tail visited {rope.count_tail_visited_positions()} positions.")
     # print(f"Visible trees: {forest.count_visible_trees()}")
     # print(f"Highest scenic score: {forest.highest_scenic_score()}")
