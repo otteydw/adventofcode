@@ -39,6 +39,28 @@ class TestSanta(unittest.TestCase):
     def test_count_visible_trees(self):
         self.assertEqual(self.forest.count_visible_trees(), 21)
 
+    def test_viewing_distance_left(self):
+        self.assertEqual(self.forest.viewing_distance_left(1, 2), 1)
+        self.assertEqual(self.forest.viewing_distance_left(3, 2), 2)
+
+    def test_viewing_distance_right(self):
+        self.assertEqual(self.forest.viewing_distance_right(1, 2), 2)
+        self.assertEqual(self.forest.viewing_distance_right(3, 2), 2)
+
+    def test_viewing_distance_up(self):
+        self.assertEqual(self.forest.viewing_distance_up(1, 2), 1)
+        self.assertEqual(self.forest.viewing_distance_up(3, 2), 2)
+
+    def test_viewing_distance_down(self):
+        self.assertEqual(self.forest.viewing_distance_down(1, 2), 2)
+        self.assertEqual(self.forest.viewing_distance_down(3, 2), 1)
+
+    def test_scenic_score(self):
+        self.assertEqual(self.forest.scenic_score(1, 2), 4)
+        self.assertEqual(self.forest.scenic_score(3, 2), 8)
+
+    def test_highest_scenic_score(self):
+        self.assertEqual(self.forest.highest_scenic_score(), 8)
 
 if __name__ == "__main__":
     unittest.main()
