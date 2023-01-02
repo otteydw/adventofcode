@@ -1,6 +1,6 @@
 import os
-
-from collections import deque
+# import profile
+from collections import deque, defaultdict
 from queue import SimpleQueue
 
 def load_from_file(filename):
@@ -28,8 +28,9 @@ class Item:
 
 class Monkey:
     def __init__(self, relief_enabled=True):
-        # self.items = deque()
-        self.items = SimpleQueue()
+        self.items = deque()
+        # self.items = SimpleQueue()
+        # self.items = []
         self.operation = None
         self.operand1 = None
         self.operand2 = None
@@ -44,18 +45,24 @@ class Monkey:
             item_worry_levels = text.split(": ")[1].split(", ")
             for item_worry_level in item_worry_levels:
                 item = Item(item_worry_level)
-                # self.items.append(item)
-                self.items.put_nowait(item)
+                self.items.append(item)
+                # self.items.put_nowait(item)
         elif "Operation" in text:
             self.operand1, self.operation, self.operand2 = text.split("= ")[1].split(
                 " "
             )
+            if self.operand1.isdigit():
+                self.operand1 = int(self.operand1)
+            if self.operand2.isdigit():
+                self.operand2 = int(self.operand2)
         elif "Test" in text:
             self.divisible_test = int(text.split("divisible by ")[1])
         elif "true" in text:
             self.true_target = int(text.split("throw to monkey ")[1])
         elif "false" in text:
             self.false_target = int(text.split("throw to monkey ")[1])
+
+
 
     def inspect_items(self, monkeys):
         # for item in list(self.items):  # iterate over a copy of the list so we can manipulate the list
@@ -68,13 +75,13 @@ class Monkey:
             operand1 = self.operand1
             if operand1 == "old":
                 operand1 = int(item.worry_level)
-            else:
-                operand1 = int(operand1)
+            # else:
+            #     operand1 = int(operand1)
             operand2 = self.operand2
             if operand2 == "old":
                 operand2 = int(item.worry_level)
-            else:
-                operand2 = int(operand2)
+            # else:
+            #     operand2 = int(operand2)
             if self.operation == "+":
                 item.worry_level = operand1 + operand2
             if self.operation == "*":
@@ -102,6 +109,48 @@ class Monkey:
             # monkeys[target].items.append(item)
             monkeys[target].items.put_nowait(item)
 
+    def inspect_items_with_return(self):
+        # gifts = {}
+
+        # Since we will inspect every item we currently have, just increment that value up front
+        self.items_inspected += len(self.items)
+
+        gifts = defaultdict(list)
+        while len(self.items) > 0:
+        # while not self.items.empty():
+            # item = self.items.get()
+            item = self.items.pop()
+            # self.items_inspected += 1
+            # operand1 = self.operand1
+            if self.operand1 == "old":
+                operand1 = int(item.worry_level)
+            else:
+                operand1 = self.operand1
+            if self.operand2 == "old":
+                operand2 = int(item.worry_level)
+            else:
+                operand2 = self.operand2
+
+            if self.operation == "+":
+                item.worry_level = operand1 + operand2
+            elif self.operation == "*":
+                item.worry_level = operand1 * operand2
+
+            if self.relief_enabled:
+                item.relief()
+
+            if item.worry_level % self.divisible_test == 0:
+                target = self.true_target
+            else:
+                target = self.false_target
+            # monkeys[target].items.append(item)
+            # monkeys[target].items.put_nowait(item)
+
+            # if target not in gifts:
+            #     gifts[target] = deque()
+            gifts[target].append(item)
+        return gifts
+
     def get_worry_levels(self):
         worry_levels = []
         for item in self.items:
@@ -120,15 +169,26 @@ class Game:
             # print(
             #     f"After round {round+1}, the monkeys are holding items with these worry levels:"
             # )
-            print(f"Complete round {round+1} of {rounds}.")
+            print(f"Completed round {round+1} of {rounds}.")
             # report(self.monkeys)
 
         self.inspection_count_report()
 
+    def send_gifts(self, gifts):
+        # for monkey_target, gifts_list in gifts.items():
+        #     for gift in gifts_list:
+        #         self.monkeys[monkey_target].items.put_nowait(gift)
+        for monkey_target, gifts_list in gifts.items():
+            self.monkeys[monkey_target].items.extend(gifts_list)
+
     def play_round(self):
-        for monkey_number, monkey in enumerate(self.monkeys):
+        # for monkey_number, monkey in enumerate(self.monkeys):
+        for monkey in self.monkeys:
             # print(f"Monkey {monkey_number}:")
-            monkey.inspect_items(self.monkeys)
+            # monkey.inspect_items(self.monkeys)
+            gifts_to_send = monkey.inspect_items_with_return()
+            self.send_gifts(gifts_to_send)
+
 
     def inspection_count_report(self):
         for monkey_number, monkey in enumerate(self.monkeys):
@@ -172,5 +232,10 @@ if __name__ == "__main__":
 
     input_filename = "example.txt"
     # input_filename = "input.txt"
-    game = Game(input_filename, rounds=20)
+    # game = Game(input_filename, rounds=20)
+    game = Game(input_filename, rounds=800, relief_enabled=False)
+
     print(f"Monkey business: {game.monkey_business()}")
+
+    # game = Game(input_filename, rounds=800, relief_enabled=False)
+    # profile.run('game.monkey_business()')
