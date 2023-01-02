@@ -18,5 +18,6 @@ class TestSanta(unittest.TestCase):
         # game = Game(input_filename, rounds=10000, relief_enabled=False)
         # self.assertEqual(game.monkey_business(), 2713310158)
 
+
 if __name__ == "__main__":
     unittest.main()
