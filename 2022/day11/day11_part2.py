@@ -3,6 +3,12 @@ import os
 from collections import deque, defaultdict
 from queue import SimpleQueue
 
+# Part 2 required knowing about Chinese Remainder Theorem which I had never heard about.
+# Thanks to the following two resources ....
+# https://www.reddit.com/r/adventofcode/comments/zifqmh/2022_day_11_solutions/
+# https://github.com/mahakaal/adventofcode/blob/main/2022/day11/day11.py
+monkey_divisor = 1
+
 def load_from_file(filename):
     input_path = os.path.join(os.path.dirname(__file__), filename)
 
@@ -19,15 +25,19 @@ class Item:
     def __init__(self, worry_level=0):
         self.worry_level = int(worry_level)
 
-    def relief(self):
-        self.worry_level = self.worry_level // 3
+    def relief(self, crt=False):
+        global monkey_divisor
+        if crt:
+            self.worry_level = self.worry_level % monkey_divisor
+        else:
+            self.worry_level = self.worry_level // 3
         # print(
         #     f"    Monkey gets bored with item. Worry level is divided by 3 to {self.worry_level}."
         # )
 
 
 class Monkey:
-    def __init__(self, relief_enabled=True):
+    def __init__(self, crt=False):
         self.items = deque()
         # self.items = SimpleQueue()
         # self.items = []
@@ -38,9 +48,10 @@ class Monkey:
         self.true_target = None
         self.false_target = None
         self.items_inspected = 0
-        self.relief_enabled = relief_enabled
+        self.crt = crt
 
     def process_text(self, text):
+        global monkey_divisor
         if "Starting" in text:
             item_worry_levels = text.split(": ")[1].split(", ")
             for item_worry_level in item_worry_levels:
@@ -57,6 +68,7 @@ class Monkey:
                 self.operand2 = int(self.operand2)
         elif "Test" in text:
             self.divisible_test = int(text.split("divisible by ")[1])
+            monkey_divisor = monkey_divisor * self.divisible_test
         elif "true" in text:
             self.true_target = int(text.split("throw to monkey ")[1])
         elif "false" in text:
@@ -90,8 +102,8 @@ class Monkey:
                 #     f"    Worry level is multiplied by {operand2} to {item.worry_level}."
                 # )
 
-            if self.relief_enabled:
-                item.relief()
+            # if self.relief_enabled:
+            item.relief(crt=self.crt)
 
             if item.worry_level % self.divisible_test == 0:
                 target = self.true_target
@@ -136,8 +148,8 @@ class Monkey:
             elif self.operation == "*":
                 item.worry_level = operand1 * operand2
 
-            if self.relief_enabled:
-                item.relief()
+            # if self.relief_enabled:
+            item.relief(crt=self.crt)
 
             if item.worry_level % self.divisible_test == 0:
                 target = self.true_target
@@ -159,8 +171,8 @@ class Monkey:
 
 
 class Game:
-    def __init__(self, input_filename, rounds=1, relief_enabled=True):
-        self.load_monkeys(input_filename, relief_enabled=relief_enabled)
+    def __init__(self, input_filename, rounds=1, crt=False):
+        self.load_monkeys(input_filename, crt=crt)
         # report(self.monkeys)
 
         for round in range(rounds):
@@ -205,7 +217,7 @@ class Game:
         return highest_items_inspected[0] * highest_items_inspected[1]
 
 
-    def load_monkeys(self, filename, relief_enabled=True):
+    def load_monkeys(self, filename, crt=False):
         data = load_from_file(filename)
         monkeys = []
 
@@ -215,7 +227,7 @@ class Game:
             if line_stripped == "":
                 continue
             elif line_stripped.startswith("Monkey"):
-                monkey = Monkey(relief_enabled=relief_enabled)
+                monkey = Monkey(crt=crt)
                 monkeys.append(monkey)
                 current_monkey = monkey
             else:
@@ -230,12 +242,15 @@ def report(monkeys):
 
 if __name__ == "__main__":
 
-    input_filename = "example.txt"
-    # input_filename = "input.txt"
+    # input_filename = "example.txt"
+    input_filename = "input.txt"
     # game = Game(input_filename, rounds=20)
-    game = Game(input_filename, rounds=800, relief_enabled=False)
 
-    print(f"Monkey business: {game.monkey_business()}")
+    game = Game(input_filename, rounds=20, crt=False)
+    print(f"Monkey business Part 1: {game.monkey_business()}")
+
+    game = Game(input_filename, rounds=10000, crt=True)
+    print(f"Monkey business Part 2: {game.monkey_business()}")
 
     # game = Game(input_filename, rounds=800, relief_enabled=False)
     # profile.run('game.monkey_business()')

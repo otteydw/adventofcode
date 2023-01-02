@@ -9,8 +9,8 @@ class TestSanta(unittest.TestCase):
         game = Game(input_filename, rounds=20)
         self.assertEqual(game.monkey_business(), 10605)
 
-        game = Game(input_filename, rounds=20, relief_enabled=False)
-        self.assertEqual(game.monkey_business(), 10197)
+        game = Game(input_filename, rounds=10000, crt=True)
+        self.assertEqual(game.monkey_business(), 2713310158)
 
         # game = Game(input_filename, rounds=1000, relief_enabled=False)
         # self.assertEqual(game.monkey_business(), 27019168)
