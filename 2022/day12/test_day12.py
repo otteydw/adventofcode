@@ -32,6 +32,19 @@ class TestSanta(unittest.TestCase):
         self.assertTrue(self.grid.can_go(self.grid.start, 'down'))
         self.assertFalse(self.grid.can_go((0, 4), 'down'))
 
+    def test_get_neighbor_position(self):
+        self.assertEqual(self.grid.get_neighbor_position((0, 0), 'right'), (0, 1))
+        self.assertEqual(self.grid.get_neighbor_position((0, 0), 'left'), None)
+        self.assertEqual(self.grid.get_neighbor_position((0, 0), 'up'), None)
+        self.assertEqual(self.grid.get_neighbor_position((0, 0), 'down'), (1, 0))
+
+    def test_shortest_distance(self):
+        self.assertEqual(self.grid.shortest_distance((0, 0), (0, 0)), 0)
+        # self.assertEqual(self.grid.shortest_distance((0, 0), (0, 1)), 1) # one to the right
+        # self.assertEqual(self.grid.shortest_distance((0, 0), (1, 1)), 2) # one down and to the right
+        # self.assertEqual(self.grid.shortest_distance((0, 0), (2, 2)), 4) # two down and to the right
+        # self.assertEqual(self.grid.shortest_distance(self.grid.start, self.grid.end), 31)
+
 
 
 
