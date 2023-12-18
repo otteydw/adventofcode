@@ -1,2 +1,3 @@
-pytest
 more_itertools
+pyflakes
+pytest
