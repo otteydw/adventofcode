@@ -10,7 +10,7 @@ def parse(puzzle_input):
     return [line for line in puzzle_input.split("\n")]
 
 
-def parse_data(data):
+def parse_races_part1(data):
     times = [int(x) for x in data[0].split(":")[1].split()]
     distances = [int(x) for x in data[1].split(":")[1].split()]
     print(times, distances)
@@ -21,6 +21,15 @@ def parse_data(data):
         races.append(this_race)
 
     return races
+
+
+def parse_races_part2(data):
+    time = int(data[0].split(":")[1].replace(" ", ""))
+    distance = int(data[1].split(":")[1].replace(" ", ""))
+
+    print(time, distance)
+
+    return Race(time, distance)
 
 
 def run_race(max_time, charge_time, distance_to_beat):
@@ -42,7 +51,7 @@ def ways_to_win(max_time, distance_to_beat):
 
 def part1(data):
     my_ways_to_win = []
-    race_info = parse_data(data)
+    race_info = parse_races_part1(data)
     print(race_info)
     for race in race_info:
         my_ways_to_win.append(ways_to_win(race.time, race.distance))
@@ -51,7 +60,9 @@ def part1(data):
 
 
 def part2(data):
-    pass
+    race = parse_races_part2(data)
+    print(race)
+    return ways_to_win(race.time, race.distance)
 
 
 def solve(puzzle_input):
