@@ -74,6 +74,21 @@ def test_hand_value():
     assert hand6.hand_value == 6
 
 
+def test_hand_value_jokers():
+    hand1 = aoc.Hand("32T3K", jokers=True)
+    hand2 = aoc.Hand("T55J5", jokers=True)
+    hand3 = aoc.Hand("KK677", jokers=True)
+    hand4 = aoc.Hand("KTJJT", jokers=True)
+    hand5 = aoc.Hand("QQQJA", jokers=True)
+    hand6 = aoc.Hand("QQQQQ", jokers=True)
+    assert hand1.hand_value == 1  # one pair
+    assert hand2.hand_value == 5  # four of a kind
+    assert hand3.hand_value == 2  # two pair
+    assert hand4.hand_value == 5  # four of a kind
+    assert hand5.hand_value == 5  # four of a kind
+    assert hand6.hand_value == 6  # five of a kind
+
+
 def test_cards_lt():
     hand1 = aoc.Hand("32T3K")
     hand2 = aoc.Hand("KK677")
@@ -102,3 +117,11 @@ def test_cards_gte():
     assert (hand2 >= hand1) is True
     assert (hand1 >= hand3) is False
     assert (hand3 >= hand1) is True
+
+
+def test_cards_lt_jokers():
+    assert (aoc.Hand("T55J5", jokers=True) < aoc.Hand("QQQJA", jokers=True)) is True
+    assert (aoc.Hand("T55J5", jokers=True) < aoc.Hand("KTJJT", jokers=True)) is True
+    assert (aoc.Hand("QQQJA", jokers=True) < aoc.Hand("KTJJT", jokers=True)) is True
+    assert (aoc.Hand("32T3K", jokers=True) < aoc.Hand("KTJJT", jokers=True)) is True
+    assert (aoc.Hand("32T3K", jokers=True) < aoc.Hand("KK677", jokers=True)) is True

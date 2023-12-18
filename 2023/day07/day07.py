@@ -3,12 +3,12 @@ import sys
 from collections import Counter
 from functools import total_ordering
 
-# from pprint import pprint as print
-
 
 @total_ordering
 class Hand:
-    def __init__(self, cards_string, bet=0):
+    def __init__(self, cards_string, bet=0, jokers=False):
+        self.JOKERS = jokers
+        self.JOKER_VALUE = 0 if self.JOKERS else 11
         self.cards = self._get_cards(cards_string)
         self.bet = bet
         self.hand_value = self._calc_hand_value()
@@ -32,7 +32,7 @@ class Hand:
             "A": 14,
             "K": 13,
             "Q": 12,
-            "J": 11,
+            "J": self.JOKER_VALUE,
             "T": 10,
             "9": 9,
             "8": 8,
@@ -55,26 +55,38 @@ class Hand:
         # 1 - One pair, where two cards share one label, and the other three cards have a different label from the pair and each other: A23A4
         # 0 - High card, where all cards' labels are distinct: 23456
 
-        counts = Counter(self.cards)
+        cards = list(self.cards)
+        if self.JOKERS:
+            cards_without_jokers = [card for card in cards if card != self.JOKER_VALUE]
+            number_of_jokers = len(cards) - len(cards_without_jokers)
+
+            # All jokers
+            if len(cards_without_jokers) == 0:
+                return 6
+
+            counts = Counter(cards_without_jokers)
+
+            most_common_non_joker = counts.most_common(1)[0][0]
+
+            cards = list(cards_without_jokers)
+            for _ in range(number_of_jokers):
+                cards.append(most_common_non_joker)
+
+        counts = Counter(cards)
 
         two_most_common = counts.most_common(2)
 
         if len(two_most_common) == 1:
             return 6
 
-        most, second = two_most_common
-        most, second = most[1], second[1]
+        most, second = [x[1] for x in two_most_common]
 
         if most == 4:
             return 5
         if most == 3:
-            if second == 2:
-                return 4
-            return 3
+            return 4 if second == 2 else 3
         if most == 2:
-            if second == 2:
-                return 2
-            return 1
+            return 2 if second == 2 else 1
         return 0
 
 
@@ -82,17 +94,15 @@ def parse(puzzle_input):
     return [line for line in puzzle_input.split("\n")]
 
 
-def part1(data):
+def part1(data, jokers=False):
     hands = []
     for row in data:
         hand_string, bet = row.split()
         bet = int(bet)
-        hand = Hand(hand_string, bet)
+        hand = Hand(hand_string, bet, jokers=jokers)
         hands.append(hand)
 
-    # print(hands)
     hands.sort()
-    # print(hands)
 
     total_winnings = 0
     for position, hand in enumerate(hands):
@@ -103,7 +113,7 @@ def part1(data):
 
 
 def part2(data):
-    pass
+    return part1(data, jokers=True)
 
 
 def solve(puzzle_input):
