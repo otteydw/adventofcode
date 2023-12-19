@@ -6,31 +6,36 @@ def parse(puzzle_input):
     return [line for line in puzzle_input.split("\n")]
 
 
-def prediction(history):
+def prediction(history, direction="forward"):
     diffs = []
     for position, value in enumerate(history):
         if position == 0:
             continue
         diffs.append(value - history[position - 1])
 
+    if direction == "forward":
+        if set(diffs) == {0}:
+            return history[-1]
+        else:
+            return prediction(diffs) + history[-1]
+    elif direction == "backward":
+        if set(diffs) == {0}:
+            return history[0]
+        else:
+            return history[0] - prediction(diffs, direction="backward")
 
-    if set(diffs) == {0}:
-        return history[-1] + diffs[-1]
-    else:
-        return prediction(diffs) + history[-1]
 
-
-def part1(data):
+def part1(data, direction="forward"):
     predictions = []
     for row in data:
         history = [int(x) for x in row.split()]
-        this_prediction = prediction(history)
+        this_prediction = prediction(history, direction=direction)
         predictions.append(this_prediction)
     return sum(predictions)
 
 
 def part2(data):
-    pass
+    return part1(data, direction="backward")
 
 
 def solve(puzzle_input):
