@@ -32,7 +32,7 @@ def example1():
 #     assert example1 == ...
 
 
-# @pytest.mark.skip(reason="Not implemented")
+
 def test_part1_example1(example1):
     """Test part 1 on example input."""
     assert aoc.part1(example1) == 405
@@ -74,6 +74,7 @@ def test_smudge_example1(example1):
     assert this0.find_horizontal_reflection2() == 3
     assert this0.find_vertical_reflection2() is 5
 
+@pytest.mark.skip(reason="Not implemented")
 def test_iterate_smudges_example1(example1):
     pattern0 = aoc.pattern_to_grid(example1[0])
     this0 = aoc.Pattern(pattern0)

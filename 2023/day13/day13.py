@@ -122,8 +122,8 @@ def part1(data):
         this = Pattern(pattern)
         print(this)
         print(this.get_dimensions())
-        horizontal = this.find_horizontal_reflection2()
-        vertical = this.find_vertical_reflection2()
+        horizontal = this.find_horizontal_reflection()
+        vertical = this.find_vertical_reflection()
         print(f"Hor: {horizontal}")
         print(f"Ver: {vertical}")
         # summary = 100 * horizontal + vertical
