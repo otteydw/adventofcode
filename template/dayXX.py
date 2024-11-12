@@ -1,5 +1,5 @@
+import argparse
 import pathlib
-import sys
 
 
 def parse(puzzle_input):
@@ -24,7 +24,11 @@ def solve(puzzle_input):
 
 
 if __name__ == "__main__":
-    for path in sys.argv[1:]:
+    parser = argparse.ArgumentParser(description="Solve Advent of Code puzzles")
+    parser.add_argument("files", nargs="+", help="Input files to process")
+    args = parser.parse_args()
+
+    for path in args.files:
         print(f"{path}:")
         puzzle_input = pathlib.Path(path).read_text().strip()
         solutions = solve(puzzle_input)
