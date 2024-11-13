@@ -60,7 +60,10 @@ def run_program(program: List):
 
 
 def part1(data: List):
-    return run_program(data)
+    data[1] = 12
+    data[2] = 2
+    program = run_program(data)
+    return program[0]
 
 
 def part2(data):
