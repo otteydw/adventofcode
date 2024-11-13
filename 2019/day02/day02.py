@@ -1,4 +1,6 @@
 import argparse
+import copy
+import itertools
 import pathlib
 from typing import List
 
@@ -40,6 +42,8 @@ def opcode_multiply(memory: List, instruction_pointer: int) -> None:
 
 
 def run_program(program: List):
+    program = copy.deepcopy(program)
+
     current_address = 0
     done = False
 
@@ -68,8 +72,15 @@ def part1(data: List):
     return program[0]
 
 
-def part2(data):
-    pass
+def part2(data: List):
+    desired_output = 19690720
+    for noun, verb in itertools.product(range(99), range(99)):
+        data[1] = noun
+        data[2] = verb
+        program = run_program(data)
+        if program[0] == desired_output:
+            break
+    return 100 * noun + verb
 
 
 def solve(puzzle_input):
