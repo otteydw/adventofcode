@@ -70,10 +70,11 @@
 # the value 12 and replace position 2 with the value 2. What value is left at
 # position 0 after the program halts?
 
+
 def intcode(input_list):
 
-    for index in range(int((len(input_list))/4)):
-        minicode = input_list[index*4:(index*4)+4]
+    for index in range(int((len(input_list)) / 4)):
+        minicode = input_list[index * 4 : (index * 4) + 4]
         opcode = int(minicode[0])
 
         if opcode == 99:
@@ -90,10 +91,11 @@ def intcode(input_list):
                 # Opcode 2 works exactly like opcode 1, except it multiplies the two inputs instead of adding them.
                 input_list[result_position] = operand1 * operand2
             else:
-                print('Unknown op code!')
+                print("Unknown op code!")
         # print()
 
     return input_list
+
 
 # print(intcode('1,9,10,3,2,3,11,0,99,30,40,50'))
 # print(intcode('1,0,0,0,99'))
@@ -101,10 +103,10 @@ def intcode(input_list):
 # print(intcode('2,4,4,5,99,0'))
 # print(intcode('1,1,1,4,99,5,6,0,99'))
 
-inputs_path = 'input.txt'
+inputs_path = "input.txt"
 
 with open(inputs_path) as input_file:
-    input_program = [int(x) for x in input_file.readline().rstrip().split(',')]
+    input_program = [int(x) for x in input_file.readline().rstrip().split(",")]
 
 input_program[1] = 12
 input_program[2] = 2
