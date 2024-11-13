@@ -2,8 +2,10 @@
 
 import sys
 
+
 def get_opcode(program, position):
     return program[position]
+
 
 def intcode(program, position=0):
 
@@ -19,11 +21,12 @@ def intcode(program, position=0):
         return program
 
     else:
-        print('Invalid opcode!')
+        print("Invalid opcode!")
         sys.exit(1)
 
     position += 4
     return intcode(program, position)
+
 
 def opcode_add(program, position):
     storage_position = program[position + 3]
@@ -33,6 +36,7 @@ def opcode_add(program, position):
     b_val = program[b_pos]
     program[storage_position] = a_val + b_val
     return program
+
 
 def opcode_multiply(program, position):
     storage_position = program[position + 3]
@@ -51,10 +55,10 @@ def opcode_multiply(program, position):
 
 # print(result)
 
-inputs_path = 'input.txt'
+inputs_path = "input.txt"
 
 with open(inputs_path) as input_file:
-    input_program = [int(x) for x in input_file.readline().rstrip().split(',')]
+    input_program = [int(x) for x in input_file.readline().rstrip().split(",")]
 
 input_program[1] = 12
 input_program[2] = 2

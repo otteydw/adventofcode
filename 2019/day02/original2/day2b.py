@@ -2,8 +2,10 @@
 
 import sys
 
+
 def get_opcode(program, position):
     return program[position]
+
 
 def intcode(program, position=0):
 
@@ -19,11 +21,12 @@ def intcode(program, position=0):
         return program
 
     else:
-        print('Invalid opcode!')
+        print("Invalid opcode!")
         sys.exit(1)
 
     position += 4
     return intcode(program, position)
+
 
 def opcode_add(program, position):
     storage_position = program[position + 3]
@@ -33,6 +36,7 @@ def opcode_add(program, position):
     b_val = program[b_pos]
     program[storage_position] = a_val + b_val
     return program
+
 
 def opcode_multiply(program, position):
     storage_position = program[position + 3]
@@ -44,10 +48,10 @@ def opcode_multiply(program, position):
     return program
 
 
-inputs_path = 'input.txt'
+inputs_path = "input.txt"
 
 with open(inputs_path) as input_file:
-    input_program = [int(x) for x in input_file.readline().rstrip().split(',')]
+    input_program = [int(x) for x in input_file.readline().rstrip().split(",")]
 
 
 DESIRED_OUTPUT = 19690720
@@ -58,7 +62,7 @@ for noun in range(0, 99):
         this_program[2] = verb
 
         if intcode(this_program)[0] == DESIRED_OUTPUT:
-            print('Noun = ' + str(noun))
-            print('Verb = ' + str(verb))
-            print('Answer = ' + str(100 * noun + verb))
+            print("Noun = " + str(noun))
+            print("Verb = " + str(verb))
+            print("Answer = " + str(100 * noun + verb))
             break

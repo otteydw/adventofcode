@@ -70,10 +70,11 @@
 # the value 12 and replace position 2 with the value 2. What value is left at
 # position 0 after the program halts?
 
+
 def intcode(input_list):
 
-    for index in range(int((len(input_list))/4)):
-        minicode = input_list[index*4:(index*4)+4]
+    for index in range(int((len(input_list)) / 4)):
+        minicode = input_list[index * 4 : (index * 4) + 4]
         opcode = int(minicode[0])
 
         if opcode == 99:
@@ -90,16 +91,17 @@ def intcode(input_list):
                 # Opcode 2 works exactly like opcode 1, except it multiplies the two inputs instead of adding them.
                 input_list[result_position] = operand1 * operand2
             else:
-                print('Unknown op code!')
+                print("Unknown op code!")
         # print()
 
     return input_list
 
-inputs_path = 'input.txt'
+
+inputs_path = "input.txt"
 DESIRED_OUTPUT = 19690720
 
 with open(inputs_path) as input_file:
-    original_input_program = [int(x) for x in input_file.readline().rstrip().split(',')]
+    original_input_program = [int(x) for x in input_file.readline().rstrip().split(",")]
 
 for noun in range(0, 99):
     for verb in range(0, 99):
@@ -108,7 +110,7 @@ for noun in range(0, 99):
         input_program[2] = verb
 
         if intcode(input_program)[0] == DESIRED_OUTPUT:
-            print('Noun = ' + str(noun))
-            print('Verb = ' + str(verb))
-            print('Answer = ' + str(100 * noun + verb))
+            print("Noun = " + str(noun))
+            print("Verb = " + str(verb))
+            print("Answer = " + str(100 * noun + verb))
             break
