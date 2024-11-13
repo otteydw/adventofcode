@@ -9,53 +9,54 @@ def parse(puzzle_input):
     return program
 
 
-def get_opcode(program: List, position: int) -> int:
-    return program[position]
+def get_opcode(memory: List, address: int) -> int:
+    return memory[address]
 
 
-def opcode_add(program: List, current_position: int) -> None:
+def opcode_add(memory: List, instruction_address: int) -> None:
     # Opcode 1 adds together numbers read from two positions and stores the result in a third position.
     # The three integers immediately after the opcode tell you these three positions -
     # the first two indicate the positions from which you should read the input values, and the third indicates
     # the position at which the output should be stored.
-    position1 = program[current_position + 1]
-    position2 = program[current_position + 2]
-    storage_position = program[current_position + 3]
-    value1 = program[position1]
-    value2 = program[position2]
-    program[storage_position] = value1 + value2
+    position1 = memory[instruction_address + 1]
+    position2 = memory[instruction_address + 2]
+    storage_position = memory[instruction_address + 3]
+    value1 = memory[position1]
+    value2 = memory[position2]
+    memory[storage_position] = value1 + value2
     return None
 
 
-def opcode_multiply(program: List, current_position: int) -> None:
+def opcode_multiply(memory: List, instruction_address: int) -> None:
     # Opcode 2 works exactly like opcode 1, except it multiplies the two inputs instead of adding them. Again, the three
     # integers after the opcode indicate where the inputs and outputs are, not their values.
-    position1 = program[current_position + 1]
-    position2 = program[current_position + 2]
-    storage_position = program[current_position + 3]
-    value1 = program[position1]
-    value2 = program[position2]
-    program[storage_position] = value1 * value2
+    position1 = memory[instruction_address + 1]
+    position2 = memory[instruction_address + 2]
+    storage_position = memory[instruction_address + 3]
+    value1 = memory[position1]
+    value2 = memory[position2]
+    memory[storage_position] = value1 * value2
+    return None
 
 
 def run_program(program: List):
-    current_position = 0
+    current_address = 0
     done = False
 
     while not done:
-        opcode = get_opcode(program, current_position)
+        opcode = get_opcode(program, current_address)
 
         match opcode:
             case 1:
-                opcode_add(program, current_position)
+                opcode_add(program, current_address)
             case 2:
-                opcode_multiply(program, current_position)
+                opcode_multiply(program, current_address)
             case 99:
                 done = True
             case _:
                 pass
 
-        current_position += 4
+        current_address += 4
     return program
 
 
