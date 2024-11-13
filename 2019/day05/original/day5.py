@@ -88,8 +88,9 @@
 # After providing 1 to the only input instruction and passing all the tests,
 # what diagnostic code does the program produce?
 
+
 def intcode(input_list):
-    """ The intcode program """
+    """The intcode program"""
 
     next_instruction = 0
     for index in range(int((len(input_list)))):
@@ -114,19 +115,19 @@ def intcode(input_list):
 
                 # print('Modes: ' + str(mode1) + ' ' + str(mode2) + ' ' + str(mode3))
                 if mode1 == 0:
-                    operand1 = int(input_list[int(input_list[index+1])])
+                    operand1 = int(input_list[int(input_list[index + 1])])
                 elif mode1 == 1:
-                    operand1 = int(input_list[index+1])
+                    operand1 = int(input_list[index + 1])
 
                 if mode2 == 0:
-                    operand2 = int(input_list[int(input_list[index+2])])
+                    operand2 = int(input_list[int(input_list[index + 2])])
                 elif mode2 == 1:
-                    operand2 = int(input_list[index+2])
+                    operand2 = int(input_list[index + 2])
 
                 if mode3 == 0:
-                    result_position = int(input_list[index+3])
+                    result_position = int(input_list[index + 3])
                 elif mode3 == 1:
-                    result_position = int(input_list[int(input_list[index+3])])
+                    result_position = int(input_list[int(input_list[index + 3])])
 
                 # print('Operands: ' + str(operand1) + ' ' + str(operand2) + '   Result Position: ' + str(result_position))
 
@@ -141,20 +142,21 @@ def intcode(input_list):
             elif opcode == 3:
                 # Opcode 3 takes a single integer as input and saves it to the position given by its only parameter.
                 # or example, the instruction 3,50 would take an input value and store it at address 50.
-                input_list[int(input_list[index+1])] = int(input("Input a single integer: "))
+                input_list[int(input_list[index + 1])] = int(input("Input a single integer: "))
                 next_instruction += 2
             elif opcode == 4:
                 # Opcode 4 outputs the value of its only parameter. For example, the instruction 4,50 would output the value at address 50.
-                print(input_list[int(input_list[index+1])])
+                print(input_list[int(input_list[index + 1])])
                 next_instruction += 2
             else:
-                print('Unknown op code!')
+                print("Unknown op code!")
 
     return input_list
 
-inputs_path = 'input.txt'
+
+inputs_path = "input.txt"
 
 with open(inputs_path) as input_file:
-    INPUT_PROGRAM = [int(x) for x in input_file.readline().rstrip().split(',')]
+    INPUT_PROGRAM = [int(x) for x in input_file.readline().rstrip().split(",")]
 
 intcode(INPUT_PROGRAM)
