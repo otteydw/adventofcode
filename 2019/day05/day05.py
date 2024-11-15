@@ -4,6 +4,8 @@ import itertools
 import pathlib
 from typing import List
 
+# from pprint import pprint
+
 
 def parse(puzzle_input):
     lines = [line for line in puzzle_input.split("\n")]
@@ -146,23 +148,36 @@ def opcode_multiply(memory: List, instruction_pointer: int, modes: dict) -> None
     memory[storage_position] = value1 * value2
 
 
-# def opcode3(memory: List, instruction_pointer: int) -> None:
-#     # Opcode 3 takes a single integer as input and saves it to the position given by its only parameter. For example,
-#     # the instruction 3,50 would take an input value and store it at address 50.
-#     storage_position = memory[instruction_pointer + 3]
+def opcode3(memory: List, instruction_pointer: int) -> None:
+    # Opcode 3 takes a single integer as input and saves it to the position given by its only parameter. For example,
+    # the instruction 3,50 would take an input value and store it at address 50.
+    value_to_store = int(input("Input a single integer: "))
+    storage_position = memory[instruction_pointer + 1]
+    # print(f"Storing value {value_to_store} at position {storage_position}")
+    memory[storage_position] = value_to_store
 
 
-def run_program(program: List):
+def opcode4(memory: List, instruction_pointer: int) -> int:
+    # Opcode 4 outputs the value of its only parameter. For example, the instruction 4,50 would output the value at address 50.
+    value_position = memory[instruction_pointer + 1]
+    value = memory[value_position]
+    return value
+
+
+def run_program(program: List) -> int:
     program = copy.deepcopy(program)
+    # print(program)
 
     current_address = 0
     done = False
 
     while not done:
         instruction = program[current_address]
+        # print(f"Instruction {instruction} from address {current_address}")
         opcode = get_opcode(instruction)
-        modes = get_modes(instruction)
+        modes = get_modes(instruction)  # Should we limit mode check to only opcode 1 and 2?
 
+        # print(f"Attempting opcode {opcode} at address {current_address}")
         match opcode:
             case 1:
                 opcode_add(program, current_address, modes)
@@ -171,22 +186,25 @@ def run_program(program: List):
                 opcode_multiply(program, current_address, modes)
                 current_address += 4
             case 3:
-                pass
+                opcode3(program, current_address)
+                current_address += 2
             case 4:
-                pass
+                diagnostic_value = opcode4(program, current_address)
+                # print(diagnostic_value)
+                current_address += 2
             case 99:
                 done = True
             case _:
-                raise ValueError(f"Unhandled opcode {opcode}")
+                raise ValueError(f"Unhandled opcode {opcode} at address {current_address}")
 
-    return program
+    return diagnostic_value
 
 
 def part1(data: List):
-    data[1] = 12
-    data[2] = 2
-    program = run_program(data)
-    return program[0]
+    # data[1] = 12
+    # data[2] = 2
+    response = run_program(data)
+    return response
 
 
 def part2(data: List):
@@ -203,8 +221,10 @@ def part2(data: List):
 def solve(puzzle_input):
     """Solve the puzzle for the given input."""
     data = parse(puzzle_input)
-    solution1 = part1(data)
-    solution2 = part2(data)
+    solve1 = True
+    solve2 = False
+    solution1 = part1(data) if solve1 else None
+    solution2 = part2(data) if solve2 else None
 
     return solution1, solution2
 

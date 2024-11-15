@@ -84,6 +84,14 @@ def test_get_value_via_mode(memory: List, address: int, mode_value: int, expecte
     assert aoc.get_value_via_mode(memory, address, mode_value) == expected
 
 
+# def test_opcode3():
+#     memory = [1, 2, 0, 0]
+#     expected_value = 73
+#     print(f"When prompted, please enter the integer {expected_value}.")
+#     aoc.opcode3(memory, 0)
+#     assert memory == [1, 2, expected_value, 0]
+
+
 # @pytest.fixture
 # def example1():
 #     puzzle_input = (PUZZLE_DIR / "example1.txt").read_text().strip()
