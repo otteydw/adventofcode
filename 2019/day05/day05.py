@@ -11,17 +11,21 @@ def parse(puzzle_input):
     return program
 
 
-def get_opcode(memory: List, address: int) -> int:
-    """Returns the opcode of a program at a given address
+# def get_opcode(memory: List, address: int) -> int:
+#     """Returns the opcode of a program at a given address
 
-    Args:
-        memory (List): The program memory
-        address (int): The address of the instruction
+#     Args:
+#         memory (List): The program memory
+#         address (int): The address of the instruction
 
-    Returns:
-        int: the opcode
-    """
-    return memory[address] % 100
+#     Returns:
+#         int: the opcode
+#     """
+#     return memory[address] % 100
+
+
+def get_opcode(instruction: int) -> int:
+    return instruction % 100
 
 
 def get_modes(instruction: int) -> dict:
@@ -50,15 +54,56 @@ def get_modes(instruction: int) -> dict:
     return parameter_modes
 
 
-def get_value_via_mode(memory: List, address: int, mode_value: int):
-    match mode_value:
+# def get_modes(memory: List, address: int) -> dict:
+#     """Given an instruction, return the modes of the 3 parameters.
+
+#     Args:
+#         instruction (int): An instruction value
+
+#     Returns:
+#         dict: The modes of the 3 parameters
+#     """
+
+#     # ABCDE
+#     #  1002
+
+#     # DE - two-digit opcode,      02 == opcode 2
+#     #  C - mode of 1st parameter,  0 == position mode
+#     #  B - mode of 2nd parameter,  1 == immediate mode
+#     #  A - mode of 3rd parameter,  0 == position mode,
+#     #                                   omitted due to being a leading zero
+
+#     instruction = memory[address]
+#     parameter_modes = {
+#         1: int(instruction % 1000 / 100),
+#         2: int(instruction % 10000 / 1000),
+#         3: int(instruction % 100000 / 10000),
+#     }
+#     return parameter_modes
+
+
+def get_value_via_mode(memory: List, address: int, mode: int):
+    match mode:
         case 0:
             position = memory[address]
             value = memory[position]
         case 1:
             value = memory[address]
         case _:
-            raise ValueError
+            raise ValueError(f"Unexpected mode {mode}")
+
+    return value
+
+
+def get_position_via_mode(memory: List, address: int, mode: int):
+    match mode:
+        case 0:
+            value = memory[address]
+        case 1:
+            position = memory[address]
+            value = memory[position]
+        case _:
+            raise ValueError(f"Unexpected mode {mode}")
 
     return value
 
@@ -86,13 +131,16 @@ def opcode_add2(memory: List, instruction_pointer: int, modes: dict) -> None:
     # the first two indicate the positions from which you should read the input values, and the third indicates
     # the position at which the output should be stored.
 
-    ### MAKE THE MODE WORK
+    print()
+    print(f"Memory: {memory}")
+    print(f"instruction_pointer: {instruction_pointer}")
+    print(f"My modes: {modes}")
 
-    position1 = memory[instruction_pointer + 1]
-    position2 = memory[instruction_pointer + 2]
-    storage_position = memory[instruction_pointer + 3]
-    value1 = memory[position1]
-    value2 = memory[position2]
+    value1 = get_value_via_mode(memory, instruction_pointer + 1, modes[1])
+    value2 = get_value_via_mode(memory, instruction_pointer + 2, modes[2])
+    storage_position = get_position_via_mode(memory, instruction_pointer + 3, modes[3])
+    print(f"I will add {value1} and {value2} and store the result in position {storage_position}")
+
     memory[storage_position] = value1 + value2
 
     return None
@@ -111,6 +159,22 @@ def opcode_multiply(memory: List, instruction_pointer: int) -> None:
     return None
 
 
+def opcode_multiply2(memory: List, instruction_pointer: int, modes: dict) -> None:
+    # Opcode 2 works exactly like opcode 1, except it multiplies the two inputs instead of adding them. Again, the three
+    # integers after the opcode indicate where the inputs and outputs are, not their values.
+    print()
+    print(f"Memory: {memory}")
+    print(f"instruction_pointer: {instruction_pointer}")
+    print(f"My modes: {modes}")
+
+    value1 = get_value_via_mode(memory, instruction_pointer + 1, modes[1])
+    value2 = get_value_via_mode(memory, instruction_pointer + 2, modes[2])
+    storage_position = get_position_via_mode(memory, instruction_pointer + 3, modes[3])
+    print(f"I will multiply {value1} and {value2} and store the result in position {storage_position}")
+
+    memory[storage_position] = value1 * value2
+
+
 # def opcode3(memory: List, instruction_pointer: int) -> None:
 #     # Opcode 3 takes a single integer as input and saves it to the position given by its only parameter. For example,
 #     # the instruction 3,50 would take an input value and store it at address 50.
@@ -124,8 +188,10 @@ def run_program(program: List):
     done = False
 
     while not done:
-        opcode = get_opcode(program, current_address)
-        modes = get_modes(opcode)
+        instruction = program[current_address]
+        # opcode = get_opcode(program, current_address)
+        opcode = get_opcode(instruction)
+        modes = get_modes(instruction)
 
         match opcode:
             case 1:
@@ -133,8 +199,8 @@ def run_program(program: List):
                 opcode_add2(program, current_address, modes)
                 current_address += 4
             case 2:
-                # opcode_multiply(program, current_address, modes)
-                opcode_multiply(program, current_address)
+                opcode_multiply2(program, current_address, modes)
+                # opcode_multiply(program, current_address)
                 current_address += 4
             case 3:
                 pass
@@ -143,7 +209,7 @@ def run_program(program: List):
             case 99:
                 done = True
             case _:
-                pass
+                raise ValueError(f"Unhandled opcode {opcode}")
 
     return program
 

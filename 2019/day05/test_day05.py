@@ -29,27 +29,46 @@ def test_parse(input_s: str, expected: List) -> None:
         ([2, 3, 0, 3, 99], [2, 3, 0, 6, 99]),
         ([2, 4, 4, 5, 99, 0], [2, 4, 4, 5, 99, 9801]),
         ([1, 1, 1, 4, 99, 5, 6, 0, 99], [30, 1, 1, 4, 2, 5, 6, 0, 99]),
-        # ([1101, 100, -1, 4, 0], [1101, 100, -1, 99, 0]),
+        ([101, 4, 0, 0, 99], [105, 4, 0, 0, 99]),  # literal 4 added to 101 from position 0 = 105 stored in position 0
+        (
+            [102, 4, 0, 0, 99],
+            [408, 4, 0, 0, 99],
+        ),  # literal 4 multiplied by 102 from position 0 = 408 stored in position 0
+        ([1101, 100, -1, 4, 0], [1101, 100, -1, 4, 99]),
     ),
 )
 def test_run_program(input_l: List, expected: List) -> None:
     assert aoc.run_program(input_l) == expected
 
 
+# @pytest.mark.parametrize(
+#     ("program", "address", "expected"),
+#     (
+#         ([1, 0, 0, 0, 99], 0, 1),
+#         ([2, 3, 0, 3, 99], 0, 2),
+#         ([1002, 3, 0, 3, 99], 0, 2),
+#     ),
+# )
+# def test_get_opcode(program, address, expected):
+#     assert aoc.get_opcode(program, address) == expected
+
+
 @pytest.mark.parametrize(
-    ("program", "address", "expected"),
+    ("instruction", "expected"),
     (
-        ([1, 0, 0, 0, 99], 0, 1),
-        ([2, 3, 0, 3, 99], 0, 2),
-        ([1002, 3, 0, 3, 99], 0, 2),
+        (1, 1),
+        (2, 2),
+        (1002, 2),
     ),
 )
-def test_get_opcode(program, address, expected):
-    assert aoc.get_opcode(program, address) == expected
+def test_get_opcode(instruction, expected):
+    assert aoc.get_opcode(instruction) == expected
 
 
 def test_get_modes():
     assert aoc.get_modes(1002) == {1: 0, 2: 1, 3: 0}
+    assert aoc.get_modes(11002) == {1: 0, 2: 1, 3: 1}
+    assert aoc.get_modes(1101) == {1: 1, 2: 1, 3: 0}
 
 
 @pytest.mark.parametrize(
