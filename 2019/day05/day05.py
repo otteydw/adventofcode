@@ -110,7 +110,7 @@ def get_position_via_mode(memory: List, address: int, mode: int):
     return value
 
 
-def opcode_add(memory: List, instruction_pointer: int, modes: dict) -> None:
+def opcode_add(memory: List, instruction_pointer: int, modes: dict) -> int:
     # Opcode 1 adds together numbers read from two positions and stores the result in a third position.
     # The three integers immediately after the opcode tell you these three positions -
     # the first two indicate the positions from which you should read the input values, and the third indicates
@@ -120,6 +120,7 @@ def opcode_add(memory: List, instruction_pointer: int, modes: dict) -> None:
     # print(f"Memory: {memory}")
     # print(f"instruction_pointer: {instruction_pointer}")
     # print(f"My modes: {modes}")
+    pointer_increment = 4
 
     value1 = get_value_via_mode(memory, instruction_pointer + 1, modes[1])
     value2 = get_value_via_mode(memory, instruction_pointer + 2, modes[2])
@@ -128,10 +129,11 @@ def opcode_add(memory: List, instruction_pointer: int, modes: dict) -> None:
 
     memory[storage_position] = value1 + value2
 
-    return None
+    next_pointer = instruction_pointer + pointer_increment
+    return next_pointer
 
 
-def opcode_multiply(memory: List, instruction_pointer: int, modes: dict) -> None:
+def opcode_multiply(memory: List, instruction_pointer: int, modes: dict) -> int:
     # Opcode 2 works exactly like opcode 1, except it multiplies the two inputs instead of adding them. Again, the three
     # integers after the opcode indicate where the inputs and outputs are, not their values.
 
@@ -140,6 +142,8 @@ def opcode_multiply(memory: List, instruction_pointer: int, modes: dict) -> None
     # print(f"instruction_pointer: {instruction_pointer}")
     # print(f"My modes: {modes}")
 
+    pointer_increment = 4
+
     value1 = get_value_via_mode(memory, instruction_pointer + 1, modes[1])
     value2 = get_value_via_mode(memory, instruction_pointer + 2, modes[2])
     storage_position = get_position_via_mode(memory, instruction_pointer + 3, modes[3])
@@ -147,21 +151,58 @@ def opcode_multiply(memory: List, instruction_pointer: int, modes: dict) -> None
 
     memory[storage_position] = value1 * value2
 
+    next_pointer = instruction_pointer + pointer_increment
+    return next_pointer
 
-def opcode3(memory: List, instruction_pointer: int) -> None:
+
+def opcode3(memory: List, instruction_pointer: int) -> int:
     # Opcode 3 takes a single integer as input and saves it to the position given by its only parameter. For example,
     # the instruction 3,50 would take an input value and store it at address 50.
+
+    pointer_increment = 2
+
     value_to_store = int(input("Input a single integer: "))
     storage_position = memory[instruction_pointer + 1]
     # print(f"Storing value {value_to_store} at position {storage_position}")
     memory[storage_position] = value_to_store
 
+    next_pointer = instruction_pointer + pointer_increment
+    return next_pointer
 
-def opcode4(memory: List, instruction_pointer: int) -> int:
+
+def opcode4(memory: List, instruction_pointer: int) -> tuple[int, int]:
     # Opcode 4 outputs the value of its only parameter. For example, the instruction 4,50 would output the value at address 50.
+
+    pointer_increment = 2
+
     value_position = memory[instruction_pointer + 1]
     value = memory[value_position]
-    return value
+    next_pointer = instruction_pointer + pointer_increment
+    return value, next_pointer
+
+
+def opcode5(memory: List, instruction_pointer: int) -> None:
+    # Opcode 5 is jump-if-true: if the first parameter is non-zero, it sets the instruction pointer to the value from the
+    # second parameter. Otherwise, it does nothing.
+    pass
+
+
+def opcode6(memory: List, instruction_pointer: int) -> None:
+    # Opcode 6 is jump-if-false: if the first parameter is zero, it sets the instruction pointer to the value from the
+    # second parameter. Otherwise, it does nothing.
+    pass
+
+
+def opcode7(memory: List, instruction_pointer: int) -> None:
+    # Opcode 7 is less than: if the first parameter is less than the second parameter, it stores 1 in the position given
+    # by the third parameter. Otherwise, it stores 0.
+    pass
+
+
+def opcode8(memory: List, instruction_pointer: int) -> None:
+    # Opcode 8 is equals: if the first parameter is equal to the second parameter, it stores 1 in the position given by
+    # the third parameter. Otherwise, it stores 0.
+    pass
 
 
 def run_program(program: List) -> int:
@@ -179,22 +220,19 @@ def run_program(program: List) -> int:
         # print(f"Attempting opcode {opcode} at address {current_address}")
         match opcode:
             case 1:
-                opcode_add(program, current_address, modes)
-                current_address += 4
+                next_address = opcode_add(program, current_address, modes)
             case 2:
-                opcode_multiply(program, current_address, modes)
-                current_address += 4
+                next_address = opcode_multiply(program, current_address, modes)
             case 3:
-                opcode3(program, current_address)
-                current_address += 2
+                next_address = opcode3(program, current_address)
             case 4:
-                diagnostic_value = opcode4(program, current_address)
+                diagnostic_value, next_address = opcode4(program, current_address)
                 # print(diagnostic_value)
-                current_address += 2
             case 99:
                 done = True
             case _:
                 raise ValueError(f"Unhandled opcode {opcode} at address {current_address}")
+        current_address = next_address
 
     try:
         return diagnostic_value
