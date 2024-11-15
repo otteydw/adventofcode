@@ -108,69 +108,40 @@ def get_position_via_mode(memory: List, address: int, mode: int):
     return value
 
 
-# def opcode_add(memory: List, instruction_pointer: int, modes: dict) -> None:
-def opcode_add(memory: List, instruction_pointer: int) -> None:
+def opcode_add(memory: List, instruction_pointer: int, modes: dict) -> None:
     # Opcode 1 adds together numbers read from two positions and stores the result in a third position.
     # The three integers immediately after the opcode tell you these three positions -
     # the first two indicate the positions from which you should read the input values, and the third indicates
     # the position at which the output should be stored.
 
-    position1 = memory[instruction_pointer + 1]
-    position2 = memory[instruction_pointer + 2]
-    storage_position = memory[instruction_pointer + 3]
-    value1 = memory[position1]
-    value2 = memory[position2]
-    memory[storage_position] = value1 + value2
-
-    return None
-
-
-def opcode_add2(memory: List, instruction_pointer: int, modes: dict) -> None:
-    # Opcode 1 adds together numbers read from two positions and stores the result in a third position.
-    # The three integers immediately after the opcode tell you these three positions -
-    # the first two indicate the positions from which you should read the input values, and the third indicates
-    # the position at which the output should be stored.
-
-    print()
-    print(f"Memory: {memory}")
-    print(f"instruction_pointer: {instruction_pointer}")
-    print(f"My modes: {modes}")
+    # print()
+    # print(f"Memory: {memory}")
+    # print(f"instruction_pointer: {instruction_pointer}")
+    # print(f"My modes: {modes}")
 
     value1 = get_value_via_mode(memory, instruction_pointer + 1, modes[1])
     value2 = get_value_via_mode(memory, instruction_pointer + 2, modes[2])
     storage_position = get_position_via_mode(memory, instruction_pointer + 3, modes[3])
-    print(f"I will add {value1} and {value2} and store the result in position {storage_position}")
+    # print(f"I will add {value1} and {value2} and store the result in position {storage_position}")
 
     memory[storage_position] = value1 + value2
 
     return None
 
 
-# def opcode_multiply(memory: List, instruction_pointer: int, modes: dict) -> None:
-def opcode_multiply(memory: List, instruction_pointer: int) -> None:
+def opcode_multiply(memory: List, instruction_pointer: int, modes: dict) -> None:
     # Opcode 2 works exactly like opcode 1, except it multiplies the two inputs instead of adding them. Again, the three
     # integers after the opcode indicate where the inputs and outputs are, not their values.
-    position1 = memory[instruction_pointer + 1]
-    position2 = memory[instruction_pointer + 2]
-    storage_position = memory[instruction_pointer + 3]
-    value1 = memory[position1]
-    value2 = memory[position2]
-    memory[storage_position] = value1 * value2
-    return None
 
-
-def opcode_multiply2(memory: List, instruction_pointer: int, modes: dict) -> None:
-    # Opcode 2 works exactly like opcode 1, except it multiplies the two inputs instead of adding them. Again, the three
-    # integers after the opcode indicate where the inputs and outputs are, not their values.
-    print()
-    print(f"Memory: {memory}")
-    print(f"instruction_pointer: {instruction_pointer}")
-    print(f"My modes: {modes}")
+    # print()
+    # print(f"Memory: {memory}")
+    # print(f"instruction_pointer: {instruction_pointer}")
+    # print(f"My modes: {modes}")
 
     value1 = get_value_via_mode(memory, instruction_pointer + 1, modes[1])
     value2 = get_value_via_mode(memory, instruction_pointer + 2, modes[2])
     storage_position = get_position_via_mode(memory, instruction_pointer + 3, modes[3])
-    print(f"I will multiply {value1} and {value2} and store the result in position {storage_position}")
+    # print(f"I will multiply {value1} and {value2} and store the result in position {storage_position}")
 
     memory[storage_position] = value1 * value2
 
@@ -189,18 +160,15 @@ def run_program(program: List):
 
     while not done:
         instruction = program[current_address]
-        # opcode = get_opcode(program, current_address)
         opcode = get_opcode(instruction)
         modes = get_modes(instruction)
 
         match opcode:
             case 1:
-                # opcode_add(program, current_address)
-                opcode_add2(program, current_address, modes)
+                opcode_add(program, current_address, modes)
                 current_address += 4
             case 2:
-                opcode_multiply2(program, current_address, modes)
-                # opcode_multiply(program, current_address)
+                opcode_multiply(program, current_address, modes)
                 current_address += 4
             case 3:
                 pass
