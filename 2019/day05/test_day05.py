@@ -86,14 +86,26 @@ def test_get_value_via_mode(memory: List, address: int, mode_value: int, expecte
     assert aoc.get_value_via_mode(memory, address, mode_value) == expected
 
 
+def test_opcode_add():
+    assert aoc.opcode_add([1, 2, 3, 4, 5], 0, {1: 0, 2: 0, 3: 0}) == 4
+
+
+def test_opcode_multiply():
+    assert aoc.opcode_add([1, 2, 3, 4, 5], 0, {1: 0, 2: 0, 3: 0}) == 4
+
+
 # def test_opcode3():
-#     memory = [1, 2, 0, 0]
+#     memory = [1, 2, 3, 4, 5]
 #     expected_value = 73
 #     print(f"When prompted, please enter the integer {expected_value}.")
-#     aoc.opcode3(memory, 0)
-#     assert memory == [1, 2, expected_value, 0]
+#     value = aoc.opcode3(memory, 0)
+#     assert memory == [1, 2, expected_value, 4, 5]
+#     assert value == 2
 
-# def test_
+
+def test_opcode4():
+    assert aoc.opcode4([1, 2, 3, 4, 5], 0) == (3, 2)
+
 
 # @pytest.fixture
 # def example1():
