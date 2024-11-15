@@ -12,23 +12,93 @@ def parse(puzzle_input):
 
 
 def get_opcode(memory: List, address: int) -> int:
-    return memory[address]
+    """Returns the opcode of a program at a given address
+
+    Args:
+        memory (List): The program memory
+        address (int): The address of the instruction
+
+    Returns:
+        int: the opcode
+    """
+    return memory[address] % 100
 
 
+def get_modes(instruction: int) -> dict:
+    """Given an instruction, return the modes of the 3 parameters.
+
+    Args:
+        instruction (int): An instruction value
+
+    Returns:
+        dict: The modes of the 3 parameters
+    """
+
+    # ABCDE
+    #  1002
+
+    # DE - two-digit opcode,      02 == opcode 2
+    #  C - mode of 1st parameter,  0 == position mode
+    #  B - mode of 2nd parameter,  1 == immediate mode
+    #  A - mode of 3rd parameter,  0 == position mode,
+    #                                   omitted due to being a leading zero
+    parameter_modes = {
+        1: int(instruction % 1000 / 100),
+        2: int(instruction % 10000 / 1000),
+        3: int(instruction % 100000 / 10000),
+    }
+    return parameter_modes
+
+
+def get_value_via_mode(memory: List, address: int, mode_value: int):
+    match mode_value:
+        case 0:
+            position = memory[address]
+            value = memory[position]
+        case 1:
+            value = memory[address]
+        case _:
+            raise ValueError
+
+    return value
+
+
+# def opcode_add(memory: List, instruction_pointer: int, modes: dict) -> None:
 def opcode_add(memory: List, instruction_pointer: int) -> None:
     # Opcode 1 adds together numbers read from two positions and stores the result in a third position.
     # The three integers immediately after the opcode tell you these three positions -
     # the first two indicate the positions from which you should read the input values, and the third indicates
     # the position at which the output should be stored.
+
     position1 = memory[instruction_pointer + 1]
     position2 = memory[instruction_pointer + 2]
     storage_position = memory[instruction_pointer + 3]
     value1 = memory[position1]
     value2 = memory[position2]
     memory[storage_position] = value1 + value2
+
     return None
 
 
+def opcode_add2(memory: List, instruction_pointer: int, modes: dict) -> None:
+    # Opcode 1 adds together numbers read from two positions and stores the result in a third position.
+    # The three integers immediately after the opcode tell you these three positions -
+    # the first two indicate the positions from which you should read the input values, and the third indicates
+    # the position at which the output should be stored.
+
+    ### MAKE THE MODE WORK
+
+    position1 = memory[instruction_pointer + 1]
+    position2 = memory[instruction_pointer + 2]
+    storage_position = memory[instruction_pointer + 3]
+    value1 = memory[position1]
+    value2 = memory[position2]
+    memory[storage_position] = value1 + value2
+
+    return None
+
+
+# def opcode_multiply(memory: List, instruction_pointer: int, modes: dict) -> None:
 def opcode_multiply(memory: List, instruction_pointer: int) -> None:
     # Opcode 2 works exactly like opcode 1, except it multiplies the two inputs instead of adding them. Again, the three
     # integers after the opcode indicate where the inputs and outputs are, not their values.
@@ -41,6 +111,12 @@ def opcode_multiply(memory: List, instruction_pointer: int) -> None:
     return None
 
 
+# def opcode3(memory: List, instruction_pointer: int) -> None:
+#     # Opcode 3 takes a single integer as input and saves it to the position given by its only parameter. For example,
+#     # the instruction 3,50 would take an input value and store it at address 50.
+#     storage_position = memory[instruction_pointer + 3]
+
+
 def run_program(program: List):
     program = copy.deepcopy(program)
 
@@ -49,14 +125,21 @@ def run_program(program: List):
 
     while not done:
         opcode = get_opcode(program, current_address)
+        modes = get_modes(opcode)
 
         match opcode:
             case 1:
-                opcode_add(program, current_address)
+                # opcode_add(program, current_address)
+                opcode_add2(program, current_address, modes)
                 current_address += 4
             case 2:
+                # opcode_multiply(program, current_address, modes)
                 opcode_multiply(program, current_address)
                 current_address += 4
+            case 3:
+                pass
+            case 4:
+                pass
             case 99:
                 done = True
             case _:

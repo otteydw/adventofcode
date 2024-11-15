@@ -29,10 +29,40 @@ def test_parse(input_s: str, expected: List) -> None:
         ([2, 3, 0, 3, 99], [2, 3, 0, 6, 99]),
         ([2, 4, 4, 5, 99, 0], [2, 4, 4, 5, 99, 9801]),
         ([1, 1, 1, 4, 99, 5, 6, 0, 99], [30, 1, 1, 4, 2, 5, 6, 0, 99]),
+        # ([1101, 100, -1, 4, 0], [1101, 100, -1, 99, 0]),
     ),
 )
 def test_run_program(input_l: List, expected: List) -> None:
     assert aoc.run_program(input_l) == expected
+
+
+@pytest.mark.parametrize(
+    ("program", "address", "expected"),
+    (
+        ([1, 0, 0, 0, 99], 0, 1),
+        ([2, 3, 0, 3, 99], 0, 2),
+        ([1002, 3, 0, 3, 99], 0, 2),
+    ),
+)
+def test_get_opcode(program, address, expected):
+    assert aoc.get_opcode(program, address) == expected
+
+
+def test_get_modes():
+    assert aoc.get_modes(1002) == {1: 0, 2: 1, 3: 0}
+
+
+@pytest.mark.parametrize(
+    ("memory", "address", "mode_value", "expected"),
+    (
+        ([1, 0, 0, 0, 99], 0, 0, 0),
+        ([1, 0, 0, 0, 99], 0, 1, 1),
+        ([1002, 3, 0, 3, 99], 2, 0, 1002),
+        ([1002, 3, 0, 3, 99], 2, 1, 0),
+    ),
+)
+def test_get_value_via_mode(memory: List, address: int, mode_value: int, expected: int):
+    assert aoc.get_value_via_mode(memory, address, mode_value) == expected
 
 
 # @pytest.fixture
