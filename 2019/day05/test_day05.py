@@ -38,7 +38,9 @@ def test_parse(input_s: str, expected: List) -> None:
     ),
 )
 def test_run_program(input_l: List, expected: List) -> None:
-    assert aoc.run_program(input_l) == expected
+    memory = input_l
+    aoc.run_program(memory)
+    assert memory == expected
 
 
 # @pytest.mark.parametrize(
@@ -91,6 +93,7 @@ def test_get_value_via_mode(memory: List, address: int, mode_value: int, expecte
 #     aoc.opcode3(memory, 0)
 #     assert memory == [1, 2, expected_value, 0]
 
+# def test_
 
 # @pytest.fixture
 # def example1():

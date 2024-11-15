@@ -165,7 +165,6 @@ def opcode4(memory: List, instruction_pointer: int) -> int:
 
 
 def run_program(program: List) -> int:
-    program = copy.deepcopy(program)
     # print(program)
 
     current_address = 0
@@ -197,13 +196,17 @@ def run_program(program: List) -> int:
             case _:
                 raise ValueError(f"Unhandled opcode {opcode} at address {current_address}")
 
-    return diagnostic_value
+    try:
+        return diagnostic_value
+    except:
+        return None
 
 
 def part1(data: List):
     # data[1] = 12
     # data[2] = 2
-    response = run_program(data)
+    program = copy.deepcopy(data)
+    response = run_program(program)
     return response
 
 
