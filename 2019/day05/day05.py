@@ -4,8 +4,6 @@ import logging
 import pathlib
 from typing import List
 
-# from pprint import pprint
-
 logger = logging.getLogger("intcode")
 logger.setLevel(logging.DEBUG)
 
@@ -19,6 +17,7 @@ def parse(puzzle_input):
 def log_program(program):
     logger.info("Program:")
     spacing = 4
+
     # Print index positions
     index_positions = " ".join(f"{i:{spacing}}" for i in range(len(program)))
     logger.info(index_positions)
@@ -58,34 +57,6 @@ def get_modes(instruction: int) -> dict:
     return parameter_modes
 
 
-# def get_modes(memory: List, address: int) -> dict:
-#     """Given an instruction, return the modes of the 3 parameters.
-
-#     Args:
-#         instruction (int): An instruction value
-
-#     Returns:
-#         dict: The modes of the 3 parameters
-#     """
-
-#     # ABCDE
-#     #  1002
-
-#     # DE - two-digit opcode,      02 == opcode 2
-#     #  C - mode of 1st parameter,  0 == position mode
-#     #  B - mode of 2nd parameter,  1 == immediate mode
-#     #  A - mode of 3rd parameter,  0 == position mode,
-#     #                                   omitted due to being a leading zero
-
-#     instruction = memory[address]
-#     parameter_modes = {
-#         1: int(instruction % 1000 / 100),
-#         2: int(instruction % 10000 / 1000),
-#         3: int(instruction % 100000 / 10000),
-#     }
-#     return parameter_modes
-
-
 def get_value_via_mode(memory: List, address: int, mode: int):
     match mode:
         case 0:
@@ -119,10 +90,6 @@ def opcode_add(memory: List, instruction_pointer: int) -> int:
     # the first two indicate the positions from which you should read the input values, and the third indicates
     # the position at which the output should be stored.
 
-    # print()
-    # print(f"Memory: {memory}")
-    # print(f"instruction_pointer: {instruction_pointer}")
-    # print(f"My modes: {modes}")
     pointer_increment = 4
     instruction = memory[instruction_pointer]
     modes = get_modes(instruction)
@@ -142,11 +109,6 @@ def opcode_add(memory: List, instruction_pointer: int) -> int:
 def opcode_multiply(memory: List, instruction_pointer: int) -> int:
     # Opcode 2 works exactly like opcode 1, except it multiplies the two inputs instead of adding them. Again, the three
     # integers after the opcode indicate where the inputs and outputs are, not their values.
-
-    # print()
-    # print(f"Memory: {memory}")
-    # print(f"instruction_pointer: {instruction_pointer}")
-    # print(f"My modes: {modes}")
 
     pointer_increment = 4
 
@@ -187,23 +149,16 @@ def opcode4(memory: List, instruction_pointer: int) -> tuple[int, int]:
     instruction = memory[instruction_pointer]
     modes = get_modes(instruction)
 
-    # value_position = memory[instruction_pointer + 1]
-    # value = memory[value_position]
-
     value = get_value_via_mode(memory, instruction_pointer + 1, modes[1])
 
-    # logger.debug(f"Returning value {value} from position {value_position}")
     logger.debug(f"Returning value {value}.")
     next_pointer = instruction_pointer + pointer_increment
     return value, next_pointer
 
 
-# def opcode5(memory: List, instruction_pointer: int, modes) -> int:
 def opcode5(memory: List, instruction_pointer: int) -> int:
     # Opcode 5 is jump-if-true: if the first parameter is non-zero, it sets the instruction pointer to the value from the
     # second parameter. Otherwise, it does nothing.
-
-    # parameter1 = memory[instruction_pointer + 1]
 
     instruction = memory[instruction_pointer]
     modes = get_modes(instruction)
@@ -216,7 +171,6 @@ def opcode5(memory: List, instruction_pointer: int) -> int:
     )
 
     if parameter1 != 0:
-        # parameter2 = memory[instruction_pointer + 2]
         next_pointer = parameter2
     else:
         next_pointer = instruction_pointer + 3
@@ -224,13 +178,9 @@ def opcode5(memory: List, instruction_pointer: int) -> int:
     return next_pointer
 
 
-# def opcode6(memory: List, instruction_pointer: int, modes) -> int:
 def opcode6(memory: List, instruction_pointer: int) -> int:
     # Opcode 6 is jump-if-false: if the first parameter is zero, it sets the instruction pointer to the value from the
     # second parameter. Otherwise, it does nothing.
-
-    # parameter1_pointer = instruction_pointer + 1
-    # parameter2_pointer = instruction_pointer + 2
 
     instruction = memory[instruction_pointer]
     modes = get_modes(instruction)
@@ -238,16 +188,11 @@ def opcode6(memory: List, instruction_pointer: int) -> int:
     parameter1 = get_value_via_mode(memory, instruction_pointer + 1, modes[1])
     parameter2 = get_value_via_mode(memory, instruction_pointer + 2, modes[2])
 
-    # parameter1_position = memory[parameter1_pointer]
-    # parameter1 = memory[parameter1_position]
-
     logger.debug(
         f"Checking if {parameter1=} is zero. If true, jump to {parameter2=} else jump to {instruction_pointer+3}."
     )
 
     if parameter1 == 0:
-        # parameter2_position = memory[parameter2_pointer]
-        # parameter2 = memory[parameter2_position]
         next_pointer = parameter2
     else:
         next_pointer = instruction_pointer + 3
@@ -268,20 +213,10 @@ def opcode7(memory: List, instruction_pointer: int) -> int:
     parameter1 = get_value_via_mode(memory, instruction_pointer + 1, modes[1])
     parameter2 = get_value_via_mode(memory, instruction_pointer + 2, modes[2])
 
-    # parameter1_pointer = instruction_pointer + 1
-    # parameter2_pointer = instruction_pointer + 2
     parameter3_pointer = instruction_pointer + 3
-
-    # parameter1_position = memory[parameter1_pointer]
-    # parameter2_position = memory[parameter2_pointer]
     parameter3_position = memory[parameter3_pointer]
 
-    # parameter1 = memory[parameter1_position]
-    # parameter2 = memory[parameter2_position]
-
-    # logger.debug(f"Checking if {parameter1=} at {parameter1_position=} from {parameter1_pointer=} is less than {parameter2=} at {parameter2_position=} from {parameter2_pointer}.")
     logger.debug(f"Checking if {parameter1=} is less than {parameter2=}. Store 1 if true, 0 if false.")
-    # logger.debug(f"Storing in position {parameter3_position} 1 if true, 0 if false.")
 
     if parameter1 < parameter2:
         value_to_store = 1
@@ -295,7 +230,6 @@ def opcode7(memory: List, instruction_pointer: int) -> int:
 
 
 def opcode8(memory: List, instruction_pointer: int) -> int:
-    # def opcode8(memory: List, instruction_pointer: int, modes) -> int:
     # Opcode 8 is equals: if the first parameter is equal to the second parameter, it stores 1 in the position given by
     # the third parameter. Otherwise, it stores 0.
 
@@ -307,21 +241,11 @@ def opcode8(memory: List, instruction_pointer: int) -> int:
     parameter1 = get_value_via_mode(memory, instruction_pointer + 1, modes[1])
     parameter2 = get_value_via_mode(memory, instruction_pointer + 2, modes[2])
 
-    # parameter1_pointer = instruction_pointer + 1
-    # parameter2_pointer = instruction_pointer + 2
     parameter3_pointer = instruction_pointer + 3
 
-    # parameter1_position = memory[parameter1_pointer]
-    # parameter2_position = memory[parameter2_pointer]
     parameter3_position = memory[parameter3_pointer]
 
-    # parameter1 = memory[parameter1_position]
-    # parameter2 = memory[parameter2_position]
-
-    # logger.debug(f"Checking if {parameter1=} at {parameter1_position=} from {parameter1_pointer=} is equal to {parameter2=} at {parameter2_position=} from {parameter2_pointer}.")
     logger.debug(f"Checking if {parameter1=} is equal to {parameter2=}. Store 1 if true, 0 if false.")
-    # logger.debug(f"Storing in position {parameter3_position} 1 if true, 0 if false.")
-    # memory[parameter3_position] = 1 if parameter1 == parameter2 else 0
 
     if parameter1 == parameter2:
         value_to_store = 1
@@ -335,43 +259,33 @@ def opcode8(memory: List, instruction_pointer: int) -> int:
 
 
 def run_program(program: List) -> int:
-    # print(program)
 
     current_address = 0
     done = False
 
     while not done:
         instruction = program[current_address]
-        # logger.info(f"Program: {program}")
         log_program(program)
         logger.info(f"Instruction {instruction} from address {current_address}")
         opcode = get_opcode(instruction)
-        # modes = get_modes(instruction)  # Should we limit mode check to only opcode 1 and 2?
 
         match opcode:
             case 1:
-                # next_address = opcode_add(program, current_address, modes)
                 next_address = opcode_add(program, current_address)
             case 2:
-                # next_address = opcode_multiply(program, current_address, modes)
                 next_address = opcode_multiply(program, current_address)
             case 3:
                 next_address = opcode3(program, current_address)
             case 4:
                 diagnostic_value, next_address = opcode4(program, current_address)
-                # print(diagnostic_value)
             case 5:
                 next_address = opcode5(program, current_address)
-                # next_address = opcode5(program, current_address, modes)
             case 6:
                 next_address = opcode6(program, current_address)
-                # next_address = opcode6(program, current_address, modes)
             case 7:
                 next_address = opcode7(program, current_address)
-                # next_address = opcode7(program, current_address, modes)
             case 8:
                 next_address = opcode8(program, current_address)
-                # next_address = opcode8(program, current_address, modes)
             case 99:
                 done = True
             case _:
