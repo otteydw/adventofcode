@@ -89,8 +89,8 @@ def test_opcode_multiply():
 def test_opcode3():
     memory = [1, 2, 3, 4, 5]
     expected_value = 73
-    print(f"When prompted, please enter the integer {expected_value}.")
-    value = aoc.opcode3(memory, 0)
+    with patch("builtins.input", return_value=expected_value):
+        value = aoc.opcode3(memory, 0)
     assert memory == [1, 2, expected_value, 4, 5]
     assert value == 2
 
