@@ -284,30 +284,21 @@ def test_day5b_4():
     assert diagnositc_code == 0
 
 
-def test_day5b_jump():
+@pytest.mark.parametrize(
+    ("program", "input_value", "expected_diagnostic_code"),
+    (
+        ([3, 12, 6, 12, 15, 1, 13, 14, 13, 4, 13, 99, -1, 0, 1, 9], 0, 0),  # pos mode
+        ([3, 12, 6, 12, 15, 1, 13, 14, 13, 4, 13, 99, -1, 0, 1, 9], 1, 1),  # pos mode
+        ([3, 3, 1105, -1, 9, 1101, 0, 0, 12, 4, 12, 99, 1], 0, 0),  # immediate mode
+        ([3, 3, 1105, -1, 9, 1101, 0, 0, 12, 4, 12, 99, 1], 1, 1),  # immediate mode
+    ),
+)
+def test_day5b_jump(program, input_value, expected_diagnostic_code):
     # Here are some jump tests that take an input, then output 0 if the input was zero or 1 if the input was non-zero:
 
-    # position mode
-    program = [3, 12, 6, 12, 15, 1, 13, 14, 13, 4, 13, 99, -1, 0, 1, 9]
-    print("When prompted, enter 0")
-    diagnositc_code = aoc.run_program(program)
-    assert diagnositc_code == 0
-
-    program = [3, 12, 6, 12, 15, 1, 13, 14, 13, 4, 13, 99, -1, 0, 1, 9]
-    print("When prompted, enter 1")
-    diagnositc_code = aoc.run_program(program)
-    assert diagnositc_code == 1
-
-    # immediate mode
-    program = [3, 3, 1105, -1, 9, 1101, 0, 0, 12, 4, 12, 99, 1]
-    print("When prompted, enter 0")
-    diagnositc_code = aoc.run_program(program)
-    assert diagnositc_code == 0
-
-    program = [3, 3, 1105, -1, 9, 1101, 0, 0, 12, 4, 12, 99, 1]
-    print("When prompted, enter 1")
-    diagnositc_code = aoc.run_program(program)
-    assert diagnositc_code == 1
+    with patch("builtins.input", return_value=input_value):
+        diagnositc_code = aoc.run_program(program)
+    assert diagnositc_code == expected_diagnostic_code
 
 
 @pytest.mark.parametrize(
@@ -330,7 +321,7 @@ def test_day5_part2(input_value: int, expected_diagnostic_code: int):
 
     with patch("builtins.input", return_value=input_value):
         diagnositc_code = aoc.run_program(program)
-        assert diagnositc_code == expected_diagnostic_code
+    assert diagnositc_code == expected_diagnostic_code
 
 
 # @pytest.fixture
