@@ -3,6 +3,7 @@ import copy
 import logging
 import pathlib
 from typing import List
+from unittest.mock import patch
 
 logger = logging.getLogger("intcode")
 logger.setLevel(logging.DEBUG)
@@ -299,16 +300,18 @@ def run_program(program: List) -> int:
 
 
 def part1(data: List):
-    print("When prompted, enter 1.")
     program = copy.deepcopy(data)
-    response = run_program(program)
+    input_value = 1
+    with patch("builtins.input", return_value=input_value):
+        response = run_program(program)
     return response
 
 
 def part2(data: List):
-    print("When prompted, enter 5.")
     program = copy.deepcopy(data)
-    response = run_program(program)
+    input_value = 5
+    with patch("builtins.input", return_value=input_value):
+        response = run_program(program)
     return response
 
 
