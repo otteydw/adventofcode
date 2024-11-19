@@ -212,76 +212,68 @@ def test_opcode8(memory, address, expected_memory, expected_pointer):
     assert next_pointer == expected_pointer
 
 
-def test_day5b_1():
+@pytest.mark.parametrize(
+    ("program", "input_value", "expected_diagnostic_code"),
+    (
+        ([3, 9, 8, 9, 10, 9, 4, 9, 99, -1, 8], 7, 0),
+        ([3, 9, 8, 9, 10, 9, 4, 9, 99, -1, 8], 8, 1),
+        ([3, 9, 8, 9, 10, 9, 4, 9, 99, -1, 8], 9, 0),
+    ),
+)
+def test_day5b_1(program, input_value, expected_diagnostic_code):
     # Using position mode, consider whether the input is equal to 8; output 1 (if it is) or 0 (if it is not).
-    program = [3, 9, 8, 9, 10, 9, 4, 9, 99, -1, 8]
-    print("When prompted, enter 7")
-    diagnositc_code = aoc.run_program(program)
-    assert diagnositc_code == 0
 
-    program = [3, 9, 8, 9, 10, 9, 4, 9, 99, -1, 8]
-    print("When prompted, enter 8")
-    diagnositc_code = aoc.run_program(program)
-    assert diagnositc_code == 1
-
-    program = [3, 9, 8, 9, 10, 9, 4, 9, 99, -1, 8]
-    print("When prompted, enter 9")
-    diagnositc_code = aoc.run_program(program)
-    assert diagnositc_code == 0
+    with patch("builtins.input", return_value=input_value):
+        diagnositc_code = aoc.run_program(program)
+    assert diagnositc_code == expected_diagnostic_code
 
 
-def test_day5b_2():
+@pytest.mark.parametrize(
+    ("program", "input_value", "expected_diagnostic_code"),
+    (
+        ([3, 9, 7, 9, 10, 9, 4, 9, 99, -1, 8], 7, 1),
+        ([3, 9, 7, 9, 10, 9, 4, 9, 99, -1, 8], 8, 0),
+        ([3, 9, 7, 9, 10, 9, 4, 9, 99, -1, 8], 9, 0),
+    ),
+)
+def test_day5b_2(program, input_value, expected_diagnostic_code):
     # Using position mode, consider whether the input is less than 8; output 1 (if it is) or 0 (if it is not).
-    program = [3, 9, 7, 9, 10, 9, 4, 9, 99, -1, 8]
-    print("When prompted, enter 7")
-    diagnositc_code = aoc.run_program(program)
-    assert diagnositc_code == 1
 
-    program = [3, 9, 7, 9, 10, 9, 4, 9, 99, -1, 8]
-    print("When prompted, enter 8")
-    diagnositc_code = aoc.run_program(program)
-    assert diagnositc_code == 0
-
-    program = [3, 9, 7, 9, 10, 9, 4, 9, 99, -1, 8]
-    print("When prompted, enter 9")
-    diagnositc_code = aoc.run_program(program)
-    assert diagnositc_code == 0
+    with patch("builtins.input", return_value=input_value):
+        diagnositc_code = aoc.run_program(program)
+    assert diagnositc_code == expected_diagnostic_code
 
 
-def test_day5b_3():
+@pytest.mark.parametrize(
+    ("program", "input_value", "expected_diagnostic_code"),
+    (
+        ([3, 3, 1108, -1, 8, 3, 4, 3, 99], 7, 0),
+        ([3, 3, 1108, -1, 8, 3, 4, 3, 99], 8, 1),
+        ([3, 3, 1108, -1, 8, 3, 4, 3, 99], 9, 0),
+    ),
+)
+def test_day5b_3(program, input_value, expected_diagnostic_code):
     # Using immediate mode, consider whether the input is equal to 8; output 1 (if it is) or 0 (if it is not).
-    program = [3, 3, 1108, -1, 8, 3, 4, 3, 99]
-    print("When prompted, enter 7")
-    diagnositc_code = aoc.run_program(program)
-    assert diagnositc_code == 0
 
-    program = [3, 3, 1108, -1, 8, 3, 4, 3, 99]
-    print("When prompted, enter 8")
-    diagnositc_code = aoc.run_program(program)
-    assert diagnositc_code == 1
-
-    program = [3, 3, 1108, -1, 8, 3, 4, 3, 99]
-    print("When prompted, enter 9")
-    diagnositc_code = aoc.run_program(program)
-    assert diagnositc_code == 0
+    with patch("builtins.input", return_value=input_value):
+        diagnositc_code = aoc.run_program(program)
+    assert diagnositc_code == expected_diagnostic_code
 
 
-def test_day5b_4():
+@pytest.mark.parametrize(
+    ("program", "input_value", "expected_diagnostic_code"),
+    (
+        ([3, 3, 1107, -1, 8, 3, 4, 3, 99], 7, 1),
+        ([3, 3, 1107, -1, 8, 3, 4, 3, 99], 8, 0),
+        ([3, 3, 1107, -1, 8, 3, 4, 3, 99], 9, 0),
+    ),
+)
+def test_day5b_4(program, input_value, expected_diagnostic_code):
     # Using immediate mode, consider whether the input is less than 8; output 1 (if it is) or 0 (if it is not).
-    program = [3, 3, 1107, -1, 8, 3, 4, 3, 99]
-    print("When prompted, enter 7")
-    diagnositc_code = aoc.run_program(program)
-    assert diagnositc_code == 1
 
-    program = [3, 3, 1107, -1, 8, 3, 4, 3, 99]
-    print("When prompted, enter 8")
-    diagnositc_code = aoc.run_program(program)
-    assert diagnositc_code == 0
-
-    program = [3, 3, 1107, -1, 8, 3, 4, 3, 99]
-    print("When prompted, enter 9")
-    diagnositc_code = aoc.run_program(program)
-    assert diagnositc_code == 0
+    with patch("builtins.input", return_value=input_value):
+        diagnositc_code = aoc.run_program(program)
+    assert diagnositc_code == expected_diagnostic_code
 
 
 @pytest.mark.parametrize(
