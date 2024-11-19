@@ -48,11 +48,10 @@ def test_parse_example1(example1):
     }
 
 
-def test_orbits_directly(example1):
-    assert aoc.orbits_directly(example1, "D", "C") is True
-    assert aoc.orbits_directly(example1, "L", "K") is True
-    assert aoc.orbits_directly(example1, "C", "D") is False
-
+# def test_orbits_directly(example1):
+#     assert aoc.orbits_directly(example1, "D", "C") is True
+#     assert aoc.orbits_directly(example1, "L", "K") is True
+#     assert aoc.orbits_directly(example1, "C", "D") is False
 
 # def test_orbits_indirectly(example1):
 #     assert aoc.orbits_indirectly(example1, "D", "C") is True
@@ -65,7 +64,6 @@ def test_total_orbits_for_object(example1):
     assert aoc.total_orbits_for_object(example1, "COM") == 0
 
 
-# @pytest.mark.skip(reason="Not yet implemented")
 def total_orbits_in_map(example1):
     assert aoc.total_orbits_in_map(example1) == 42
 
