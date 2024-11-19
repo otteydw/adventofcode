@@ -19,19 +19,6 @@ def parse(puzzle_input):
     return program
 
 
-# def get_opcode(memory: List, address: int) -> int:
-#     """Returns the opcode of a program at a given address
-
-#     Args:
-#         memory (List): The program memory
-#         address (int): The address of the instruction
-
-#     Returns:
-#         int: the opcode
-#     """
-#     return memory[address] % 100
-
-
 def log_program(program):
     logger.info("Program:")
     spacing = 4

@@ -47,18 +47,6 @@ def test_run_program(input_l: List, expected: List) -> None:
     assert memory == expected
 
 
-# @pytest.mark.parametrize(
-#     ("program", "address", "expected"),
-#     (
-#         ([1, 0, 0, 0, 99], 0, 1),
-#         ([2, 3, 0, 3, 99], 0, 2),
-#         ([1002, 3, 0, 3, 99], 0, 2),
-#     ),
-# )
-# def test_get_opcode(program, address, expected):
-#     assert aoc.get_opcode(program, address) == expected
-
-
 @pytest.mark.parametrize(
     ("instruction", "expected"),
     (
@@ -91,12 +79,10 @@ def test_get_value_via_mode(memory: List, address: int, mode_value: int, expecte
 
 
 def test_opcode_add():
-    # assert aoc.opcode_add([1, 2, 3, 4, 5], 0, {1: 0, 2: 0, 3: 0}) == 4
     assert aoc.opcode_add([1, 2, 3, 4, 5], 0) == 4
 
 
 def test_opcode_multiply():
-    # assert aoc.opcode_multiply([1, 2, 3, 4, 5], 0, {1: 0, 2: 0, 3: 0}) == 4
     assert aoc.opcode_multiply([1, 2, 3, 4, 5], 0) == 4
 
 
@@ -115,10 +101,7 @@ def test_opcode4():
         3,
         2,
     )  # Parameter mode. Output value 3 from position 2
-    assert aoc.opcode4([104, 2, 3, 4, 5], 0) == (
-        2,
-        2,
-    )  # Immediate mode. Output value 2 (position 2)
+    assert aoc.opcode4([104, 2, 3, 4, 5], 0) == (2, 2)  # Immediate mode. Output value 2 (position 2)
 
 
 def test_opcode5():
