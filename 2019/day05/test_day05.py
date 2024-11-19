@@ -107,6 +107,86 @@ def test_opcode4():
     assert aoc.opcode4([1, 2, 3, 4, 5], 0) == (3, 2)
 
 
+def test_opcode5():
+    assert aoc.opcode5([5, 1, 4, 7], 0) == 4  # Non-zero case 1
+    assert aoc.opcode5([5, -1, 4, 7], 0) == 4  # Non-zero case 2
+    assert aoc.opcode5([5, 0, 4, 7], 0) == 3  # Zero case
+
+
+def test_opcode6():
+    assert aoc.opcode6([6, 1, 4, 7], 0) == 3  # Non-zero case 1
+    assert aoc.opcode6([6, -1, 4, 7], 0) == 3  # Non-zero case 2
+    assert aoc.opcode6([6, 0, 4, 7], 0) == 4  # Zero case
+
+
+@pytest.mark.parametrize(
+    ("memory", "address", "expected_memory", "expected_pointer"),
+    (
+        ([7, 1, 2, 3], 0, [7, 1, 2, 1], 4),  # 1 from pos 1 < 2 from pos 2, store 1 in position 3
+        ([7, 0, 1, 3], 0, [7, 0, 1, 0], 4),  # 7 from pos 0 is not < 0 from pos 1, store 0 in position 3
+    ),
+)
+def test_opcode7(memory, address, expected_memory, expected_pointer):
+    next_pointer = aoc.opcode7(memory, address)
+    assert memory == expected_memory
+    assert next_pointer == expected_pointer
+
+
+@pytest.mark.parametrize(
+    ("memory", "address", "expected_memory", "expected_pointer"),
+    (
+        ([8, 1, 1, 3], 0, [8, 1, 1, 1], 4),  # 1 == 1, store 1 in position 3
+        ([8, 2, 1, 3], 0, [8, 2, 1, 0], 4),  # 2 != 1, store 0 in position 3
+    ),
+)
+def test_opcode8(memory, address, expected_memory, expected_pointer):
+    next_pointer = aoc.opcode8(memory, address)
+    assert memory == expected_memory
+    assert next_pointer == expected_pointer
+
+
+def test_day5b_1():
+    # Result is equal to 8
+    program = [3, 9, 8, 9, 10, 9, 4, 9, 99, -1, 8]
+    print("When prompted, enter 7")
+    diagnositc_code = aoc.run_program(program)
+    assert diagnositc_code == 0
+
+    program = [3, 9, 8, 9, 10, 9, 4, 9, 99, -1, 8]
+    print("When prompted, enter 8")
+    diagnositc_code = aoc.run_program(program)
+    assert diagnositc_code == 1
+
+    program = [3, 9, 8, 9, 10, 9, 4, 9, 99, -1, 8]
+    print("When prompted, enter 9")
+    diagnositc_code = aoc.run_program(program)
+    assert diagnositc_code == 0
+
+
+def test_day5b_2():
+    # Result is less than 8
+    program = [3, 9, 7, 9, 10, 9, 4, 9, 99, -1, 8]
+    print("When prompted, enter 7")
+    diagnositc_code = aoc.run_program(program)
+    assert diagnositc_code == 1
+
+    program = [3, 9, 7, 9, 10, 9, 4, 9, 99, -1, 8]
+    print("When prompted, enter 8")
+    diagnositc_code = aoc.run_program(program)
+    assert diagnositc_code == 0
+
+    program = [3, 9, 7, 9, 10, 9, 4, 9, 99, -1, 8]
+    print("When prompted, enter 9")
+    diagnositc_code = aoc.run_program(program)
+    assert diagnositc_code == 0
+
+
+# def test_day5b_1():
+#     program = [3, 12, 6, 12, 15, 1, 13, 14, 13, 4, 13, 99, -1, 0, 1, 9]
+#     print("When prompted, enter 0")
+#     diagnositc_code = aoc.run_program(program)
+#     assert diagnositc_code == 0
+
 # @pytest.fixture
 # def example1():
 #     puzzle_input = (PUZZLE_DIR / "example1.txt").read_text().strip()
