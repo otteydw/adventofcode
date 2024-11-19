@@ -89,7 +89,6 @@
 # what diagnostic code does the program produce?
 
 
-
 # --- Part Two ---
 # The air conditioner comes online! Its cold air feels good for a while, but then the TEST alarms start to go off. Since the air conditioner can't vent its heat anywhere but back into the spacecraft, it's actually making the air inside the ship warmer.
 
@@ -128,22 +127,22 @@
 
 
 def intcode(input_list):
-    """ The intcode program """
+    """The intcode program"""
 
     next_instruction = 0
     for index in range(int((len(input_list)))):
         print()
-        print('Index is ' + str(index))
+        print("Index is " + str(index))
         if index < next_instruction:
             # Skip this instruction
             continue
 
         instruction = input_list[index]
-        print('Instruction is ' + str(instruction))
+        print("Instruction is " + str(instruction))
 
         # opcode is the right-most digit
         opcode = int(instruction % 100)
-        print('Index: ' + str(index) + '   Opcode: ' + str(opcode))
+        print("Index: " + str(index) + "   Opcode: " + str(opcode))
 
         if opcode == 99:
             break
@@ -156,19 +155,19 @@ def intcode(input_list):
 
                 # print('Modes: ' + str(mode1) + ' ' + str(mode2) + ' ' + str(mode3))
                 if mode1 == 0:
-                    operand1 = int(input_list[int(input_list[index+1])])
+                    operand1 = int(input_list[int(input_list[index + 1])])
                 elif mode1 == 1:
-                    operand1 = int(input_list[index+1])
+                    operand1 = int(input_list[index + 1])
 
                 if mode2 == 0:
-                    operand2 = int(input_list[int(input_list[index+2])])
+                    operand2 = int(input_list[int(input_list[index + 2])])
                 elif mode2 == 1:
-                    operand2 = int(input_list[index+2])
+                    operand2 = int(input_list[index + 2])
 
                 if mode3 == 0:
-                    result_position = int(input_list[index+3])
+                    result_position = int(input_list[index + 3])
                 elif mode3 == 1:
-                    result_position = int(input_list[int(input_list[index+3])])
+                    result_position = int(input_list[int(input_list[index + 3])])
 
                 # print('Operands: ' + str(operand1) + ' ' + str(operand2) + '   Result Position: ' + str(result_position))
 
@@ -183,59 +182,60 @@ def intcode(input_list):
             elif opcode == 3:
                 # Opcode 3 takes a single integer as input and saves it to the position given by its only parameter.
                 # or example, the instruction 3,50 would take an input value and store it at address 50.
-                input_list[int(input_list[index+1])] = int(input("Input a single integer: "))
+                input_list[int(input_list[index + 1])] = int(input("Input a single integer: "))
                 next_instruction += 2
             elif opcode == 4:
                 # Opcode 4 outputs the value of its only parameter. For example, the instruction 4,50 would output the value at address 50.
-                print(input_list[int(input_list[index+1])])
+                print(input_list[int(input_list[index + 1])])
                 next_instruction += 2
             elif opcode == 5:
                 # Opcode 5 is jump-if-true: if the first parameter is non-zero, it sets the instruction pointer to the value from the second parameter. Otherwise, it does nothing.
                 # if input_list[int(input_list[index+1])] != 0:
-                if int(input_list[index+1]) != 0:
+                if int(input_list[index + 1]) != 0:
                     # next_instruction = input_list[int(input_list[index+2])]
-                    next_instruction = int(input_list[index+2])
+                    next_instruction = int(input_list[index + 2])
                 # else:
                 #     next_instruction += 3
             elif opcode == 6:
                 # Opcode 6 is jump-if-false: if the first parameter is zero, it sets the instruction pointer to the value from the second parameter. Otherwise, it does nothing.
                 # if input_list[int(input_list[index+1])] == 0:
-                if int(input_list[index+1]) == 0:
+                if int(input_list[index + 1]) == 0:
                     # next_instruction = input_list[int(input_list[index+2])]
-                    next_instruction = int(input_list[index+2])
+                    next_instruction = int(input_list[index + 2])
                 # else:
                 #     next_instruction += 3
             elif opcode == 7:
                 # Opcode 7 is less than: if the first parameter is less than the second parameter, it stores 1 in the position given by the third parameter. Otherwise, it stores 0.
                 # if input_list[int(input_list[index+1])] < input_list[int(input_list[index+2])]:
-                if int(input_list[index+1]) < int(input_list[index+2]):
-                    input_list[int(input_list[index+3])] = 1
+                if int(input_list[index + 1]) < int(input_list[index + 2]):
+                    input_list[int(input_list[index + 3])] = 1
                 else:
-                    input_list[int(input_list[index+3])] = 0
+                    input_list[int(input_list[index + 3])] = 0
                 next_instruction += 4
             elif opcode == 8:
                 # Opcode 8 is equals: if the first parameter is equal to the second parameter, it stores 1 in the position given by the third parameter. Otherwise, it stores 0.
                 # if input_list[int(input_list[index+1])] == input_list[int(input_list[index+2])]:
-                if int(input_list[index+1]) == int(input_list[index+2]):
-                    input_list[int(input_list[index+3])] = 1
+                if int(input_list[index + 1]) == int(input_list[index + 2]):
+                    input_list[int(input_list[index + 3])] = 1
                 else:
-                    input_list[int(input_list[index+3])] = 0
+                    input_list[int(input_list[index + 3])] = 0
                 next_instruction += 4
             else:
-                print('Unknown op code!')
+                print("Unknown op code!")
 
     return input_list
 
-inputs_path = 'input.txt'
+
+inputs_path = "input.txt"
 
 with open(inputs_path) as input_file:
-    INPUT_PROGRAM = [int(x) for x in input_file.readline().rstrip().split(',')]
+    INPUT_PROGRAM = [int(x) for x in input_file.readline().rstrip().split(",")]
 
 # Using position mode, consider whether the input is equal to 8; output 1 (if it is) or 0 (if it is not).
 # INPUT_PROGRAM = [3,9,8,9,10,9,4,9,99,-1,8]
 
 # Using position mode, consider whether the input is less than 8; output 1 (if it is) or 0 (if it is not).
-INPUT_PROGRAM = [3,9,7,9,10,9,4,9,99,-1,8]
+INPUT_PROGRAM = [3, 9, 7, 9, 10, 9, 4, 9, 99, -1, 8]
 
 # Using immediate mode, consider whether the input is equal to 8; output 1 (if it is) or 0 (if it is not).
 # INPUT_PROGRAM = [3,3,1108,-1,8,3,4,3,99]
