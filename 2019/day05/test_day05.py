@@ -141,30 +141,34 @@ def test_opcode6():
 @pytest.mark.parametrize(
     ("memory", "address", "expected_memory", "expected_pointer"),
     (
+        # Val 1 from pos 4 is less than Val 2 from pos 5. Store 1 in position 3
         (
             [7, 4, 5, 3, 1, 2, 3],
             0,
             [7, 4, 5, 1, 1, 2, 3],
             4,
-        ),  # Val 1 from pos 4 is less than Val 2 from pos 5. Store 1 in position 3
+        ),
+        # Val 2 from pos 4 is not less than Val 1 from pos 5. Store 0 in position 3
         (
             [7, 4, 5, 3, 2, 1, 3],
             0,
             [7, 4, 5, 0, 2, 1, 3],
             4,
-        ),  # Val 2 from pos 4 is not less than Val 1 from pos 5. Store 0 in position 3
+        ),
+        # Immediate mode. Val 4 from pos 1 is less than Val 5 from pos 2. Store 1 in position 3
         (
             [1107, 4, 5, 3, 2, 2, 3],
             0,
             [1107, 4, 5, 1, 2, 2, 3],
             4,
-        ),  # Immediate mode. Val 4 from pos 1 is less than Val 5 from pos 2. Store 1 in position 3
+        ),
+        # Immediate mode. Val 5 from pos 1 is not less than Val 4 from pos 2. Store 0 in position 3
         (
             [1107, 5, 4, 3, 1, 2, 3],
             0,
             [1107, 5, 4, 0, 1, 2, 3],
             4,
-        ),  # Immediate mode. Val 5 from pos 1 is not less than Val 4 from pos 2. Store 0 in position 3
+        ),
     ),
 )
 def test_opcode7(memory, address, expected_memory, expected_pointer):
@@ -178,30 +182,34 @@ def test_opcode7(memory, address, expected_memory, expected_pointer):
 @pytest.mark.parametrize(
     ("memory", "address", "expected_memory", "expected_pointer"),
     (
+        # Val 1 from pos 4 is equal to Val 1 from pos 5. Store 1 in position 3
         (
             [8, 4, 5, 3, 1, 1, 3],
             0,
             [8, 4, 5, 1, 1, 1, 3],
             4,
-        ),  # Val 1 from pos 4 is equal to Val 1 from pos 5. Store 1 in position 3
+        ),
+        # Val 2 from pos 4 is not equal to than Val 1 from pos 5. Store 0 in position 3
         (
             [8, 4, 5, 3, 2, 1, 3],
             0,
             [8, 4, 5, 0, 2, 1, 3],
             4,
-        ),  # Val 2 from pos 4 is not equal to than Val 1 from pos 5. Store 0 in position 3
+        ),
+        # Immediate mode. Val 4 from pos 1 is equal to Val 4 from pos 2. Store 1 in position 3
         (
             [1108, 4, 4, 3, 1, 2, 3],
             0,
             [1108, 4, 4, 1, 1, 2, 3],
             4,
-        ),  # Immediate mode. Val 4 from pos 1 is equal to Val 4 from pos 2. Store 1 in position 3
+        ),
+        # Immediate mode. Val 5 from pos 1 is not euqual to Val 4 from pos 2. Store 0 in position 3
         (
             [1108, 5, 4, 3, 2, 2, 3],
             0,
             [1108, 5, 4, 0, 2, 2, 3],
             4,
-        ),  # Immediate mode. Val 5 from pos 1 is not euqual to Val 4 from pos 2. Store 0 in position 3
+        ),
     ),
 )
 def test_opcode8(memory, address, expected_memory, expected_pointer):
@@ -215,79 +223,58 @@ def test_opcode8(memory, address, expected_memory, expected_pointer):
 @pytest.mark.parametrize(
     ("program", "input_value", "expected_diagnostic_code"),
     (
-        ([3, 9, 8, 9, 10, 9, 4, 9, 99, -1, 8], 7, 0),
-        ([3, 9, 8, 9, 10, 9, 4, 9, 99, -1, 8], 8, 1),
-        ([3, 9, 8, 9, 10, 9, 4, 9, 99, -1, 8], 9, 0),
-    ),
-)
-def test_day5b_1(program, input_value, expected_diagnostic_code):
-    # Using position mode, consider whether the input is equal to 8; output 1 (if it is) or 0 (if it is not).
-
-    with patch("builtins.input", return_value=input_value):
-        diagnositc_code = aoc.run_program(program)
-    assert diagnositc_code == expected_diagnostic_code
-
-
-@pytest.mark.parametrize(
-    ("program", "input_value", "expected_diagnostic_code"),
-    (
+        # Testing position mode: checks if input equals 8; outputs 1 if true, 0 otherwise.
+        (
+            [3, 9, 8, 9, 10, 9, 4, 9, 99, -1, 8],
+            7,
+            0,
+        ),
+        (
+            [3, 9, 8, 9, 10, 9, 4, 9, 99, -1, 8],
+            8,
+            1,
+        ),
+        (
+            [3, 9, 8, 9, 10, 9, 4, 9, 99, -1, 8],
+            9,
+            0,
+        ),
+        # Testing position mode: checks if input is less than 8; outputs 1 if true, 0 otherwise.
+        (
+            [3, 9, 7, 9, 10, 9, 4, 9, 99, -1, 8],
+            7,
+            1,
+        ),
+        (
+            [3, 9, 7, 9, 10, 9, 4, 9, 99, -1, 8],
+            8,
+            0,
+        ),
+        (
+            [3, 9, 7, 9, 10, 9, 4, 9, 99, -1, 8],
+            9,
+            0,
+        ),
+        # Using position mode, consider whether the input is less than 8; output 1 (if it is) or 0 (if it is not).
         ([3, 9, 7, 9, 10, 9, 4, 9, 99, -1, 8], 7, 1),
         ([3, 9, 7, 9, 10, 9, 4, 9, 99, -1, 8], 8, 0),
         ([3, 9, 7, 9, 10, 9, 4, 9, 99, -1, 8], 9, 0),
-    ),
-)
-def test_day5b_2(program, input_value, expected_diagnostic_code):
-    # Using position mode, consider whether the input is less than 8; output 1 (if it is) or 0 (if it is not).
-
-    with patch("builtins.input", return_value=input_value):
-        diagnositc_code = aoc.run_program(program)
-    assert diagnositc_code == expected_diagnostic_code
-
-
-@pytest.mark.parametrize(
-    ("program", "input_value", "expected_diagnostic_code"),
-    (
+        # Using immediate mode, consider whether the input is equal to 8; output 1 (if it is) or 0 (if it is not).
         ([3, 3, 1108, -1, 8, 3, 4, 3, 99], 7, 0),
         ([3, 3, 1108, -1, 8, 3, 4, 3, 99], 8, 1),
         ([3, 3, 1108, -1, 8, 3, 4, 3, 99], 9, 0),
-    ),
-)
-def test_day5b_3(program, input_value, expected_diagnostic_code):
-    # Using immediate mode, consider whether the input is equal to 8; output 1 (if it is) or 0 (if it is not).
-
-    with patch("builtins.input", return_value=input_value):
-        diagnositc_code = aoc.run_program(program)
-    assert diagnositc_code == expected_diagnostic_code
-
-
-@pytest.mark.parametrize(
-    ("program", "input_value", "expected_diagnostic_code"),
-    (
+        # Using immediate mode, consider whether the input is less than 8; output 1 (if it is) or 0 (if it is not).
         ([3, 3, 1107, -1, 8, 3, 4, 3, 99], 7, 1),
         ([3, 3, 1107, -1, 8, 3, 4, 3, 99], 8, 0),
         ([3, 3, 1107, -1, 8, 3, 4, 3, 99], 9, 0),
-    ),
-)
-def test_day5b_4(program, input_value, expected_diagnostic_code):
-    # Using immediate mode, consider whether the input is less than 8; output 1 (if it is) or 0 (if it is not).
-
-    with patch("builtins.input", return_value=input_value):
-        diagnositc_code = aoc.run_program(program)
-    assert diagnositc_code == expected_diagnostic_code
-
-
-@pytest.mark.parametrize(
-    ("program", "input_value", "expected_diagnostic_code"),
-    (
+        # Here are some jump tests that take an input, then output 0 if the input was zero or 1 if the input was non-zero:
         ([3, 12, 6, 12, 15, 1, 13, 14, 13, 4, 13, 99, -1, 0, 1, 9], 0, 0),  # pos mode
         ([3, 12, 6, 12, 15, 1, 13, 14, 13, 4, 13, 99, -1, 0, 1, 9], 1, 1),  # pos mode
         ([3, 3, 1105, -1, 9, 1101, 0, 0, 12, 4, 12, 99, 1], 0, 0),  # immediate mode
         ([3, 3, 1105, -1, 9, 1101, 0, 0, 12, 4, 12, 99, 1], 1, 1),  # immediate mode
     ),
 )
-def test_day5b_jump(program, input_value, expected_diagnostic_code):
-    # Here are some jump tests that take an input, then output 0 if the input was zero or 1 if the input was non-zero:
-
+def test_day5b(program, input_value, expected_diagnostic_code):
     with patch("builtins.input", return_value=input_value):
         diagnositc_code = aoc.run_program(program)
     assert diagnositc_code == expected_diagnostic_code
