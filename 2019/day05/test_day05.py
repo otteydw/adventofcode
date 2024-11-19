@@ -3,6 +3,7 @@
 import copy
 import pathlib
 from typing import List
+from unittest.mock import patch
 
 import day05 as aoc
 import pytest
@@ -321,19 +322,19 @@ def test_day5_part2():
                999,1105,1,46,1101,1000,1,20,4,20,1105,1,46,98,99]  # fmt: skip
 
     program1 = copy.deepcopy(program)
-    print("When prompted, enter 7")
-    diagnositc_code = aoc.run_program(program1)
-    assert diagnositc_code == 999
+    with patch("builtins.input", return_value=7):
+        diagnositc_code = aoc.run_program(program1)
+        assert diagnositc_code == 999
 
     program2 = copy.deepcopy(program)
-    print("When prompted, enter 8")
-    diagnositc_code = aoc.run_program(program2)
-    assert diagnositc_code == 1000
+    with patch("builtins.input", return_value=8):
+        diagnositc_code = aoc.run_program(program2)
+        assert diagnositc_code == 1000
 
     program3 = copy.deepcopy(program)
-    print("When prompted, enter 9")
-    diagnositc_code = aoc.run_program(program3)
-    assert diagnositc_code == 1001
+    with patch("builtins.input", return_value=9):
+        diagnositc_code = aoc.run_program(program3)
+        assert diagnositc_code == 1001
 
 
 # @pytest.fixture
