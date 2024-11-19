@@ -8,9 +8,6 @@ from typing import List
 
 logger = logging.getLogger("intcode")
 logger.setLevel(logging.DEBUG)
-fh = logging.FileHandler("intcode.log")
-fh.setLevel(logging.DEBUG)
-logger.addHandler(fh)
 
 
 def parse(puzzle_input):
