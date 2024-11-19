@@ -1,6 +1,5 @@
 # test_aoc_template.py
 
-import copy
 import pathlib
 from typing import List
 from unittest.mock import patch
@@ -311,7 +310,15 @@ def test_day5b_jump():
     assert diagnositc_code == 1
 
 
-def test_day5_part2():
+@pytest.mark.parametrize(
+    ("input_value", "expected_diagnostic_code"),
+    (
+        (7, 999),
+        (8, 1000),
+        (9, 1001),
+    ),
+)
+def test_day5_part2(input_value: int, expected_diagnostic_code: int):
     # The example program uses an input instruction to ask for a single number.
     # The program will then
     #   output 999 if the input value is below 8,
@@ -321,20 +328,9 @@ def test_day5_part2():
                1106,0,36,98,0,0,1002,21,125,20,4,20,1105,1,46,104,
                999,1105,1,46,1101,1000,1,20,4,20,1105,1,46,98,99]  # fmt: skip
 
-    program1 = copy.deepcopy(program)
-    with patch("builtins.input", return_value=7):
-        diagnositc_code = aoc.run_program(program1)
-        assert diagnositc_code == 999
-
-    program2 = copy.deepcopy(program)
-    with patch("builtins.input", return_value=8):
-        diagnositc_code = aoc.run_program(program2)
-        assert diagnositc_code == 1000
-
-    program3 = copy.deepcopy(program)
-    with patch("builtins.input", return_value=9):
-        diagnositc_code = aoc.run_program(program3)
-        assert diagnositc_code == 1001
+    with patch("builtins.input", return_value=input_value):
+        diagnositc_code = aoc.run_program(program)
+        assert diagnositc_code == expected_diagnostic_code
 
 
 # @pytest.fixture
