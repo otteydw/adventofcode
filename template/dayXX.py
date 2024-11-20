@@ -17,8 +17,10 @@ def part2(data):
 def solve(puzzle_input):
     """Solve the puzzle for the given input."""
     data = parse(puzzle_input)
-    solution1 = part1(data)
-    solution2 = part2(data)
+    solve1 = True
+    solve2 = True
+    solution1 = part1(data) if solve1 else None
+    solution2 = part2(data) if solve2 else None
 
     return solution1, solution2
 
