@@ -45,12 +45,10 @@ def is_safe(lst: list) -> bool:
     sorted_desc = sorted(lst, reverse=True)
 
     if lst != sorted_asc and lst != sorted_desc:
-        # print('Not sorted')
         return False
-    # print('sorted')
+
     for a, b in itertools.pairwise(lst):
         difference = abs(a - b)
-        # print(f"{difference=}")
         if difference < 1 or difference > 3:
             return False
 
