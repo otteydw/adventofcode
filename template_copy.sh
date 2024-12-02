@@ -1,4 +1,5 @@
 #!/bin/bash
+set -euo pipefail
 
 TEMPLATE_DIRECTORY=~/git/adventofcode/template
 DAY_VALUE=$1
