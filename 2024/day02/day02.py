@@ -13,7 +13,8 @@ def part1(data):
 
 
 def part2(data):
-    pass
+    total_safe = sum([1 for row in data if is_safe_with_dampener(row)])
+    return total_safe
 
 
 def parse_to_int_grid(puzzle_input):
@@ -54,6 +55,36 @@ def is_safe(lst: list) -> bool:
             return False
 
     return True
+
+
+def remove_nth_element(lst, n):
+    """Removes the nth element from a list and returns a new list."""
+
+    if n < 0 or n >= len(lst):
+        return lst  # Return the original list if n is out of range
+
+    return lst[:n] + lst[n + 1 :]
+
+
+def is_safe_with_dampener(lst: list) -> bool:
+    """The Problem Dampener is a reactor-mounted module that lets the reactor safety systems tolerate a single bad level in
+    what would otherwise be a safe report. It's like the bad level never happened!
+
+    Now, the same rules apply as before, except if removing a single level from an unsafe report would make it safe, the report
+    instead counts as safe."""
+
+    # If the list is safe using original rules, return True
+    if is_safe(lst):
+        return True
+
+    # Otherwise iterate through permutations of the list where the n'th element is removed and return True if a safe permutation is found.
+    for idx in range(len(lst)):
+        list_with_item_removed = remove_nth_element(lst, idx)
+        if is_safe(list_with_item_removed):
+            return True
+
+    # Otherwise the list is still unsafe.
+    return False
 
 
 def solve(puzzle_input):
