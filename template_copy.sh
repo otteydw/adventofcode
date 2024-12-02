@@ -1,8 +1,10 @@
 #!/bin/bash
 
 TEMPLATE_DIRECTORY=~/git/adventofcode/template
+DAY_VALUE=$1
 
-DAY_NUMBER=$1
+DAY_WIDTH=2
+DAY_NUMBER=$(printf "%0${DAY_WIDTH}d" $DAY_VALUE)
 NEW_DAY="day${DAY_NUMBER}"
 
 cp -a ${TEMPLATE_DIRECTORY} ${NEW_DAY}
