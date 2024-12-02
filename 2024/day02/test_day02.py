@@ -20,16 +20,25 @@ def example2():
     return aoc.parse(puzzle_input)
 
 
-@pytest.mark.skip(reason="Not implemented")
+def test_is_safe():
+    assert aoc.is_safe([7, 6, 4, 2, 1]) is True
+    assert aoc.is_safe([1, 2, 7, 8, 9]) is False
+    assert aoc.is_safe([9, 7, 6, 2, 1]) is False
+    assert aoc.is_safe([1, 3, 2, 4, 5]) is False
+    assert aoc.is_safe([8, 6, 4, 4, 1]) is False
+    assert aoc.is_safe([1, 3, 6, 7, 9]) is True
+
+
+# @pytest.mark.skip(reason="Not implemented")
 def test_parse_example1(example1):
     """Test that input is parsed properly."""
-    assert example1 == ...
+    assert example1[0] == [7, 6, 4, 2, 1]
 
 
-@pytest.mark.skip(reason="Not implemented")
+# @pytest.mark.skip(reason="Not implemented")
 def test_part1_example1(example1):
     """Test part 1 on example input."""
-    assert aoc.part1(example1) == ...
+    assert aoc.part1(example1) == 2
 
 
 @pytest.mark.skip(reason="Not implemented")
