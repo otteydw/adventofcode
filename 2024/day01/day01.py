@@ -7,7 +7,22 @@ def parse(puzzle_input):
 
 
 def part1(data):
-    pass
+
+    listA = []
+    listB = []
+    for line in data:
+        a, b = line.split()
+        listA.append(int(a))
+        listB.append(int(b))
+
+    listA.sort()
+    listB.sort()
+
+    distance = 0
+    for a, b in zip(listA, listB):
+        distance += abs(a - b)
+
+    return distance
 
 
 def part2(data):
