@@ -26,7 +26,19 @@ def part1(data):
 
 
 def part2(data):
-    pass
+    listA = []
+    listB = []
+    for line in data:
+        a, b = line.split()
+        listA.append(int(a))
+        listB.append(int(b))
+
+    total_similarity = 0
+
+    for a in listA:
+        total_similarity += a * listB.count(a)
+
+    return total_similarity
 
 
 def solve(puzzle_input):
