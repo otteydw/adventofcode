@@ -3,7 +3,7 @@ import pathlib
 
 
 def parse(puzzle_input):
-    return [line for line in puzzle_input.split("\n")]
+    return [line for line in puzzle_input.splitlines()]
 
 
 def part1(data):
