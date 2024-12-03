@@ -41,7 +41,7 @@ def test_part2_example1(example1):
 @pytest.mark.skip(reason="Not implemented")
 def test_part2_example2(example2):
     """Test part 2 on example input."""
-    assert aoc.part2(example2) == ...
+    assert aoc.part2(example2) == 48
 
 
 def test_find_muls(example1):
@@ -51,3 +51,16 @@ def test_find_muls(example1):
 
 def test_do_mul():
     assert aoc.do_mul("mul(23,111)") == 2553
+
+
+def test_add_do_and_dont(example2):
+    assert (
+        aoc.add_do_and_dont(example2[0])
+        == "do()xmul(2,4)&mul[3,7]!^don't()_mul(5,5)+mul(32,64](mul(11,8)undo()?mul(8,5))don't()"
+    )
+
+
+def test_find_do_sections(example2):
+    assert aoc.find_do_sections(
+        "do()xmul(2,4)&mul[3,7]!^don't()_mul(5,5)+mul(32,64](mul(11,8)undo()?mul(8,5))don't()"
+    ) == ["xmul(2,4)&mul[3,7]!^", "?mul(8,5))"]

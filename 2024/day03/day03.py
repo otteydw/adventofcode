@@ -18,7 +18,18 @@ def part1(data):
 
 
 def part2(data):
-    pass
+    value = 0
+    for row in data:
+        print(f"{row=}")
+        ammended_row = add_do_and_dont(row)
+        print(f"{ammended_row=}")
+        do_sections = find_do_sections(ammended_row)
+        for do_section in do_sections:
+            muls = find_muls(do_section)
+            for mul in muls:
+                value += do_mul(mul)
+
+    return value
 
 
 def do_mul(x: str) -> int:
@@ -35,6 +46,25 @@ def find_muls(x: str) -> list[str]:
     """
     # pattern = r"mul\(d{1,3}\,d{1,3}\)"
     pattern = r"mul\(\d{1,3},\d{1,3}\)"
+    matches = re.findall(pattern, x)
+    return matches
+
+
+def add_do_and_dont(x: str):
+    """Given string x, prepend the string with a do() function and append it with a don't() function"""
+
+    if not x.startswith("do()"):
+        x = "do()" + x
+
+    if not x.endswith("don't()"):
+        x = x + "don't()"
+
+    return x
+
+
+def find_do_sections(x: str):
+    """Given string x, find sections of code which are surrounded by a do() and a don't()."""
+    pattern = r"do\(\)(.*?)don't\(\)"
     matches = re.findall(pattern, x)
     return matches
 
