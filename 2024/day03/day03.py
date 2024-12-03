@@ -3,31 +3,33 @@ import pathlib
 import re
 
 
-def parse(puzzle_input):
-    return [line for line in puzzle_input.splitlines()]
+def parse(puzzle_input: str) -> str:
+    # return [line for line in puzzle_input.splitlines()]
+    return puzzle_input.replace("\n", "")
 
 
 def part1(data):
     value = 0
-    for row in data:
-        muls = find_muls(row)
-        for mul in muls:
-            value += do_mul(mul)
+    # for row in data:
+    # muls = find_muls(row)
+    muls = find_muls(data)
+    for mul in muls:
+        value += do_mul(mul)
 
     return value
 
 
 def part2(data):
     value = 0
-    for row in data:
-        print(f"{row=}")
-        ammended_row = add_do_and_dont(row)
-        print(f"{ammended_row=}")
-        do_sections = find_do_sections(ammended_row)
-        for do_section in do_sections:
-            muls = find_muls(do_section)
-            for mul in muls:
-                value += do_mul(mul)
+    # for row in data:
+    #     print(f"{row=}")
+    ammended_row = add_do_and_dont(data)
+    # print(f"{ammended_row=}")
+    do_sections = find_do_sections(ammended_row)
+    for do_section in do_sections:
+        muls = find_muls(do_section)
+        for mul in muls:
+            value += do_mul(mul)
 
     return value
 
