@@ -4,14 +4,11 @@ import re
 
 
 def parse(puzzle_input: str) -> str:
-    # return [line for line in puzzle_input.splitlines()]
     return puzzle_input.replace("\n", "")
 
 
 def part1(data):
     value = 0
-    # for row in data:
-    # muls = find_muls(row)
     muls = find_muls(data)
     for mul in muls:
         value += do_mul(mul)
@@ -21,10 +18,7 @@ def part1(data):
 
 def part2(data):
     value = 0
-    # for row in data:
-    #     print(f"{row=}")
     ammended_row = add_do_and_dont(data)
-    # print(f"{ammended_row=}")
     do_sections = find_do_sections(ammended_row)
     for do_section in do_sections:
         muls = find_muls(do_section)
@@ -46,7 +40,6 @@ def find_muls(x: str) -> list[str]:
     """Given string x, return a list of valid mul values in the form
     ['mul(2,4)', 'mul(23,72)'] etc
     """
-    # pattern = r"mul\(d{1,3}\,d{1,3}\)"
     pattern = r"mul\(\d{1,3},\d{1,3}\)"
     matches = re.findall(pattern, x)
     return matches
