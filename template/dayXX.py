@@ -2,19 +2,19 @@ import argparse
 import pathlib
 
 
-def parse(puzzle_input):
+def parse(puzzle_input: str) -> list[str]:
     return [line for line in puzzle_input.splitlines()]
 
 
-def part1(data):
+def part1(data: list[str]) -> int:  # type: ignore[empty-body]
     pass
 
 
-def part2(data):
+def part2(data: list[str]) -> int:  # type: ignore[empty-body]
     pass
 
 
-def solve(puzzle_input):
+def solve(puzzle_input: str) -> tuple[int | None, int | None]:
     """Solve the puzzle for the given input."""
     data = parse(puzzle_input)
     solve1 = True
