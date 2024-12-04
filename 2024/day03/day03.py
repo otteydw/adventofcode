@@ -7,7 +7,7 @@ def parse(puzzle_input: str) -> str:
     return puzzle_input.replace("\n", "")
 
 
-def part1(data):
+def part1(data: str) -> int:
     value = 0
     muls = find_muls(data)
     for mul in muls:
@@ -16,7 +16,7 @@ def part1(data):
     return value
 
 
-def part2(data):
+def part2(data: str) -> int:
     value = 0
     ammended_row = add_do_and_dont(data)
     do_sections = find_do_sections(ammended_row)
@@ -33,7 +33,10 @@ def do_mul(x: str) -> int:
 
     pattern = r"mul\((\d{1,3}),(\d{1,3})\)"
     match = re.search(pattern, x)
-    return int(match.group(1)) * int(match.group(2))
+    if match:
+        return int(match.group(1)) * int(match.group(2))
+    else:
+        raise IndexError("Expected only two matches.")
 
 
 def find_muls(x: str) -> list[str]:
@@ -45,7 +48,7 @@ def find_muls(x: str) -> list[str]:
     return matches
 
 
-def add_do_and_dont(x: str):
+def add_do_and_dont(x: str) -> str:
     """Given string x, prepend the string with a do() function and append it with a don't() function"""
 
     if not x.startswith("do()"):
@@ -57,14 +60,14 @@ def add_do_and_dont(x: str):
     return x
 
 
-def find_do_sections(x: str):
+def find_do_sections(x: str) -> list[str]:
     """Given string x, find sections of code which are surrounded by a do() and a don't()."""
     pattern = r"do\(\)(.*?)don't\(\)"
     matches = re.findall(pattern, x)
     return matches
 
 
-def solve(puzzle_input):
+def solve(puzzle_input: str) -> tuple[int | None, int | None]:
     """Solve the puzzle for the given input."""
     data = parse(puzzle_input)
     solve1 = True
