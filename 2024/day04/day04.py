@@ -80,8 +80,72 @@ def part1(data: np.array, search_string: str = "XMAS") -> int:
     return found
 
 
-def part2(data: np.array) -> int:  # type: ignore[empty-body]
-    pass
+def is_coordinate_in_grid(coordinate: tuple[int, int], grid: np.array) -> bool:
+    """Given a coordinate in form of (row, column) return true if it is within the bounds of the array's shape"""
+    rows, cols = grid.shape
+    row, col = coordinate
+
+    return (row >= 0) and (row <= rows - 1) and (col >= 0) and (col <= cols - 1)
+
+
+def found_x(my_array: np.array, coordinate: tuple[int, int]) -> bool:
+    # rows, cols = my_array.shape
+    row, column = coordinate
+
+    upper_left = (row - 1, column - 1)
+    upper_right = (row - 1, column + 1)
+    lower_left = (row + 1, column - 1)
+    lower_right = (row + 1, column + 1)
+
+    # Make sure all possible coordinates are inside the grid
+    possible_coordinates = [upper_left, upper_right, lower_left, lower_right]
+    if not all((is_coordinate_in_grid(possible_coordinate, my_array) for possible_coordinate in possible_coordinates)):
+        return False
+
+    upper_left_value = my_array[upper_left[0]][upper_left[1]]
+    upper_right_value = my_array[upper_right[0]][upper_right[1]]
+    lower_left_value = my_array[lower_left[0]][lower_left[1]]
+    lower_right_value = my_array[lower_right[0]][lower_right[1]]
+
+    leg1 = set([upper_left_value, lower_right_value])
+    leg2 = set([lower_left_value, upper_right_value])
+
+    return leg1 == leg2 == set(["M", "S"])
+
+
+def coordinates_of_element_in_array(my_array: np.array, value: str) -> list[tuple[int, int]]:
+    rows, cols = np.where(my_array == value)
+
+    # Convert coordinates to a list of (row, col) tuples with standard Python integers
+    coordinates = [(int(row), int(col)) for row, col in zip(rows, cols)]
+    return coordinates
+
+
+def part2(data: np.array) -> int:
+    """Find the X-MAS in the array.  An X-MAS looks like this
+
+    M.S
+    .A.
+    M.S
+
+    """
+    my_array = data
+    found = 0
+
+    # Loop through each of the four rotations
+    # for _ in range(4):
+    # Begin by finding all the "A" coordinates
+    a_coordinates = coordinates_of_element_in_array(my_array, "A")
+    print(f"{a_coordinates=}")
+    # Iterate over the A values and look for X-MAS
+    for a_coordinate in a_coordinates:
+        print(f"{a_coordinate=}")
+        if found_x(my_array, a_coordinate):
+            found += 1
+        # Then rotate the array
+        # np.rot90(my_array)
+
+    return found
 
 
 def solve(puzzle_input: str) -> tuple[int | None, int | None]:
