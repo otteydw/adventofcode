@@ -25,39 +25,13 @@ def search_diagnals(my_array: np.array, search_string: str, reverse: bool = True
     """To search all diagonals of an array, we get all diagonals including the ones that do not begin
     on the top row. I needed a tip from ChatGPT for that tidbit!"""
     found = 0
-    # flipped_array = np.fliplr(my_array)
-    # reversed_search_string = search_string[::-1]
 
-    # Received a tip from ChatGPT on this.
     rows, cols = my_array.shape
     for offset in range(-rows + 1, cols):
         diagonal = my_array.diagonal(offset)
         found += search_in_row(diagonal, search_string, reverse=reverse)
 
-        # if reverse:
-        #     found+=search_in_row(diagonal, reversed_search_string)
-
-        # flipped_diagonal = flipped_array.diagonal(i)
-        # found +=search_in_row(flipped_diagonal, search_string)
-
     return found
-
-
-# def part1(data: np.array, search_string: str = 'XMAS') -> int:
-#     """Rotate the array to get all permutations and search each row of each rotation for the string."""
-#     my_array = data
-#     found=0
-#     for _ in range(4):
-
-#         # Search each row ow this array
-#         for row in my_array:
-#             found+=search_in_row(row, search_string)
-
-#         found += search_diagnals(my_array, search_string)
-#         # Rotate the array for the next iteration
-#         my_array = np.rot90(my_array)
-
-#     return found
 
 
 def part1(data: np.array, search_string: str = "XMAS") -> int:
@@ -66,16 +40,11 @@ def part1(data: np.array, search_string: str = "XMAS") -> int:
     found = 0
 
     rotated_array = np.rot90(my_array)
-    # flipped_array = np.flipud(my_array)
-    # arrays_to_check = [my_array, rotated_array]
 
     for array_to_check in my_array, rotated_array:
         for row in array_to_check:
             found += search_in_row(row, search_string)
         found += search_diagnals(array_to_check, search_string)
-
-    # found += search_diagnals(my_array, search_string)
-    # found += search_diagnals(flipped_array, search_string)
 
     return found
 
@@ -89,7 +58,6 @@ def is_coordinate_in_grid(coordinate: tuple[int, int], grid: np.array) -> bool:
 
 
 def found_x(my_array: np.array, coordinate: tuple[int, int]) -> bool:
-    # rows, cols = my_array.shape
     row, column = coordinate
 
     upper_left = (row - 1, column - 1)
@@ -132,18 +100,12 @@ def part2(data: np.array) -> int:
     my_array = data
     found = 0
 
-    # Loop through each of the four rotations
-    # for _ in range(4):
-    # Begin by finding all the "A" coordinates
     a_coordinates = coordinates_of_element_in_array(my_array, "A")
-    print(f"{a_coordinates=}")
+
     # Iterate over the A values and look for X-MAS
     for a_coordinate in a_coordinates:
-        print(f"{a_coordinate=}")
         if found_x(my_array, a_coordinate):
             found += 1
-        # Then rotate the array
-        # np.rot90(my_array)
 
     return found
 

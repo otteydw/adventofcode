@@ -27,31 +27,16 @@ def example3():
     return aoc.parse(puzzle_input)
 
 
-@pytest.mark.skip(reason="Not implemented")
-def test_parse_example1(example1):
-    """Test that input is parsed properly."""
-    assert example1 == ...
-
-
-# @pytest.mark.skip(reason="Not implemented")
 def test_part1_example1(example1):
     """Test part 1 on example input."""
     assert aoc.part1(example1) == 4
 
 
-# @pytest.mark.skip(reason="Not implemented")
 def test_part1_example2(example2):
     """Test part 1 on example input."""
     assert aoc.part1(example2) == 18
 
 
-@pytest.mark.skip(reason="Not implemented")
-def test_part2_example1(example1):
-    """Test part 2 on example input."""
-    assert aoc.part2(example1) == ...
-
-
-# @pytest.mark.skip(reason="Not implemented")
 def test_part2_example3(example3):
     """Test part 2 on example input."""
     assert aoc.part2(example3) == 9
@@ -78,7 +63,6 @@ def test_part1_across():
                     [".", ".", "."],
                     [".", ".", "."],
                 ],
-                dtype="<U1",
             ),
             search_string="ABC",
         )
@@ -95,7 +79,6 @@ def test_part1_across_reverse():
                     [".", ".", "."],
                     [".", ".", "."],
                 ],
-                dtype="<U1",
             ),
             search_string="ABC",
         )
@@ -112,7 +95,6 @@ def test_part1_diagonal1():
                     [".", "B", "."],
                     [".", ".", "C"],
                 ],
-                dtype="<U1",
             ),
             search_string="ABC",
         )
@@ -129,7 +111,6 @@ def test_part1_diagonal2():
                     [".", "B", "."],
                     ["A", ".", "."],
                 ],
-                dtype="<U1",
             ),
             search_string="ABC",
         )
@@ -146,7 +127,6 @@ def test_part1_diagonal3():
                     [".", "B", "."],
                     [".", ".", "A"],
                 ],
-                dtype="<U1",
             ),
             search_string="ABC",
         )
@@ -163,7 +143,6 @@ def test_part1_down():
                     ["B", ".", "."],
                     ["A", ".", "."],
                 ],
-                dtype="<U1",
             ),
             search_string="ABC",
         )
@@ -180,7 +159,6 @@ def test_part1_diagonal4():
                     ["A", ".", "."],
                     [".", "B", "."],
                 ],
-                dtype="<U1",
             ),
             search_string="AB",
         )
@@ -197,7 +175,6 @@ def test_part2_xmas1():
                     [".", "A", "."],
                     ["S", "B", "S"],
                 ],
-                dtype="<U1",
             ),
         )
         == 1
@@ -213,7 +190,6 @@ def test_part2_xmas2():
                     [".", "A", ".", ".", ".", "."],
                     ["S", "B", "S", ".", ".", "."],
                 ],
-                dtype="<U1",
             ),
         )
         == 1
