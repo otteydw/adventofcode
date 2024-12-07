@@ -34,5 +34,5 @@ if __name__ == "__main__":
         print(f"{path}:")
         puzzle_input = pathlib.Path(path).read_text().strip()
         solutions = solve(puzzle_input)
-        for solution_number, solution in enumerate(solutions):
+        for solution_number, solution in enumerate(solutions, start=1):
             print(f"Solution {solution_number}: {str(solution)}")
