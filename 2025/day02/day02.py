@@ -6,6 +6,22 @@ def parse(puzzle_input: str) -> list[str]:
     return [line for line in puzzle_input.splitlines()]
 
 
+def valid_id(numeric_id: int) -> bool:
+    id: str = str(numeric_id)
+    if len(id) == 1:
+        return True
+
+    if len(id) % 2 != 0:
+        return True
+
+    mid = len(id) // 2
+
+    first_half = id[:mid]
+    second_half = id[mid:]
+
+    return not (first_half == second_half)
+
+
 def part1(data: list[str]) -> int:  # type: ignore[empty-body]
     pass
 
