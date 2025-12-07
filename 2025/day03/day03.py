@@ -6,8 +6,24 @@ def parse(puzzle_input: str) -> list[str]:
     return [line for line in puzzle_input.splitlines()]
 
 
-def part1(data: list[str]) -> int:  # type: ignore[empty-body]
-    pass
+def largest_joltage(bank_int: int) -> int:
+    bank = str(bank_int)
+
+    first_digit = sorted(bank[:-1])[-1]
+    index_of_first_digit = bank.index(first_digit)
+
+    second_digit = sorted(bank[index_of_first_digit + 1 :])[-1]
+
+    joltage = 10 * int(first_digit) + int(second_digit)
+    return joltage
+
+
+def part1(data: list[str]) -> int:
+    total_joltage = 0
+    for bank in data:
+        total_joltage += largest_joltage(int(bank))
+
+    return total_joltage
 
 
 def part2(data: list[str]) -> int:  # type: ignore[empty-body]
