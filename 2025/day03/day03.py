@@ -26,8 +26,29 @@ def part1(data: list[str]) -> int:
     return total_joltage
 
 
-def part2(data: list[str]) -> int:  # type: ignore[empty-body]
-    pass
+def p2_largest_joltage(bank_int: int, size: int = 12) -> int:
+
+    bank_str = str(bank_int)
+    if size == 1:
+        return int(sorted(bank_str)[-1])
+
+    available_values = bank_str[: -size + 1]
+    max_of_available_values = sorted(available_values)[-1]
+    index_of_max_value = bank_str.index(max_of_available_values)
+
+    remaining_values = bank_str[index_of_max_value + 1 :]
+    largest_joltage = 10 ** (size - 1) * int(max_of_available_values) + p2_largest_joltage(
+        int(remaining_values), size=size - 1
+    )
+    return largest_joltage
+
+
+def part2(data: list[str]) -> int:
+    total_joltage = 0
+    for bank in data:
+        total_joltage += p2_largest_joltage(int(bank))
+
+    return total_joltage
 
 
 def solve(puzzle_input: str) -> tuple[int | None, int | None]:
