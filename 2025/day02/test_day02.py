@@ -21,6 +21,23 @@ def test_valid_id():
     assert aoc.valid_id(12)
 
 
+def test_p2_valid_id():
+    assert not aoc.p2_valid_id(11)
+    assert not aoc.p2_valid_id(22)
+    assert not aoc.p2_valid_id(99)
+    assert not aoc.p2_valid_id(1010)
+    assert not aoc.p2_valid_id(1188511885)
+    assert not aoc.p2_valid_id(222222)
+    assert not aoc.p2_valid_id(446446)
+    assert not aoc.p2_valid_id(38593859)
+
+    assert aoc.p2_valid_id(12)
+
+    assert not aoc.p2_valid_id(565656)
+    assert not aoc.p2_valid_id(824824824)
+    assert not aoc.p2_valid_id(2121212121)
+
+
 def test_invalid_ids_from_range():
     assert aoc.invalid_ids_from_range("11-22") == [11, 22]
     assert aoc.invalid_ids_from_range("1188511880-1188511890") == [1188511885]
@@ -39,7 +56,6 @@ def example2():
     return aoc.parse(puzzle_input)
 
 
-# @pytest.mark.skip(reason="Not implemented")
 def test_parse_example1(example1):
     """Test that input is parsed properly."""
     assert (
@@ -48,19 +64,11 @@ def test_parse_example1(example1):
     )
 
 
-# @pytest.mark.skip(reason="Not implemented")
 def test_part1_example1(example1):
     """Test part 1 on example input."""
     assert aoc.part1(example1) == 1227775554
 
 
-@pytest.mark.skip(reason="Not implemented")
 def test_part2_example1(example1):
     """Test part 2 on example input."""
-    assert aoc.part2(example1) == ...
-
-
-@pytest.mark.skip(reason="Not implemented")
-def test_part2_example2(example2):
-    """Test part 2 on example input."""
-    assert aoc.part2(example2) == ...
+    assert aoc.part2(example1) == 4174379265

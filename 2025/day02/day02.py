@@ -1,5 +1,6 @@
 import argparse
 import pathlib
+from itertools import batched
 
 
 def parse(puzzle_input: str) -> list[str]:
@@ -22,12 +23,16 @@ def valid_id(numeric_id: int) -> bool:
     return not (first_half == second_half)
 
 
-def invalid_ids_from_range(id_range: str) -> list[int]:
+def invalid_ids_from_range(id_range: str, part: int = 1) -> list[int]:
     range_min_str, range_max_str = id_range.split("-")
     range_min = int(range_min_str)
     range_max = int(range_max_str) + 1
 
-    return [id for id in range(range_min, range_max) if not valid_id(id)]
+    if part == 1:
+        return [id for id in range(range_min, range_max) if not valid_id(id)]
+    else:
+        # Part 2
+        return [id for id in range(range_min, range_max) if not p2_valid_id(id)]
 
 
 def part1(data: list[str]) -> int:
@@ -40,8 +45,25 @@ def part1(data: list[str]) -> int:
     return part_sum
 
 
-def part2(data: list[str]) -> int:  # type: ignore[empty-body]
-    pass
+def p2_valid_id(numeric_id: int) -> bool:
+    id: str = str(numeric_id)
+    mid = len(id) // 2
+    batch_size_range = range(1, mid + 1)
+    for batch_size in batch_size_range:
+        batch = batched(id, batch_size)
+        if len(set(batch)) == 1:
+            return False
+    return True
+
+
+def part2(data: list[str]) -> int:
+    part_sum = 0
+    line = data[0]
+    id_ranges = line.split(",")
+    for id_range in id_ranges:
+        part_sum += sum(invalid_ids_from_range(id_range, part=2))
+
+    return part_sum
 
 
 def solve(puzzle_input: str) -> tuple[int | None, int | None]:
