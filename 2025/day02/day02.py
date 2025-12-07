@@ -22,8 +22,22 @@ def valid_id(numeric_id: int) -> bool:
     return not (first_half == second_half)
 
 
-def part1(data: list[str]) -> int:  # type: ignore[empty-body]
-    pass
+def invalid_ids_from_range(id_range: str) -> list[int]:
+    range_min_str, range_max_str = id_range.split("-")
+    range_min = int(range_min_str)
+    range_max = int(range_max_str) + 1
+
+    return [id for id in range(range_min, range_max) if not valid_id(id)]
+
+
+def part1(data: list[str]) -> int:
+    part_sum = 0
+    line = data[0]
+    id_ranges = line.split(",")
+    for id_range in id_ranges:
+        part_sum += sum(invalid_ids_from_range(id_range))
+
+    return part_sum
 
 
 def part2(data: list[str]) -> int:  # type: ignore[empty-body]
