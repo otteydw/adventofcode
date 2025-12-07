@@ -1,0 +1,20 @@
+[project]
+name = "ottey_aoc"
+version = "0.1.0"
+description = "Dan Ottey's Advent of Code Solutions"
+readme = "README.md"
+requires-python = ">=3.14"
+authors = [
+    { name = "Daniel W. Ottey", email = "dan@bluefrogs.us" }
+]
+
+[dependency-groups]
+dev = [
+    "pytest>=9.0.1",
+]
+
+[tool.ruff.lint]
+ignore = [
+    "D100", # Missing docstring in public module
+    "D103", # Missing docstring in public function
+]
