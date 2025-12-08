@@ -57,8 +57,27 @@ def part1(data: list[str]) -> int:
     return counter
 
 
-def part2(data: list[str]) -> int:  # type: ignore[empty-body]
-    pass
+def part2(data: list[str]) -> int:
+    grid_array = data_to_array(data)
+    shape = grid_array.shape
+    max_coord = (shape[0] - 1, shape[1] - 1)
+    counter = 0
+
+    while True:
+        rolls_to_remove = []
+        for index, value in np.ndenumerate(grid_array):
+            if value == "@":
+                values = []
+                for coord in surrounding_coordinates(index, min_coordinate=(0, 0), max_coordinate=max_coord):
+                    if grid_array[coord] == "@":
+                        values.append(coord)
+                if len(values) < 4:
+                    rolls_to_remove.append(coord)
+                    grid_array[index] = "*"  # removed
+        counter += len(rolls_to_remove)
+        if len(rolls_to_remove) == 0:
+            break
+    return counter
 
 
 def solve(puzzle_input: str) -> tuple[int | None, int | None]:
