@@ -8,6 +8,10 @@ authors = [
     { name = "Daniel W. Ottey", email = "dan@bluefrogs.us" }
 ]
 
+dependencies = [
+    "numpy"
+]
+
 [dependency-groups]
 dev = [
     "pytest>=9.0.1",
