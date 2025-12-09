@@ -19,6 +19,12 @@ def test_is_fresh():
     assert aoc.is_fresh(my_ranges, 17)
 
 
+def test_combine_ranges():
+    assert aoc.merge_intervals([(1, 10), (4, 9)]) == [(1, 10)]
+    assert aoc.merge_intervals([(4, 9), (1, 10)]) == [(1, 10)]
+    assert aoc.merge_intervals([(1, 5), (3, 7), (10, 12), (9, 11)]) == [(1, 7), (9, 12)]
+
+
 @pytest.fixture
 def example1():
     puzzle_input = (PUZZLE_DIR / "example1.txt").read_text().strip()
@@ -31,24 +37,11 @@ def example2():
     return aoc.parse(puzzle_input)
 
 
-@pytest.mark.skip(reason="Not implemented")
-def test_parse_example1(example1):
-    """Test that input is parsed properly."""
-    assert example1 == ...
-
-
 def test_part1_example1(example1):
     """Test part 1 on example input."""
     assert aoc.part1(example1) == 3
 
 
-@pytest.mark.skip(reason="Not implemented")
 def test_part2_example1(example1):
     """Test part 2 on example input."""
-    assert aoc.part2(example1) == ...
-
-
-@pytest.mark.skip(reason="Not implemented")
-def test_part2_example2(example2):
-    """Test part 2 on example input."""
-    assert aoc.part2(example2) == ...
+    assert aoc.part2(example1) == 14

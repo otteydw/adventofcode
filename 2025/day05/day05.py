@@ -22,6 +22,25 @@ def is_fresh(fresh_ranges: list[tuple[int, int]], id_to_check: int) -> bool:
     return False
 
 
+# Google AI Snippet
+# I knew I needed to merge the intervals, but needed the function to do it.  (shrug)
+def merge_intervals(intervals: list[tuple[int, int]]) -> list[tuple[int, int]]:
+    if not intervals:
+        return []
+
+    intervals.sort(key=lambda x: x[0])
+    merged = [intervals[0]]
+
+    for current_start, current_end in intervals[1:]:
+        last_merged_start, last_merged_end = merged[-1]
+
+        if current_start <= last_merged_end:  # Overlap
+            merged[-1] = (last_merged_start, max(last_merged_end, current_end))
+        else:
+            merged.append((current_start, current_end))
+    return merged
+
+
 def part1(data: list[str]) -> int:
     fresh_ingredient_range_strings, ingredient_id_strings = split_list_on_empty_string(data)
     fresh_ingredient_ranges = []
@@ -30,16 +49,28 @@ def part1(data: list[str]) -> int:
         range_min = int(range_min_str)
         range_max = int(range_max_str)
         fresh_ingredient_ranges.append((range_min, range_max))
-    # print(fresh_ingredient_ranges)
 
     ingredient_ids = [int(id) for id in ingredient_id_strings]
-    # print(ingredient_ids)
 
     return sum(1 for id in ingredient_ids if is_fresh(fresh_ingredient_ranges, id))
 
 
-def part2(data: list[str]) -> int:  # type: ignore[empty-body]
-    pass
+def part2(data: list[str]) -> int:
+    fresh_ingredient_range_strings, _ = split_list_on_empty_string(data)
+    fresh_ingredient_ranges = []
+
+    for id_range in fresh_ingredient_range_strings:
+        range_min_str, range_max_str = id_range.split("-")
+        range_min = int(range_min_str)
+        range_max = int(range_max_str) + 1
+        fresh_ingredient_ranges.append((range_min, range_max))
+    print(f"{len(fresh_ingredient_ranges)=}")
+    all_fresh_id_intervals = merge_intervals(fresh_ingredient_ranges)
+    print(f"{len(all_fresh_id_intervals)=}")
+    fresh_id_count = 0
+    for rng_min, rng_max in all_fresh_id_intervals:
+        fresh_id_count += rng_max - rng_min
+    return fresh_id_count
 
 
 def solve(puzzle_input: str) -> tuple[int | None, int | None]:
