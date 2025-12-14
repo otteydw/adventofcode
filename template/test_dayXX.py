@@ -1,5 +1,3 @@
-# test_aoc_template.py
-
 import pathlib
 
 import dayXX as aoc
@@ -10,13 +8,13 @@ PUZZLE_DIR = pathlib.Path(__file__).parent
 
 @pytest.fixture
 def example1():
-    puzzle_input = (PUZZLE_DIR / "example1.txt").read_text().strip()
+    puzzle_input = aoc.load_input(PUZZLE_DIR / "example1.txt")
     return aoc.parse(puzzle_input)
 
 
 @pytest.fixture
 def example2():
-    puzzle_input = (PUZZLE_DIR / "example2.txt").read_text().strip()
+    puzzle_input = aoc.load_input(PUZZLE_DIR / "example2.txt")
     return aoc.parse(puzzle_input)
 
 

@@ -2,6 +2,10 @@ import argparse
 import pathlib
 
 
+def load_input(path: pathlib.Path) -> str:
+    return pathlib.Path(path).read_text().strip()
+
+
 def parse(puzzle_input: str) -> list[str]:
     return [line for line in puzzle_input.splitlines()]
 
@@ -32,7 +36,7 @@ if __name__ == "__main__":
 
     for path in args.files:
         print(f"{path}:")
-        puzzle_input = pathlib.Path(path).read_text().strip()
+        puzzle_input = load_input(path)
         solutions = solve(puzzle_input)
         for solution_number, solution in enumerate(solutions, start=1):
             print(f"Solution {solution_number}: {str(solution)}")
