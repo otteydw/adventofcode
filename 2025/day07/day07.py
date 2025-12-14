@@ -66,29 +66,18 @@ class Coordinate:
 def part1(data: list[str]) -> int:
     array = data_to_array(data)
     array = np.vectorize(Coordinate, otypes=[object])(array)
-    print(array)
-    # beams = np.full_like(array, None, dtype=object)
-    # beams = array.copy()
-    # beams[beams == "S"] = "|"
-    # print_array(array, beams)
     last_row = len(array) - 1
     splits = 0
     for row_num, row in enumerate(array):
         if row_num == last_row:
             break
         for col_num, coord in enumerate(row):
-            # print(f"Checking coordinate {coord}")
             if coord.beam and not coord.splitter:
                 array[row_num + 1][col_num].beam = True
             elif coord.splitter and array[row_num - 1][col_num].beam:
                 array[row_num + 1][col_num - 1].beam = True
                 array[row_num + 1][col_num + 1].beam = True
                 splits += 1
-    print()
-    print(array)
-    # print()
-    # print_array(array, beams)
-
     return splits
 
 
