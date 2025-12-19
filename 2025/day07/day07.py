@@ -26,7 +26,6 @@ def data_to_array(data: list[str]) -> np.ndarray:
 
 class Coordinate:
     def __init__(self, value: str) -> None:
-        # self.value = value
         self.start = value == "S"
         self.splitter = value == "^"
         self.beam = self.start
@@ -37,7 +36,6 @@ class Coordinate:
         elif self.splitter:
             return "^"
         elif self.beam:
-            # return Style.BRIGHT + Fore.RED + "|"
             return "|"
         else:
             return "."
@@ -69,19 +67,11 @@ class QuantumArray:
     @lru_cache(maxsize=None)
     def quantum(self, pos: tuple[int, int]) -> int:
         row_num, col_num = pos
-        # print(f"Checking quantum at ({row_num}, {col_num}).")
-        # min_row = 0
-
-        # min_col = 0
-        # max_col = len(self.array[0]) - 1
-        # print(f"{min_row=}, {max_row=}, {min_col=}, {max_col=}")
-
         split = None
         for iter_row in range(row_num + 1, self.max_row):
             if self.array[iter_row][col_num] == "^":
                 split = (iter_row, col_num)
                 break
-        # print(f"{split=}")
         if split is None:
             return 1
 

@@ -23,13 +23,23 @@ def test_part1_example1(example1):
     assert aoc.part1(example1) == 21
 
 
-def test_quantum_array(example1):
+@pytest.fixture
+def quantum_array(example1):
     array = aoc.data_to_array(example1)
-    quantum_array = aoc.QuantumArray(array)
-    assert quantum_array.quantum((14, 1)) == 1
-    assert quantum_array.quantum((13, 1)) == 2
-    assert quantum_array.quantum((12, 2)) == 1
-    assert quantum_array.quantum((11, 2)) == 4
+    return aoc.QuantumArray(array)
+
+
+@pytest.mark.parametrize(
+    "coord, expected",
+    [
+        ((14, 1), 1),
+        ((13, 1), 2),
+        ((12, 2), 1),
+        ((11, 2), 4),
+    ],
+)
+def test_quantum_array(quantum_array, coord, expected):
+    assert quantum_array.quantum(coord) == expected
 
 
 def test_part2_example1(example1):
