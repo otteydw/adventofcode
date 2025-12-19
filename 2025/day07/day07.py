@@ -1,5 +1,6 @@
 import argparse
 import pathlib
+from functools import lru_cache
 
 import numpy as np
 
@@ -36,31 +37,10 @@ class Coordinate:
         elif self.splitter:
             return "^"
         elif self.beam:
+            # return Style.BRIGHT + Fore.RED + "|"
             return "|"
         else:
             return "."
-
-
-# def print_array(array) -> None:
-# for row_num, row in enumerate(array):
-#     for col_num, col in enumerate(row):
-#         if col == "S":
-#             print(col, end="")
-#         elif col == "^":
-#             print(col, end="")
-#         elif beams[row]
-#     print()
-
-# for array_row, beam_row in zip(array, beams):
-#     for array_col, beam_col in zip(array_row, beam_row):
-#         if array_col == "S":
-#             printable=array_col
-#         elif beam_col == "|":
-#             printable="|"
-#         else:
-#             printable=array_col
-#         print(printable, end="")
-#     print()
 
 
 def part1(data: list[str]) -> int:
@@ -81,8 +61,43 @@ def part1(data: list[str]) -> int:
     return splits
 
 
-def part2(data: list[str]) -> int:  # type: ignore[empty-body]
-    pass
+class QuantumArray:
+    def __init__(self, array: np.ndarray) -> None:
+        self.array = array
+        self.max_row = len(self.array) - 1
+
+    @lru_cache(maxsize=None)
+    def quantum(self, pos: tuple[int, int]) -> int:
+        row_num, col_num = pos
+        # print(f"Checking quantum at ({row_num}, {col_num}).")
+        # min_row = 0
+
+        # min_col = 0
+        # max_col = len(self.array[0]) - 1
+        # print(f"{min_row=}, {max_row=}, {min_col=}, {max_col=}")
+
+        split = None
+        for iter_row in range(row_num + 1, self.max_row):
+            if self.array[iter_row][col_num] == "^":
+                split = (iter_row, col_num)
+                break
+        # print(f"{split=}")
+        if split is None:
+            return 1
+
+        left_pos = (split[0] + 1, col_num - 1)
+        right_pos = (split[0] + 1, col_num + 1)
+
+        left_splits = self.quantum(left_pos)
+        right_splits = self.quantum(right_pos)
+        return left_splits + right_splits
+
+
+def part2(data: list[str]) -> int:
+    array = data_to_array(data)
+    quantum_array = QuantumArray(array)
+    start = tuple(np.argwhere(array == "S")[0])
+    return quantum_array.quantum(start)
 
 
 def solve(puzzle_input: str) -> tuple[int | None, int | None]:
