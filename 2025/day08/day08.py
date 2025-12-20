@@ -79,8 +79,30 @@ def part1(data: list[tuple[int, int, int]], max_pairs: int = 1000) -> int:
     return prod(circuit_sizes[:3])
 
 
-def part2(data: list[tuple[int, int, int]]) -> int:  # type: ignore[empty-body]
-    pass
+def part2(data: list[tuple[int, int, int]]) -> int:
+    circuits = [[coordinate] for coordinate in data]
+    sorted_pairs = sort_coordinate_pairs(data)
+    print(f"{len(sorted_pairs)=}")
+    print(f"{len(circuits)=}")
+
+    for pair in sorted_pairs:
+        for idx, circuit in enumerate(circuits):
+            if pair[0] in circuit:
+                idx1 = idx
+            if pair[1] in circuit:
+                idx2 = idx
+        if idx1 == idx2:
+            continue
+        idx1, idx2 = sorted([idx1, idx2], reverse=True)
+        circuit1 = circuits.pop(idx1)
+        circuit2 = circuits.pop(idx2)
+        circuits.append(circuit1 + circuit2)
+        if len(circuits) == 1:
+            break
+    print_circuits(circuits)
+    print(f"{pair[0]=}")
+    print(f"{pair[1]=}")
+    return pair[0][0] * pair[1][0]
 
 
 def solve(puzzle_input: str) -> tuple[int | None, int | None]:
@@ -88,7 +110,7 @@ def solve(puzzle_input: str) -> tuple[int | None, int | None]:
     data = parse(puzzle_input)
     # print(data)
     # sys.exit()
-    solve1 = True
+    solve1 = False
     solve2 = True
     solution1 = part1(data) if solve1 else None
     solution2 = part2(data) if solve2 else None

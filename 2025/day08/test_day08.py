@@ -12,12 +12,6 @@ def example1():
     return aoc.parse(puzzle_input)
 
 
-@pytest.fixture
-def example2():
-    puzzle_input = aoc.load_input(PUZZLE_DIR / "example2.txt")
-    return aoc.parse(puzzle_input)
-
-
 def test_straight_line_distance():
     coordinate1 = (162, 817, 812)
     coordinate2 = (425, 690, 689)
@@ -36,17 +30,11 @@ def test_parse_example1(example1):
     assert example1[19] == (425, 690, 689)
 
 
-# def test_sort_coordinates(example1):
-#     sorted_coordinates = aoc.sort_coordinates(example1)
-#     assert sorted_coordinates[0] == (162, 817, 812)
-
-
 def test_sort_coordinate_pairs(example1):
     sorted_pairs = aoc.sort_coordinate_pairs(example1)
     assert sorted_pairs[0] == ((162, 817, 812), (425, 690, 689))
 
 
-# @pytest.mark.skip(reason="Not implemented")
 def test_part1_example1(example1):
     """Test part 1 on example input."""
     assert aoc.part1(example1, max_pairs=1) == 2
@@ -56,13 +44,6 @@ def test_part1_example1(example1):
     assert aoc.part1(example1, max_pairs=10) == 40
 
 
-@pytest.mark.skip(reason="Not implemented")
 def test_part2_example1(example1):
     """Test part 2 on example input."""
-    assert aoc.part2(example1) == ...
-
-
-@pytest.mark.skip(reason="Not implemented")
-def test_part2_example2(example2):
-    """Test part 2 on example input."""
-    assert aoc.part2(example2) == ...
+    assert aoc.part2(example1) == 25272
