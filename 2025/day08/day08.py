@@ -9,7 +9,6 @@ def load_input(path: pathlib.Path) -> str:
 
 
 def parse(puzzle_input: str) -> list[tuple[int, int, int]]:
-    # lines = [line for line in puzzle_input.splitlines()]
     lst = []
     for line in puzzle_input.splitlines():
         x, y, z = line.split(",")
@@ -30,8 +29,6 @@ def sort_coordinate_pairs(
     coordinates: list[tuple[int, int, int]],
 ) -> list[tuple[tuple[int, int, int], tuple[int, int, int]]]:
     pairs = combinations(coordinates, 2)
-    # print(list(pairs))
-    # sys.exit()
     pairs_sorted = sorted(pairs, key=lambda pair: straight_line_distance(pair[0], pair[1]))
     return pairs_sorted
 
@@ -44,15 +41,7 @@ def print_circuits(circuits: list[list[tuple[int, int, int]]]) -> None:
 
 def part1(data: list[tuple[int, int, int]], max_pairs: int = 1000) -> int:
     circuits = [[coordinate] for coordinate in data]
-    sorted_pairs = sort_coordinate_pairs(data)
-    print(f"{len(sorted_pairs)=}")
-    print("Truncating")
-    # print(f"{max_pairs=}, {len(sorted_pairs)=}")
-    # max_pairs = min(max_pairs, len(sorted_pairs))
-    # print(f"{max_pairs=}")
-    sorted_pairs = sorted_pairs[:max_pairs]
-    print(f"{len(sorted_pairs)=}")
-    print(f"{len(circuits)=}")
+    sorted_pairs = sort_coordinate_pairs(data)[:max_pairs]
 
     for pair in sorted_pairs:
         for idx, circuit in enumerate(circuits):
@@ -62,28 +51,18 @@ def part1(data: list[tuple[int, int, int]], max_pairs: int = 1000) -> int:
                 idx2 = idx
         if idx1 == idx2:
             continue
-        # print()
-        # pprint(circuits)
-        # print_circuits(circuits)
-        # print(f"{idx1=}, {idx2=}")
-        # print(f"Planning to pop at {idx2} with {len(circuits)=}")
         idx1, idx2 = sorted([idx1, idx2], reverse=True)
         circuit1 = circuits.pop(idx1)
         circuit2 = circuits.pop(idx2)
         circuits.append(circuit1 + circuit2)
-    print_circuits(circuits)
-    # sys.exit()
 
     circuit_sizes = sorted([len(circuit) for circuit in circuits], reverse=True)
-    print(f"{circuit_sizes=}")
     return prod(circuit_sizes[:3])
 
 
 def part2(data: list[tuple[int, int, int]]) -> int:
     circuits = [[coordinate] for coordinate in data]
     sorted_pairs = sort_coordinate_pairs(data)
-    print(f"{len(sorted_pairs)=}")
-    print(f"{len(circuits)=}")
 
     for pair in sorted_pairs:
         for idx, circuit in enumerate(circuits):
@@ -99,18 +78,13 @@ def part2(data: list[tuple[int, int, int]]) -> int:
         circuits.append(circuit1 + circuit2)
         if len(circuits) == 1:
             break
-    print_circuits(circuits)
-    print(f"{pair[0]=}")
-    print(f"{pair[1]=}")
     return pair[0][0] * pair[1][0]
 
 
 def solve(puzzle_input: str) -> tuple[int | None, int | None]:
     """Solve the puzzle for the given input."""
     data = parse(puzzle_input)
-    # print(data)
-    # sys.exit()
-    solve1 = False
+    solve1 = True
     solve2 = True
     solution1 = part1(data) if solve1 else None
     solution2 = part2(data) if solve2 else None
