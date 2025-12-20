@@ -17,6 +17,8 @@ def parse(puzzle_input: str) -> list[tuple[int, int, int]]:
 
 
 def straight_line_distance(coordinate1: tuple[int, int, int], coordinate2: tuple[int, int, int]) -> float:
+    # Measuring the Euclidean distance between two 3-dimensional points
+    # https://en.wikipedia.org/wiki/Euclidean_distance
     x1, y1, z1 = coordinate1
     x2, y2, z2 = coordinate2
     x_diff = pow((x1 - x2), 2)
