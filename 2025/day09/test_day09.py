@@ -18,16 +18,24 @@ def example2():
     return aoc.parse(puzzle_input)
 
 
+def test_area():
+    assert aoc.area((2, 5), (9, 7)) == 24
+    assert aoc.area((7, 1), (11, 7)) == 35
+    assert aoc.area((7, 3), (2, 3)) == 6
+    assert aoc.area((2, 5), (11, 1)) == 50
+    assert aoc.area((11, 1), (2, 5)) == 50
+
+
 @pytest.mark.skip(reason="Not implemented")
 def test_parse_example1(example1):
     """Test that input is parsed properly."""
     assert example1 == ...
 
 
-@pytest.mark.skip(reason="Not implemented")
+# @pytest.mark.skip(reason="Not implemented")
 def test_part1_example1(example1):
     """Test part 1 on example input."""
-    assert aoc.part1(example1) == ...
+    assert aoc.part1(example1) == 50
 
 
 @pytest.mark.skip(reason="Not implemented")
