@@ -162,7 +162,7 @@ def part2(data: list[tuple[int, int]]) -> int:
 def solve(puzzle_input: str) -> tuple[int | None, int | None]:
     """Solve the puzzle for the given input."""
     data = parse(puzzle_input)
-    solve1 = False
+    solve1 = True
     solve2 = True
     solution1 = part1(data) if solve1 else None
     solution2 = part2(data) if solve2 else None
