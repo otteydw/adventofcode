@@ -15,8 +15,10 @@ dependencies = [
 [dependency-groups]
 dev = [
     "colorama",
-    "scikit-image[data]",
+    "matplotlib",
     "pytest>=9.0.1",
+    "scikit-image[data]",
+    "tqdm"
 ]
 
 [tool.ruff.lint]
