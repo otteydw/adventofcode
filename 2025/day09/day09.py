@@ -132,32 +132,9 @@ def area(coordinate1: tuple[int, int], coordinate2: tuple[int, int]) -> int:
 
 def save_image(array: np.ndarray, filename: str = "output.png") -> None:
     print(f"Saving image to {filename}")
-    # # Define colors for 0, 1, 2
-    # # 0 -> black (or white, your choice)
-    # # 1 -> red
-    # # 2 -> green
-    # cmap = ListedColormap(["white", "red", "green"])
-    # # plt.figure(figsize=(8, 8))
-    # plt.imshow(array, cmap=cmap, interpolation="nearest")
-    # plt.axis("off")
-    # # plt.show()
-    # plt.imsave(filename, array, cmap=cmap)
 
     # Create palette image
     img = Image.fromarray(array, mode="P")
-
-    # Palette: 256 entries (RGB triplets)
-    # palette = [
-    #     0,
-    #     0,
-    #     0,  # 0 -> black
-    #     255,
-    #     0,
-    #     0,  # 1 -> red
-    #     0,
-    #     255,
-    #     0,  # 2 -> green
-    # ] + [0, 0, 0] * (256 - 3)
 
     # Palette: 256 entries (RGB triplets)
     palette = [
@@ -178,10 +155,6 @@ def save_image(array: np.ndarray, filename: str = "output.png") -> None:
 
     img.putpalette(palette)
 
-    # new_size = (2000, 2000)  # (width, height)
-    # resized = img.resize(new_size, resample=Image.NEAREST)
-    # resized.save(filename, optimize=True)
-
     # Save
     img.save(filename, optimize=True)
 
@@ -196,33 +169,18 @@ def part1(data: list[tuple[int, int]]) -> int:
 
 
 def part2(data: list[tuple[int, int]]) -> int:
-    # array = red_coordinates_to_array(data)
+
     array = create_array(data)
-    # save_image(array)
-    # sys.exit()
-    # # fig, ax = plt.subplots(ncols=1, figsize=(10, 5))
-    # plt.imshow(array, cmap=plt.cm.gray)
-    # plt.show()
-    # sys.exit()
 
     if array.shape[0] < 100:
         print_array(array)
 
     pairs = combinations(data, 2)
-    # print(list(pairs)[0])
 
-    # max_area = 0
-
-    # size = len(list(pairs))
-    pairs = combinations(data, 2)
     best_areas = {}
-    # for idx, pair in enumerate(pairs, start=1):
     for pair in tqdm(pairs):
         current_area = area(*pair)
-        # print(f"Area of pair #{idx}/{size} {pair} is {current_area}.")
         best_areas[current_area] = pair
-    # sys.exit()
-    # for current_area, pair in tqdm(sorted(best_areas.items(), reverse=True)):
 
     items = sorted(best_areas.items(), reverse=True)
     with tqdm(items, desc="Processing areas") as pbar:
@@ -231,19 +189,13 @@ def part2(data: list[tuple[int, int]]) -> int:
                 area=current_area,
                 pair=pair,
             )
-            # print(f"Checking for validity of {pair} with area {current_area}")
             col0, row0 = pair[0]
             col1, row1 = pair[1]
             row0, row1 = sorted([row0, row1])
             col0, col1 = sorted([col0, col1])
             subset = array[row0:row1, col0:col1]
-            # print(f"Subset type is {subset.dtype}")
-            # valid_subset = np.all(subset != 0)
-            # valid = not np.any(subset == 0)
-            # valid_subset = subset.min() != 0
-            # valid_subset=False
 
-            # Check all edges for any "white"
+            # Check all edges uf subset rectangle for any "white"
             top = subset[0, :]
             bottom = subset[-1, :]
             left = subset[:, 0]
@@ -253,42 +205,6 @@ def part2(data: list[tuple[int, int]]) -> int:
                 print(f"max_pair is {pair}")
                 return current_area
     return -1
-    # print(f"{max_pair=}")
-    # return max_area
-
-
-# def part2_2(data: list[tuple[int, int]]) -> int:
-#     array = create_array(data)
-
-#     if array.shape[0] < 100:
-#         print_array(array)
-
-#     pairs = combinations(data, 2)
-#     pairs = combinations(data, 2)
-#     best_areas = {}
-
-#     for pair in tqdm(pairs):
-#         current_area = area(*pair)
-#         best_areas[current_area] = pair
-
-#     items = sorted(best_areas.items(), reverse=True)
-#     with tqdm(items, desc="Processing areas") as pbar:
-#         for current_area, pair in pbar:
-#             pbar.set_postfix(
-#                 area=current_area,
-#                 pair=pair,
-#             )
-
-#             col0, row0 = pair[0]
-#             col1, row1 = pair[1]
-#             row0, row1 = sorted([row0, row1])
-#             col0, col1 = sorted([col0, col1])
-
-
-#             valid=None
-#             if valid:
-#                 print(f"max_pair is {pair}")
-#                 return current_area
 
 
 def solve(puzzle_input: str) -> tuple[int | None, int | None]:
