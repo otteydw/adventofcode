@@ -11,30 +11,14 @@ from tqdm import tqdm
 
 colorama.init(autoreset=True)
 
-# def red_coordinates_to_array(coordinates: list[tuple[int,int]]) -> np.ndarray:
-#     width = max(coordinate[0] for coordinate in coordinates) + 1 + 2
-#     height = max(coordinate[1] for coordinate in coordinates) + 1 + 1
-#     array = np.full((height, width), '.')
-#     for coordinate in coordinates:
-#         col,row = coordinate[0], coordinate[1]
-#         array[row][col] = "#"
-#     return array
-
 
 def create_array(coordinates: list[tuple[int, int]]) -> np.ndarray:
     EMPTY_NUM = 0
     RED_NUM = 1
     GREEN_NUM = 2
-    # EMPTY_CHAR = "."
-    # RED_CHAR = "#"
-    # GREEN_CHAR = "X"
 
-    # map_chars = ("X", "#", "W")
-    # wall_chars = ("#", "W")
     width = max([coordinate[0] for coordinate in coordinates]) + 1 + 2
     height = max([coordinate[1] for coordinate in coordinates]) + 1 + 1
-    # array = np.full((height, width), ".")
-    # array = np.full((height, width), EMPTY_NUM)
     array = np.full((height, width), EMPTY_NUM, dtype=np.uint8)
     print(f"Created array of type {array.dtype} with shape {array.shape}")
     idx_last_coordinate = len(coordinates) - 1
@@ -52,31 +36,12 @@ def create_array(coordinates: list[tuple[int, int]]) -> np.ndarray:
             # columns are same. iterate across rows
             sorted_rows = sorted([coordinate[1], next_coordinate[1]])
             for green_idx in range(sorted_rows[0] + 1, sorted_rows[1]):
-                # array[green_idx][col] = "W"
                 array[green_idx][col] = GREEN_NUM
         else:
             # rows are same. iterate across columns
             sorted_cols = sorted([coordinate[0], next_coordinate[0]])
             for green_idx in range(sorted_cols[0] + 1, sorted_cols[1]):
-                # array[row][green_idx] = "X"
                 array[row][green_idx] = GREEN_NUM
-
-    # fig, ax = plt.subplots()
-    # print("Running imshow")
-    # ax.imshow(array, cmap=plt.cm.gray)
-    # ax.axis('scaled')
-    # print("Running plt.show")
-    # plt.show()
-    # sys.exit()
-
-    # print(f"Scaling down array of type {array.dtype} with shape {array.shape}.")
-    # # Example: downscale by factor of 4
-    # scaled = array[::4, ::4]
-    # print(f"Scaled to array of type {scaled.dtype} with shape {scaled.shape}.")
-
-    # save_image(scaled, filename="output_scaled.png")
-    # save_image(array, filename="output.png")
-    # sys.exit()
 
     # fill_begin = (
     #     (min([coordinate[0] for coordinate in coordinates]) + 1 + 1),
@@ -86,16 +51,6 @@ def create_array(coordinates: list[tuple[int, int]]) -> np.ndarray:
     print(f"Image fill beginning on array of type {array.dtype} with shape {array.shape} at point {fill_begin}.")
     array = flood_fill(array, fill_begin, GREEN_NUM)
     print("Image fill complete.")
-
-    # CONVERSION = {EMPTY_NUM: EMPTY_CHAR, RED_NUM: RED_CHAR, GREEN_NUM: GREEN_CHAR}
-
-    # print("Converting type of array")
-    # array = array.astype(str)
-    # print("Converting items in array")
-    # for num, char in CONVERSION.items():
-    #     # print(f"{num=}, {char=}")
-    #     array = np.where(array == str(num), char, array)
-    # print("Done converting items in array.")
 
     return array
 
