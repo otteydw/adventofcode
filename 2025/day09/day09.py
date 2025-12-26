@@ -47,7 +47,9 @@ def create_array(coordinates: list[tuple[int, int]]) -> np.ndarray:
     #     (min([coordinate[0] for coordinate in coordinates]) + 1 + 1),
     #     (min([coordinate[1] for coordinate in coordinates]) + 1 + 1),
     # )
-    fill_begin = (25000, 25000)  # CHEAT - HARDCODING THE START VALUE
+    upper_left = min(coordinates, key=lambda coordinate: (coordinate[0], coordinate[1]))
+    fill_begin = (upper_left[1] + 1, upper_left[0] + 1)
+    # fill_begin = (25000, 25000)  # CHEAT - HARDCODING THE START VALUE
     print(f"Image fill beginning on array of type {array.dtype} with shape {array.shape} at point {fill_begin}.")
     array = flood_fill(array, fill_begin, GREEN_NUM)
     print("Image fill complete.")
