@@ -1,5 +1,100 @@
 import argparse
+import itertools
 import pathlib
+from math import inf
+from typing import Any
+
+
+def to_list(s: str) -> list[int]:
+    if isinstance(eval(s), int):
+        return [(eval(s))]
+    return list(eval(s))
+
+
+def get_all_combinations(input_list: list[list[int]]) -> Any:
+    all_combinations: Any = []
+    # Iterate from length 0 to the full length of the list
+    for r in range(len(input_list) + 1):
+        # Generate combinations of length r
+        combs_r = itertools.combinations(input_list, r)
+        # Extend the main list with these combinations
+        all_combinations.extend(combs_r)
+
+    # Convert tuples to lists for final output if desired
+    # return [list(c) for c in all_combinations]
+    return all_combinations
+
+
+# class Wire:
+#     def __init__(self, ):
+
+
+class Machine:
+    def __init__(self, initiator_lines: str) -> None:
+        # def strip_chars(s):
+        #     chars_to_remove = "()"
+        #     for char in chars_to_remove:
+        #         s = s.replace(char, "")
+        #     return s
+
+        # def csv_string_of_numbers_to_ints(s):
+        #     lst = [int(n) for n in s]
+        #     return lst
+
+        initiator = initiator_lines.split(" ")
+
+        self.desired_state = [char for char in initiator[0][1:-1]]
+
+        bw_schematics = initiator[1:-1]
+        # self.bw_schematics = [strip_chars(thing) for thing in self.bw_schematics]
+        self.bw_schematics = [to_list(thing) for thing in bw_schematics]
+        # self.binary = self.to_binary(self.bw_schematics)
+
+        self.joltage_requirements = [int(n) for n in initiator[-1][1:-1].split(",")]
+        self.reset()
+
+    def push(self, button: list[int]) -> None:
+        for wire in button:
+            self.state[wire] = "#" if self.state[wire] == "." else "."
+
+    def reset(self) -> None:
+        self.state = len(self.desired_state) * ["."]
+
+    # def to_binary(self, lst: list[list[int]]) -> list[int]:
+    #     new_list = []
+    #     for item in lst:
+    #         new_list.append(sum([2**n for n in item]))
+    #     # print(f"{lst} -> {new_list}")
+    #     return new_list
+
+    def state_matches(self) -> bool:
+        return self.state == self.desired_state
+
+    def find_fewest_pressed(self) -> int:
+        fewest = int(inf)
+        for button_combination in get_all_combinations(self.bw_schematics):
+            print(f"Trying button combo: {button_combination}")
+            self.reset()
+            presses = 0
+            for button in button_combination:
+                self.push(button)
+                presses += 1
+                if presses > fewest:
+                    print("Breaking")
+                    break
+            if self.state_matches() and presses < fewest:
+                print(f"Setting fewest from {fewest} to {presses}")
+                fewest = int(presses)
+
+        return fewest
+
+    def __repr__(self) -> str:
+        desired = "".join(self.desired_state)
+        state = "".join(self.state)
+        repr = f"Machine\nDES: {desired}\nCUR: {state}\nBUT: {self.bw_schematics}\nJOL: {self.joltage_requirements}"
+        # repr = f"Machine\nDES: {desired}\nCUR: {state}\nBUT: {self.bw_schematics}\nBIN: {self.binary}\nJOL: {self.joltage_requirements}"
+        # repr = f"Machine\nDES: {self.desired_state}\nCUR: {self.state}\nBUT: {self.bw_schematics}\nBIN: {self.binary}\nJOL: {self.joltage_requirements}\n"
+        return repr
 
 
 def load_input(path: pathlib.Path) -> str:
@@ -10,8 +105,16 @@ def parse(puzzle_input: str) -> list[str]:
     return [line for line in puzzle_input.splitlines()]
 
 
-def part1(data: list[str]) -> int:  # type: ignore[empty-body]
-    pass
+def part1(data: list[str]) -> int:
+    total = 0
+    for line in data:
+        machine = Machine(line)
+        print(machine)
+        fewest = machine.find_fewest_pressed()
+        print(f"Fewest is {fewest}")
+        # sys.exit()
+        total += fewest
+    return total
 
 
 def part2(data: list[str]) -> int:  # type: ignore[empty-body]
@@ -21,6 +124,20 @@ def part2(data: list[str]) -> int:  # type: ignore[empty-body]
 def solve(puzzle_input: str) -> tuple[int | None, int | None]:
     """Solve the puzzle for the given input."""
     data = parse(puzzle_input)
+    # machines = []
+    # for line in data:
+    #     machine = Machine(line)
+    #     # print(machine)
+    #     machines.append(machine)
+
+    # for machine in machines:
+    #     print(machine)
+
+    # print(machines[0])
+    # machines[0].push((0, 2))
+    # machines[0].push((0, 1))
+    # print(machines[0])
+
     solve1 = True
     solve2 = True
     solution1 = part1(data) if solve1 else None
