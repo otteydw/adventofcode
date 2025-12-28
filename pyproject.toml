@@ -18,6 +18,7 @@ dev = [
     "matplotlib",
     "pytest>=9.0.1",
     "scikit-image[data]",
+    "scipy",
     "tqdm"
 ]
 

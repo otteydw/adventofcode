@@ -4,6 +4,9 @@ import pathlib
 from math import inf
 from typing import Any
 
+import numpy as np
+from scipy.optimize import Bounds, LinearConstraint, milp
+
 
 def to_list(s: str) -> list[int]:
     if isinstance(eval(s), int):
@@ -57,8 +60,13 @@ class Machine:
         for wire in button:
             self.state[wire] = "#" if self.state[wire] == "." else "."
 
+    def push_joltage(self, button: list[int]) -> None:
+        for wire in button:
+            self.joltage[wire] += 1
+
     def reset(self) -> None:
         self.state = len(self.desired_state) * ["."]
+        self.joltage = len(self.joltage_requirements) * [0]
 
     # def to_binary(self, lst: list[list[int]]) -> list[int]:
     #     new_list = []
@@ -71,7 +79,7 @@ class Machine:
         return self.state == self.desired_state
 
     def find_fewest_pressed(self) -> int:
-        fewest = int(inf)
+        fewest = inf
         for button_combination in get_all_combinations(self.bw_schematics):
             print(f"Trying button combo: {button_combination}")
             self.reset()
@@ -86,12 +94,66 @@ class Machine:
                 print(f"Setting fewest from {fewest} to {presses}")
                 fewest = int(presses)
 
-        return fewest
+        return int(fewest)
+
+    def joltage_array(self) -> np.ndarray:
+        # A_eq = np.array(
+        #     [
+        #         [1, 0, 1, 1, 0],  #
+        #         [0, 0, 0, 1, 1],  #
+        #         [1, 1, 0, 1, 1],  #
+        #         [1, 1, 0, 0, 1],  #
+        #         [1, 0, 1, 0, 1],  #
+        #     ]
+        # )
+        # b_eq = np.array([7, 5, 12, 7, 2])
+
+        grid = []
+
+        for idx, requirement in enumerate(self.joltage_requirements):
+            row = [1 if idx in button else 0 for button in self.bw_schematics]
+            grid.append(row)
+        return np.array(grid)
+
+    def optimized_buttons_for_joltage(self) -> int:
+        # Given:  (3) (1,3) (2) (2,3) (0,2) (0,1) {3,5,4,7}
+        # Converted to:
+        #    [[3], [1, 3], [2], [2, 3], [0, 2], [0, 1]]
+        #    [3, 5, 4, 7]
+        #
+        # Solve for:
+        #   e + f = 3
+        #   b + f = 5
+        #   c + d + e = 4
+        #   a + b + d = 7
+
+        # array_size = len(self.joltage_requirements)
+        array_size = len(self.bw_schematics)
+        c = np.ones(array_size)
+
+        A_eq = self.joltage_array()
+        b_eq = self.joltage_requirements
+
+        constraints = LinearConstraint(A_eq, b_eq, b_eq)
+
+        # Non-negative bounds
+        bounds = Bounds(lb=[0] * array_size, ub=[np.inf] * array_size)
+
+        # All variables must be integers
+        integrality = np.ones(array_size, dtype=int)
+        print(f"{A_eq.shape=}, {len(b_eq)=}, {len(c)=}")
+        result = milp(
+            c=c,
+            constraints=constraints,
+            bounds=bounds,
+            integrality=integrality,
+        )
+        return int(result.fun)
 
     def __repr__(self) -> str:
         desired = "".join(self.desired_state)
         state = "".join(self.state)
-        repr = f"Machine\nDES: {desired}\nCUR: {state}\nBUT: {self.bw_schematics}\nJOL: {self.joltage_requirements}"
+        repr = f"Machine\nDES: {desired}\nCUR: {state}\nBUT: {self.bw_schematics}\nJOL_REQ: {self.joltage_requirements}\nJOL_CUR: {self.joltage}\n{self.joltage_array()}"
         # repr = f"Machine\nDES: {desired}\nCUR: {state}\nBUT: {self.bw_schematics}\nBIN: {self.binary}\nJOL: {self.joltage_requirements}"
         # repr = f"Machine\nDES: {self.desired_state}\nCUR: {self.state}\nBUT: {self.bw_schematics}\nBIN: {self.binary}\nJOL: {self.joltage_requirements}\n"
         return repr
@@ -117,8 +179,15 @@ def part1(data: list[str]) -> int:
     return total
 
 
-def part2(data: list[str]) -> int:  # type: ignore[empty-body]
-    pass
+def part2(data: list[str]) -> int:
+    total = 0
+    for line in data:
+        machine = Machine(line)
+        print(machine)
+        fewest = machine.optimized_buttons_for_joltage()
+        print(f"Fewest is {fewest}")
+        total += fewest
+    return total
 
 
 def solve(puzzle_input: str) -> tuple[int | None, int | None]:
@@ -138,7 +207,7 @@ def solve(puzzle_input: str) -> tuple[int | None, int | None]:
     # machines[0].push((0, 1))
     # print(machines[0])
 
-    solve1 = True
+    solve1 = False
     solve2 = True
     solution1 = part1(data) if solve1 else None
     solution2 = part2(data) if solve2 else None

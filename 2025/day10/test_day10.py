@@ -30,11 +30,25 @@ def test_parse_example1(example1):
 
 
 # @pytest.mark.skip(reason="Not implemented")
-def test_example1a():
+def test_push():
     machine = aoc.Machine("[.##.] (3) (1,3) (2) (2,3) (0,2) (0,1) {3,5,4,7}")
     machine.push((0, 1))
     machine.push((0, 2))
     assert machine.state_matches
+
+
+def test_push_joltage():
+    machine = aoc.Machine("[....] (3) (1,3) (2) (2,3) (0,2) (0,1) {0,1,2,3}")
+    # print(machine)
+    machine.joltage = [0, 1, 2, 3]
+    machine.push_joltage((1, 3))
+    # print(machine)
+    assert machine.joltage == [0, 2, 2, 4]
+
+
+def test_optimize_joltage():
+    machine = aoc.Machine("[.##.] (3) (1,3) (2) (2,3) (0,2) (0,1) {3,5,4,7}")
+    assert machine.optimized_buttons_for_joltage() == 10
 
 
 def test_fewest():
@@ -48,10 +62,10 @@ def test_part1_example1(example1):
     assert aoc.part1(example1) == 7
 
 
-@pytest.mark.skip(reason="Not implemented")
+# @pytest.mark.skip(reason="Not implemented")
 def test_part2_example1(example1):
     """Test part 2 on example input."""
-    assert aoc.part2(example1) == ...
+    assert aoc.part2(example1) == 33
 
 
 @pytest.mark.skip(reason="Not implemented")
