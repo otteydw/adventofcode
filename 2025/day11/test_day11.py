@@ -18,16 +18,31 @@ def example2():
     return aoc.parse(puzzle_input)
 
 
+def test_paths_to_target_direct(example1):
+    # fff: out
+    assert aoc.paths_to_target(example1, "fff", "out") == 1
+
+
+def test_paths_to_target_one_hop(example1):
+    # ddd: ggg
+    # ggg: out
+    assert aoc.paths_to_target(example1, "ddd", "out") == 1
+
+
+def test_paths_to_target_triple(example1):
+    assert aoc.paths_to_target(example1, "ccc", "out") == 3
+
+
 @pytest.mark.skip(reason="Not implemented")
 def test_parse_example1(example1):
     """Test that input is parsed properly."""
     assert example1 == ...
 
 
-@pytest.mark.skip(reason="Not implemented")
+# @pytest.mark.skip(reason="Not implemented")
 def test_part1_example1(example1):
     """Test part 1 on example input."""
-    assert aoc.part1(example1) == ...
+    assert aoc.part1(example1) == 5
 
 
 @pytest.mark.skip(reason="Not implemented")
