@@ -275,6 +275,7 @@ dev = [
     { name = "matplotlib" },
     { name = "pytest" },
     { name = "scikit-image", extra = ["data"] },
+    { name = "scipy" },
     { name = "tqdm" },
 ]
 
@@ -287,6 +288,7 @@ dev = [
     { name = "matplotlib" },
     { name = "pytest", specifier = ">=9.0.1" },
     { name = "scikit-image", extras = ["data"] },
+    { name = "scipy" },
     { name = "tqdm" },
 ]
 
