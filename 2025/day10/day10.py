@@ -28,30 +28,15 @@ def get_all_combinations(input_list: list[list[int]]) -> Any:
     return all_combinations
 
 
-# class Wire:
-#     def __init__(self, ):
-
-
 class Machine:
     def __init__(self, initiator_lines: str) -> None:
-        # def strip_chars(s):
-        #     chars_to_remove = "()"
-        #     for char in chars_to_remove:
-        #         s = s.replace(char, "")
-        #     return s
-
-        # def csv_string_of_numbers_to_ints(s):
-        #     lst = [int(n) for n in s]
-        #     return lst
 
         initiator = initiator_lines.split(" ")
 
         self.desired_state = [char for char in initiator[0][1:-1]]
 
         bw_schematics = initiator[1:-1]
-        # self.bw_schematics = [strip_chars(thing) for thing in self.bw_schematics]
         self.bw_schematics = [to_list(thing) for thing in bw_schematics]
-        # self.binary = self.to_binary(self.bw_schematics)
 
         self.joltage_requirements = [int(n) for n in initiator[-1][1:-1].split(",")]
         self.reset()
@@ -68,30 +53,23 @@ class Machine:
         self.state = len(self.desired_state) * ["."]
         self.joltage = len(self.joltage_requirements) * [0]
 
-    # def to_binary(self, lst: list[list[int]]) -> list[int]:
-    #     new_list = []
-    #     for item in lst:
-    #         new_list.append(sum([2**n for n in item]))
-    #     # print(f"{lst} -> {new_list}")
-    #     return new_list
-
     def state_matches(self) -> bool:
         return self.state == self.desired_state
 
     def find_fewest_pressed(self) -> int:
         fewest = inf
         for button_combination in get_all_combinations(self.bw_schematics):
-            print(f"Trying button combo: {button_combination}")
+            # print(f"Trying button combo: {button_combination}")
             self.reset()
             presses = 0
             for button in button_combination:
                 self.push(button)
                 presses += 1
                 if presses > fewest:
-                    print("Breaking")
+                    # print("Breaking")
                     break
             if self.state_matches() and presses < fewest:
-                print(f"Setting fewest from {fewest} to {presses}")
+                # print(f"Setting fewest from {fewest} to {presses}")
                 fewest = int(presses)
 
         return int(fewest)
@@ -141,7 +119,6 @@ class Machine:
 
         # All variables must be integers
         integrality = np.ones(array_size, dtype=int)
-        print(f"{A_eq.shape=}, {len(b_eq)=}, {len(c)=}")
         result = milp(
             c=c,
             constraints=constraints,
@@ -154,8 +131,6 @@ class Machine:
         desired = "".join(self.desired_state)
         state = "".join(self.state)
         repr = f"Machine\nDES: {desired}\nCUR: {state}\nBUT: {self.bw_schematics}\nJOL_REQ: {self.joltage_requirements}\nJOL_CUR: {self.joltage}\n{self.joltage_array()}"
-        # repr = f"Machine\nDES: {desired}\nCUR: {state}\nBUT: {self.bw_schematics}\nBIN: {self.binary}\nJOL: {self.joltage_requirements}"
-        # repr = f"Machine\nDES: {self.desired_state}\nCUR: {self.state}\nBUT: {self.bw_schematics}\nBIN: {self.binary}\nJOL: {self.joltage_requirements}\n"
         return repr
 
 
@@ -171,11 +146,10 @@ def part1(data: list[str]) -> int:
     total = 0
     for line in data:
         machine = Machine(line)
-        print(machine)
-        fewest = machine.find_fewest_pressed()
-        print(f"Fewest is {fewest}")
-        # sys.exit()
-        total += fewest
+        # print(machine)
+        total += machine.find_fewest_pressed()
+        # print(f"Fewest is {fewest}")
+        # total += fewest
     return total
 
 
@@ -183,31 +157,18 @@ def part2(data: list[str]) -> int:
     total = 0
     for line in data:
         machine = Machine(line)
-        print(machine)
-        fewest = machine.optimized_buttons_for_joltage()
-        print(f"Fewest is {fewest}")
-        total += fewest
+        # print(machine)
+        total += machine.optimized_buttons_for_joltage()
+        # print(f"Fewest is {fewest}")
+        # total += fewest
     return total
 
 
 def solve(puzzle_input: str) -> tuple[int | None, int | None]:
     """Solve the puzzle for the given input."""
     data = parse(puzzle_input)
-    # machines = []
-    # for line in data:
-    #     machine = Machine(line)
-    #     # print(machine)
-    #     machines.append(machine)
 
-    # for machine in machines:
-    #     print(machine)
-
-    # print(machines[0])
-    # machines[0].push((0, 2))
-    # machines[0].push((0, 1))
-    # print(machines[0])
-
-    solve1 = False
+    solve1 = True
     solve2 = True
     solution1 = part1(data) if solve1 else None
     solution2 = part2(data) if solve2 else None
