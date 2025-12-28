@@ -59,17 +59,14 @@ class Machine:
     def find_fewest_pressed(self) -> int:
         fewest = inf
         for button_combination in get_all_combinations(self.bw_schematics):
-            # print(f"Trying button combo: {button_combination}")
             self.reset()
             presses = 0
             for button in button_combination:
                 self.push(button)
                 presses += 1
                 if presses > fewest:
-                    # print("Breaking")
                     break
             if self.state_matches() and presses < fewest:
-                # print(f"Setting fewest from {fewest} to {presses}")
                 fewest = int(presses)
 
         return int(fewest)
