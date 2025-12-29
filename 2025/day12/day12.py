@@ -37,12 +37,12 @@ class Problem:
         # print("done")
         full_data = split_by_seperator(data)
         gift_data = full_data[:-1]
-        tree_data = full_data[-1]
+        region_data = full_data[-1]
         # pprint(full_data)
         pprint(gift_data)
-        pprint(tree_data)
+        pprint(region_data)
         self._init_gifts(gift_data)
-        self._init_trees(tree_data)
+        self._init_regions(region_data)
 
     def _init_gifts(self, data: list[list[str]]) -> None:
         self.gifts = []
@@ -52,16 +52,16 @@ class Problem:
             gift_array = data_to_array(gift_data)
             self.gifts.append(gift_array)
 
-    def _init_trees(self, data: list[str]) -> None:
-        self.trees = []
+    def _init_regions(self, data: list[str]) -> None:
+        self.regions = []
         for line in data:
             dimensions_string, requirements_string = line.split(": ")
             width_str, length_str = dimensions_string.split("x")
             width = int(width_str)
             length = int(length_str)
             requirements = [int(x) for x in requirements_string.split(" ")]
-            tree = {"width": width, "length": length, "requirements": requirements}
-            self.trees.append(tree)
+            region = {"width": width, "length": length, "requirements": requirements}
+            self.regions.append(region)
 
     def __repr__(self) -> str:
         out = "Gifts\n"
@@ -69,9 +69,9 @@ class Problem:
             out += f"{str(idx)}\n"
             out += str(gift)
             out += "\n"
-        out += "\nTrees:\n"
-        for tree in self.trees:
-            out += f"{tree['width']}x{tree['length']} {tree['requirements']}\n"
+        out += "\nRegions:\n"
+        for region in self.regions:
+            out += f"{region['width']}x{region['length']} {region['requirements']}\n"
         return out
 
 
