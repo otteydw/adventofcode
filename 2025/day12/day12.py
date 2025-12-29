@@ -56,11 +56,11 @@ class Problem:
         self.trees = []
         for line in data:
             dimensions_string, requirements_string = line.split(": ")
-            width_str, height_str = dimensions_string.split("x")
+            width_str, length_str = dimensions_string.split("x")
             width = int(width_str)
-            height = int(height_str)
+            length = int(length_str)
             requirements = [int(x) for x in requirements_string.split(" ")]
-            tree = {"width": width, "height": height, "requirements": requirements}
+            tree = {"width": width, "length": length, "requirements": requirements}
             self.trees.append(tree)
 
     def __repr__(self) -> str:
@@ -71,7 +71,7 @@ class Problem:
             out += "\n"
         out += "\nTrees:\n"
         for tree in self.trees:
-            out += f"{tree['width']}x{tree['height']} {tree['requirements']}\n"
+            out += f"{tree['width']}x{tree['length']} {tree['requirements']}\n"
         return out
 
 
