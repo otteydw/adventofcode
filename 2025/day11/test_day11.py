@@ -34,42 +34,20 @@ def test_paths_to_target_triple(example1):
 
 
 def test_paths_to_target_part2_direct(example2):
-    assert aoc.paths_to_target_part2(example2, "ggg", "out") == 0
-    assert aoc.paths_to_target_part2(example2, "ggg", "out", seen=["aaa"]) == 0
-    assert aoc.paths_to_target_part2(example2, "ggg", "out", seen=["dac"]) == 0
-    assert aoc.paths_to_target_part2(example2, "ggg", "out", seen=["fft"]) == 0
-    assert aoc.paths_to_target_part2(example2, "ggg", "out", seen=["dac", "fft"]) == 1
-    assert aoc.paths_to_target_part2(example2, "ggg", "out", seen=["fft", "dac"]) == 1
-    assert aoc.paths_to_target_part2(example2, "ggg", "out", seen=["fft", "aaa", "dac"]) == 1
-
-
-def test_paths_to_target_part2_one_hop(example2):
-    assert aoc.paths_to_target_part2(example2, "fff", "out", seen=["fft", "aaa", "dac"]) == 2
+    map = aoc.Map(example2)
+    assert map.paths_to_target_part2("ggg", "out") == 0
 
 
 def test_paths_to_target_part2_begin_fft(example2):
-    assert aoc.paths_to_target_part2(example2, "fft", "out") == 2
+    map = aoc.Map(example2)
+    assert map.paths_to_target_part2("fft", "out") == 2
 
 
-@pytest.mark.skip(reason="Not implemented")
-def test_parse_example1(example1):
-    """Test that input is parsed properly."""
-    assert example1 == ...
-
-
-# @pytest.mark.skip(reason="Not implemented")
 def test_part1_example1(example1):
     """Test part 1 on example input."""
     assert aoc.part1(example1) == 5
 
 
-@pytest.mark.skip(reason="Not implemented")
-def test_part2_example1(example1):
-    """Test part 2 on example input."""
-    assert aoc.part2(example1) == ...
-
-
-# @pytest.mark.skip(reason="Not implemented")
 def test_part2_example2(example2):
     """Test part 2 on example input."""
     assert aoc.part2(example2) == 2
