@@ -16,11 +16,14 @@ dependencies = [
 dev = [
     "colorama",
     "matplotlib",
-    "polyomino",
     "pytest>=9.0.1",
     "scikit-image[data]",
     "scipy",
     "tqdm"
+]
+
+2025_day12 = [
+    "polyomino"
 ]
 
 [tool.ruff.lint]
