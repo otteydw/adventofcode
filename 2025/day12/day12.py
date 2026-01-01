@@ -3,6 +3,9 @@ import pathlib
 from typing import Iterable
 
 import numpy as np
+from polyomino.board import Rectangle
+from polyomino.constant import MONOMINO
+from polyomino.tileset import any_number_of
 
 
 def data_to_array(data: list[str]) -> np.ndarray:
@@ -44,8 +47,18 @@ class Gift:
     def max_point_count(self) -> int:
         return (self.gift_array == "#").sum()
 
+    @property
+    def as_tuples(self) -> list[tuple[int, int]]:
+        t = []
+        for coord in np.argwhere(self.gift_array == "#"):
+            # print(f"{coord=}")
+            x, y = coord
+            # print(f"{x=}. {y=}")
+            t.append((int(x), int(y)))
+        return t
+
     def __repr__(self) -> str:
-        return array_to_grid(self.gift_array)
+        return array_to_grid(self.gift_array) + "\n" + str(self.as_tuples) + "\n"
 
 
 class Region:
@@ -55,6 +68,7 @@ class Region:
         self.width = int(width_str)
         self.length = int(length_str)
         self.requirements = [int(x) for x in requirements_string.split(" ")]
+        self.board = Rectangle(self.width, self.length)
 
     @property
     def area(self) -> int:
@@ -73,14 +87,9 @@ class Region:
 
 class Problem:
     def __init__(self, data: list[str]) -> None:
-        # pprint(data)
-        # print("done")
         full_data = split_by_seperator(data)
         gift_data = full_data[:-1]
         region_data = full_data[-1]
-        # pprint(full_data)
-        # pprint(gift_data)
-        # pprint(region_data)
         self._init_gifts(gift_data)
         self._init_regions(region_data)
 
@@ -106,6 +115,32 @@ class Problem:
                 invalid_regions += 1
         print(f"{total_regions=}, {invalid_regions=}")
 
+    def remove_too_small_regions(self) -> None:
+        # Remove the regions which cannot support the required gifts just due to area requirements
+        self.regions = [region for region in self.regions if region.can_support_gifts(self.gifts)]
+
+    def p1(self) -> int:
+        solvable = 0
+        for idx, region in enumerate(self.regions, start=1):
+            print(f"Region {idx} - {region}")
+            problem = region.board.tile_with_set(
+                any_number_of([MONOMINO])
+                .and_repeated_exactly(region.requirements[0], self.gifts[0].as_tuples)
+                .and_repeated_exactly(region.requirements[1], self.gifts[1].as_tuples)
+                .and_repeated_exactly(region.requirements[2], self.gifts[2].as_tuples)
+                .and_repeated_exactly(region.requirements[3], self.gifts[3].as_tuples)
+                .and_repeated_exactly(region.requirements[4], self.gifts[4].as_tuples)
+                .and_repeated_exactly(region.requirements[5], self.gifts[5].as_tuples)
+            )
+            # print(f"Solving Region {idx} - {region}")
+            solution = problem.solve()
+            if solution:
+                print(solution.display())
+                solvable += 1
+            else:
+                print("No solution")
+        return solvable
+
     def __repr__(self) -> str:
         out = "Gifts\n"
         for idx, gift in enumerate(self.gifts):
@@ -129,10 +164,12 @@ def parse(puzzle_input: str) -> list[str]:
 
 def part1(data: list[str]) -> int:
     problem = Problem(data)
+    # print(problem)
+    # problem.report_valid_regions()
+    problem.remove_too_small_regions()
     print(problem)
     problem.report_valid_regions()
-
-    return 0
+    return problem.p1()
 
 
 def part2(data: list[str]) -> int:  # type: ignore[empty-body]
