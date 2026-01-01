@@ -81,6 +81,32 @@ class Region:
             area_required += gift_list[gift_idx].max_point_count * number_of_gifts
         return area_required <= area_available
 
+    def easy_p1(self) -> bool:
+        # Region 211 - 48x36 = 1728 | [32, 32, 24, 20, 45, 38]
+        # Solved!
+
+        # 48 can fit 16 shapes 3-wide
+        # 36 can fit 12 shapes 3-long
+
+        # So it can fit a total of 16x12 = 192 shapes
+        # and we need to fit 191 shapes.
+
+        # max_gift_width = max(gift.width for gift in gift_list)
+        # max_gift_length = max(gift.length for gift in gift_list)
+        # Hard-coded max dimensions of a gift.
+        max_gift_width = 3
+        max_gift_length = 3
+
+        region_gifts_over_width = int(self.width / max_gift_width)
+        region_gifts_over_length = int(self.length / max_gift_length)
+
+        max_full_shapes = region_gifts_over_width * region_gifts_over_length
+        total_requested_shapes = sum(self.requirements)
+        print(
+            f"For a region {self.width}x{self.length} I can fit {region_gifts_over_width}x{region_gifts_over_length} gifts."
+        )
+        return total_requested_shapes <= max_full_shapes
+
     def __repr__(self) -> str:
         return f"{self.width}x{self.length} = {self.area} | {self.requirements}"
 
@@ -107,6 +133,10 @@ class Problem:
             region = Region(line)
             self.regions.append(region)
 
+    def sort_regions_by_area(self) -> None:
+        # Sort regions by area, lowest to highest
+        self.regions.sort(key=lambda region: region.area)
+
     def report_valid_regions(self) -> None:
         total_regions = len(self.regions)
         invalid_regions = 0
@@ -123,6 +153,12 @@ class Problem:
         solvable = 0
         for idx, region in enumerate(self.regions, start=1):
             print(f"Region {idx} - {region}")
+            if region.easy_p1():
+                print("Easy solve!")
+                solvable += 1
+                continue
+            else:
+                print("Need further checking...")
             problem = region.board.tile_with_set(
                 any_number_of([MONOMINO])
                 .and_repeated_exactly(region.requirements[0], self.gifts[0].as_tuples)
@@ -135,7 +171,8 @@ class Problem:
             # print(f"Solving Region {idx} - {region}")
             solution = problem.solve()
             if solution:
-                print(solution.display())
+                print("Solved!")
+                # print(solution.display())
                 solvable += 1
             else:
                 print("No solution")
@@ -167,6 +204,7 @@ def part1(data: list[str]) -> int:
     # print(problem)
     # problem.report_valid_regions()
     problem.remove_too_small_regions()
+    problem.sort_regions_by_area()
     print(problem)
     problem.report_valid_regions()
     return problem.p1()
