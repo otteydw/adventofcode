@@ -22,6 +22,10 @@ dev = [
     "tqdm"
 ]
 
+2025_day12 = [
+    "polyomino"
+]
+
 [tool.ruff.lint]
 ignore = [
     "D100", # Missing docstring in public module

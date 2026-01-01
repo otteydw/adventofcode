@@ -88,6 +88,16 @@ wheels = [
 ]
 
 [[package]]
+name = "exact-cover"
+version = "1.3.0"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "numpy" },
+    { name = "setuptools" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/51/de/456cf584881361190437ca620e921347b52bc12b0b78d8120c1f3fa4aa51/exact_cover-1.3.0.tar.gz", hash = "sha256:e66e6ab1ddb7d6e95966ab00db8899c493d5adfdb65a9285af2a58f466b63cca", size = 19637, upload-time = "2023-10-21T08:06:59.397Z" }
+
+[[package]]
 name = "fonttools"
 version = "4.61.1"
 source = { registry = "https://pypi.org/simple" }
@@ -270,6 +280,9 @@ dependencies = [
 ]
 
 [package.dev-dependencies]
+2025-day12 = [
+    { name = "polyomino" },
+]
 dev = [
     { name = "colorama" },
     { name = "matplotlib" },
@@ -283,6 +296,7 @@ dev = [
 requires-dist = [{ name = "numpy" }]
 
 [package.metadata.requires-dev]
+2025-day12 = [{ name = "polyomino" }]
 dev = [
     { name = "colorama" },
     { name = "matplotlib" },
@@ -353,6 +367,19 @@ wheels = [
 ]
 
 [[package]]
+name = "polyomino"
+version = "0.7.1"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "exact-cover" },
+    { name = "pretty-poly" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/e7/23/9b45f96480273501a6ef2829c0aceace716d6390b8d9997b5c2efa499442/polyomino-0.7.1.tar.gz", hash = "sha256:d2354442fccae964e64fb8305e2c5c6213cb4a0b81d2838711566214c313c8fd", size = 8556, upload-time = "2023-12-21T00:04:23.48Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/2a/bc/9e901e8c9c01f3532f295b72c6c5a5e5dabb420308c579ff8099b5248770/polyomino-0.7.1-py3-none-any.whl", hash = "sha256:43c737e9b73d20ba493a5b3a48c787673af65b410ee8ffd40dd0f197087ffd3a", size = 9916, upload-time = "2023-12-21T00:04:23.59Z" },
+]
+
+[[package]]
 name = "pooch"
 version = "1.8.2"
 source = { registry = "https://pypi.org/simple" }
@@ -364,6 +391,19 @@ dependencies = [
 sdist = { url = "https://files.pythonhosted.org/packages/c6/77/b3d3e00c696c16cf99af81ef7b1f5fe73bd2a307abca41bd7605429fe6e5/pooch-1.8.2.tar.gz", hash = "sha256:76561f0de68a01da4df6af38e9955c4c9d1a5c90da73f7e40276a5728ec83d10", size = 59353, upload-time = "2024-06-06T16:53:46.224Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/a8/87/77cc11c7a9ea9fd05503def69e3d18605852cd0d4b0d3b8f15bbeb3ef1d1/pooch-1.8.2-py3-none-any.whl", hash = "sha256:3529a57096f7198778a5ceefd5ac3ef0e4d06a6ddaf9fc2d609b806f25302c47", size = 64574, upload-time = "2024-06-06T16:53:44.343Z" },
+]
+
+[[package]]
+name = "pretty-poly"
+version = "0.5.1"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "pypng" },
+    { name = "svgwrite" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/31/47/24a6d1364a1dad0a6359150f49922cc5b2c45882108cb296a1d4ffc8f33f/pretty_poly-0.5.1.tar.gz", hash = "sha256:acd1214aab5f9f3e93b142762ff82485369e1fb532489b4895b29da84afb7a8e", size = 6284, upload-time = "2021-12-30T16:01:14.903Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/47/cf/0bbb92b3399acd464304d1f150989fb5f2dc8c28dd27c3e5c2a891be07a4/pretty_poly-0.5.1-py3-none-any.whl", hash = "sha256:64dd122b69781d44aa7a83e22262a917d362f1f34e1a125d0bf199f0c645db80", size = 7768, upload-time = "2021-12-30T16:01:13.594Z" },
 ]
 
 [[package]]
@@ -382,6 +422,15 @@ source = { registry = "https://pypi.org/simple" }
 sdist = { url = "https://files.pythonhosted.org/packages/33/c1/1d9de9aeaa1b89b0186e5fe23294ff6517fce1bc69149185577cd31016b2/pyparsing-3.3.1.tar.gz", hash = "sha256:47fad0f17ac1e2cad3de3b458570fbc9b03560aa029ed5e16ee5554da9a2251c", size = 1550512, upload-time = "2025-12-23T03:14:04.391Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/8b/40/2614036cdd416452f5bf98ec037f38a1afb17f327cb8e6b652d4729e0af8/pyparsing-3.3.1-py3-none-any.whl", hash = "sha256:023b5e7e5520ad96642e2c6db4cb683d3970bd640cdf7115049a6e9c3682df82", size = 121793, upload-time = "2025-12-23T03:14:02.103Z" },
+]
+
+[[package]]
+name = "pypng"
+version = "0.0.20"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/bc/fb/f719f1ac965e2101aa6ea6f54ef8b40f8fbb033f6ad07c017663467f5147/pypng-0.0.20.tar.gz", hash = "sha256:1032833440c91bafee38a42c38c02d00431b24c42927feb3e63b104d8550170b", size = 649538, upload-time = "2019-07-16T21:20:55.69Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/f7/24/36654d22e5750517f53b823fafe1c6f128f7ff9c319af811947f410b64d4/pypng-0.0.20-py3-none-any.whl", hash = "sha256:1f9c9cc24030459abbb2813a62b2bbcdb43ad0867e2f2232a302655308b3d25f", size = 70450, upload-time = "2021-08-26T19:52:20.694Z" },
 ]
 
 [[package]]
@@ -498,12 +547,30 @@ wheels = [
 ]
 
 [[package]]
+name = "setuptools"
+version = "80.9.0"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/18/5d/3bf57dcd21979b887f014ea83c24ae194cfcd12b9e0fda66b957c69d1fca/setuptools-80.9.0.tar.gz", hash = "sha256:f36b47402ecde768dbfafc46e8e4207b4360c654f1f3bb84475f0a28628fb19c", size = 1319958, upload-time = "2025-05-27T00:56:51.443Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/a3/dc/17031897dae0efacfea57dfd3a82fdd2a2aeb58e0ff71b77b87e44edc772/setuptools-80.9.0-py3-none-any.whl", hash = "sha256:062d34222ad13e0cc312a4c02d73f059e86a4acbfbdea8f8f76b28c99f306922", size = 1201486, upload-time = "2025-05-27T00:56:49.664Z" },
+]
+
+[[package]]
 name = "six"
 version = "1.17.0"
 source = { registry = "https://pypi.org/simple" }
 sdist = { url = "https://files.pythonhosted.org/packages/94/e7/b2c673351809dca68a0e064b6af791aa332cf192da575fd474ed7d6f16a2/six-1.17.0.tar.gz", hash = "sha256:ff70335d468e7eb6ec65b95b99d3a2836546063f63acc5171de367e834932a81", size = 34031, upload-time = "2024-12-04T17:35:28.174Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/b7/ce/149a00dd41f10bc29e5921b496af8b574d8413afcd5e30dfa0ed46c2cc5e/six-1.17.0-py2.py3-none-any.whl", hash = "sha256:4721f391ed90541fddacab5acf947aa0d3dc7d27b2e1e8eda2be8970586c3274", size = 11050, upload-time = "2024-12-04T17:35:26.475Z" },
+]
+
+[[package]]
+name = "svgwrite"
+version = "1.4.3"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/16/c1/263d4e93b543390d86d8eb4fc23d9ce8a8d6efd146f9427364109004fa9b/svgwrite-1.4.3.zip", hash = "sha256:a8fbdfd4443302a6619a7f76bc937fc683daf2628d9b737c891ec08b8ce524c3", size = 189516, upload-time = "2022-07-14T14:05:26.107Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/84/15/640e399579024a6875918839454025bb1d5f850bb70d96a11eabb644d11c/svgwrite-1.4.3-py3-none-any.whl", hash = "sha256:bb6b2b5450f1edbfa597d924f9ac2dd099e625562e492021d7dd614f65f8a22d", size = 67122, upload-time = "2022-07-14T14:05:24.459Z" },
 ]
 
 [[package]]
