@@ -41,8 +41,22 @@ def part1(data: dict[str, dict[str, int]]) -> int:
     return int(min_distance)
 
 
-def part2(data: dict[str, dict[str, int]]) -> int:  # type: ignore[empty-body]
-    pass
+def part2(data: dict[str, dict[str, int]]) -> int:
+    all_cities = set(data.keys())
+    # print(all_cities)
+
+    all_path_permutations = permutations(all_cities)
+    # print(list(all_path_permutations))
+
+    max_distance = 0
+    for path in all_path_permutations:
+        this_distance = 0
+        for idx in range(len(path) - 1):
+            source_city = path[idx]
+            destination_city = path[idx + 1]
+            this_distance += data[source_city][destination_city]
+        max_distance = max(this_distance, max_distance)
+    return max_distance
 
 
 def solve(puzzle_input: str) -> tuple[int | None, int | None]:
