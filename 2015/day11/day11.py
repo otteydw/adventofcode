@@ -17,7 +17,6 @@ class Password:
         def _increasing_straight(s: str | list[str]) -> bool:
             REQUIRED_STRAIGHT_LENGTH = 3
             for idx in range(len(s) - REQUIRED_STRAIGHT_LENGTH + 1):
-                # print(f"Checking char {s[idx]} at {idx=}")
                 ord1 = ord(s[idx])
                 ord2 = ord(s[idx + 1])
                 ord3 = ord(s[idx + 2])
@@ -42,7 +41,6 @@ class Password:
         return True
 
     def next_password(self) -> None:
-        # print(f"Current password is {self.value}")
         INVALID_CHARS = ["i", "o", "l"]
 
         for idx in range(len(self.value) - 1, -1, -1):
@@ -83,16 +81,10 @@ def part1(data: str) -> str:
     return str(password)
 
 
-def part2(password: str) -> str:
-    return ""
-
-
-def solve(password: str) -> tuple[str | None, str | None]:
+def solve(password: str) -> tuple[str, str]:
     """Solve the puzzle for the given input."""
-    solve1 = True
-    solve2 = True
-    solution1 = part1(password) if solve1 else None
-    solution2 = part2(password) if solve2 else None
+    solution1 = part1(password)
+    solution2 = part1(solution1)
 
     return solution1, solution2
 
@@ -103,7 +95,7 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     password = args.password
-    print(f"{password}:")
+    print(f"Initial password: {password}")
     solutions = solve(password)
-    for solution_number, solution in enumerate(solutions, start=1):
-        print(f"Solution {solution_number}: {str(solution)}")
+    for solution in solutions:
+        print(f"Next password: {str(solution)}")
