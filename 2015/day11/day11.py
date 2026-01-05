@@ -1,15 +1,86 @@
 import argparse
+from itertools import groupby
 
 
-def part1(password: str) -> int:
-    return 0
+class Password:
+    def __init__(self, s: str) -> None:
+        self.value = [char for char in s]
+
+    def is_valid(self) -> bool:
+        def _invalid_chars(s: str | list[str]) -> bool:
+            INVALID_CHARS = ["i", "o", "l"]
+            for invalid_char in INVALID_CHARS:
+                if invalid_char in self.value:
+                    return True
+            return False
+
+        def _increasing_straight(s: str | list[str]) -> bool:
+            REQUIRED_STRAIGHT_LENGTH = 3
+            for idx in range(len(s) - REQUIRED_STRAIGHT_LENGTH + 1):
+                # print(f"Checking char {s[idx]} at {idx=}")
+                ord1 = ord(s[idx])
+                ord2 = ord(s[idx + 1])
+                ord3 = ord(s[idx + 2])
+                if ord1 + 1 == ord2 and ord2 + 1 == ord3:
+                    return True
+            return False
+
+        def _has_non_overlapping_pairs(s: str | list[str]) -> bool:
+            MINIMUM_PAIRS_REQUIRED = 2
+            pair_counter = sum(1 if len(list(v)) >= 2 else 0 for k, v in groupby(s))
+            return pair_counter >= MINIMUM_PAIRS_REQUIRED
+
+        if _invalid_chars(self.value):
+            return False
+
+        if not _increasing_straight(self.value):
+            return False
+
+        if not _has_non_overlapping_pairs(self.value):
+            return False
+
+        return True
+
+    def next_password(self) -> None:
+        for idx in range(len(self.value) - 1, -1, -1):
+            wrapped = False
+            ord_at_idx = ord(self.value[idx])
+            next_char = chr(ord_at_idx + 1)
+            if next_char == "{":
+                wrapped = True
+                next_char = "a"
+            self.value[idx] = next_char
+            if not wrapped:
+                return None
+        print(f"Oops! Password is {self.value} and {wrapped=}")
+        raise
+
+    def next_valid_password(self) -> None:
+        found_valid = False
+        while not found_valid:
+            self.next_password()
+            found_valid = self.is_valid()
+
+    def __repr__(self) -> str:
+        return "".join(self.value)
+
+    def __eq__(self, other: object) -> bool:
+        if not isinstance(other, str):
+            return NotImplemented
+        return "".join(self.value) == other
 
 
-def part2(password: str) -> int:
-    return 0
+def part1(data: str) -> str:
+    password = Password(data)
+    password.next_valid_password()
+    return str(password)
 
 
-def solve(password: str) -> tuple[int | None, int | None]:
+def part2(password: str) -> str:
+    return ""
+
+
+def solve(password: str) -> tuple[str | None, str | None]:
     """Solve the puzzle for the given input."""
     solve1 = True
     solve2 = True
