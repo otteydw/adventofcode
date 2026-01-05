@@ -42,14 +42,21 @@ class Password:
         return True
 
     def next_password(self) -> None:
+        # print(f"Current password is {self.value}")
+        INVALID_CHARS = ["i", "o", "l"]
+
         for idx in range(len(self.value) - 1, -1, -1):
             wrapped = False
-            ord_at_idx = ord(self.value[idx])
-            next_char = chr(ord_at_idx + 1)
-            if next_char == "{":
-                wrapped = True
-                next_char = "a"
-            self.value[idx] = next_char
+            found_valid_next_char = False
+
+            while not found_valid_next_char:
+                ord_at_idx = ord(self.value[idx])
+                next_char = chr(ord_at_idx + 1)
+                if next_char == "{":
+                    wrapped = True
+                    next_char = "a"
+                self.value[idx] = next_char
+                found_valid_next_char = self.value[idx] not in INVALID_CHARS
             if not wrapped:
                 return None
         print(f"Oops! Password is {self.value} and {wrapped=}")
