@@ -2,7 +2,6 @@ import argparse
 import pathlib
 from collections import defaultdict
 from itertools import permutations
-from pprint import pprint
 
 
 def load_input(path: pathlib.Path) -> str:
@@ -23,15 +22,10 @@ def parse(puzzle_input: str) -> dict[str, dict[str, int]]:
 
 
 def part1(happiness: dict[str, dict[str, int]]) -> int:
-    # pprint(happiness)
     people = happiness.keys()
-    pprint(people)
     max_happiness = 0
     people_count = len(people)
     for order in permutations(people):
-        # full_cycle = list(order) + [order[0]]
-        # print(full_cycle, end='')
-        # print(order, end="")
         total_happiness = 0
         for idx in range(people_count):
             before = order[-1] if idx == 0 else order[idx - 1]
@@ -39,19 +33,15 @@ def part1(happiness: dict[str, dict[str, int]]) -> int:
             after = order[0] if idx == people_count - 1 else order[idx + 1]
             total_happiness += happiness[current][before]
             total_happiness += happiness[current][after]
-        # print(f" {total_happiness=}")
         max_happiness = max(total_happiness, max_happiness)
     return max_happiness
 
 
 def part2(happiness: dict[str, dict[str, int]]) -> int:
-    # pprint(happiness)
     people = list(happiness.keys())
-    # print(people)
     for person in people:
         happiness[person]["Me"] = 0
         happiness["Me"][person] = 0
-    # pprint(happiness)
     return part1(happiness)
 
 
