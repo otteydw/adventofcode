@@ -23,7 +23,7 @@ def parse(puzzle_input: str) -> dict[str, dict[str, int]]:
 
 
 def part1(happiness: dict[str, dict[str, int]]) -> int:
-    pprint(happiness)
+    # pprint(happiness)
     people = happiness.keys()
     pprint(people)
     max_happiness = 0
@@ -44,8 +44,15 @@ def part1(happiness: dict[str, dict[str, int]]) -> int:
     return max_happiness
 
 
-def part2(happiness: dict[str, dict[str, int]]) -> int:  # type: ignore[empty-body]
-    pass
+def part2(happiness: dict[str, dict[str, int]]) -> int:
+    # pprint(happiness)
+    people = list(happiness.keys())
+    # print(people)
+    for person in people:
+        happiness[person]["Me"] = 0
+        happiness["Me"][person] = 0
+    # pprint(happiness)
+    return part1(happiness)
 
 
 def solve(puzzle_input: str) -> tuple[int | None, int | None]:
