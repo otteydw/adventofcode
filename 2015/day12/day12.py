@@ -14,17 +14,19 @@ def parse(puzzle_input: str) -> list[str]:
     return [line for line in puzzle_input.splitlines()]
 
 
-def walk(data: Any) -> int:
+def walk(data: Any, ignore_red: bool = False) -> int:
     # print(f"Received {data} of type {type(data)}")
     sum = 0
     if isinstance(data, list):
         for item in data:
-            sum += walk(item)
+            sum += walk(item, ignore_red)
     elif isinstance(data, dict):
-        # print(f"Dict data is {data}")
-        for key, value in data.items():
-            sum += walk(key)
-            sum += walk(value)
+        if not ignore_red or (ignore_red and "red" not in data.keys() and "red" not in data.values()):
+            # print(f"Dict data is {data}")
+            # if not ignore_red:
+            for key, value in data.items():
+                sum += walk(key, ignore_red)
+                sum += walk(value, ignore_red)
     elif isinstance(data, int):
         return data
     # elif data.isnumeric(data):
@@ -36,8 +38,8 @@ def part1(data: Any) -> int:
     return walk(data)
 
 
-def part2(data: Any) -> int:  # type: ignore[empty-body]
-    pass
+def part2(data: Any) -> int:
+    return walk(data, ignore_red=True)
 
 
 def solve(data: Any) -> tuple[int | None, int | None]:
