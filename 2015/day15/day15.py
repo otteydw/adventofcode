@@ -76,20 +76,17 @@ def parse(puzzle_input: str) -> list[Ingredient]:
 def calculate_score(
     ingredient_list: list[Ingredient], quantities: tuple[int, ...], desired_calories: int | None = None
 ) -> int:
-    print(f"{ingredient_list=}, {quantities=}")
     total_capacity = 0
     total_durability = 0
     total_flavor = 0
     total_texture = 0
     total_calories = 0
     for idx, quantity in enumerate(quantities):
-        name = ingredient_list[idx].name
         capacity = quantity * ingredient_list[idx].capacity
         durability = quantity * ingredient_list[idx].durability
         flavor = quantity * ingredient_list[idx].flavor
         texture = quantity * ingredient_list[idx].texture
         calories = quantity * ingredient_list[idx].calories
-        print(f"{name=}, {capacity=}, {durability=}, {flavor=}, {texture=}")
         total_capacity += capacity
         total_durability += durability
         total_flavor += flavor
@@ -103,9 +100,7 @@ def calculate_score(
     total_durability = max(0, total_durability)
     total_flavor = max(0, total_flavor)
     total_texture = max(0, total_texture)
-    print(f"{total_capacity=}, {total_durability=}, {total_flavor=}, {total_texture=}")
     score = total_capacity * total_durability * total_flavor * total_texture
-    print()
     return score
 
 
@@ -116,11 +111,7 @@ def part1(data: list[Ingredient], desired_calories: int | None = None) -> int:
     max_score = 0
     for permutation in permutations:
         score = calculate_score(data, permutation, desired_calories)
-        # prev_max_score = max_score
         max_score = max(score, max_score)
-    #     if max_score != prev_max_score:
-    #         max_permutation = permutation
-    # print(f"{max_score=} found at {max_permutation=}")
     return max_score
 
 
