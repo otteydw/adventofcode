@@ -82,16 +82,11 @@ def calculate_score(
     total_texture = 0
     total_calories = 0
     for idx, quantity in enumerate(quantities):
-        capacity = quantity * ingredient_list[idx].capacity
-        durability = quantity * ingredient_list[idx].durability
-        flavor = quantity * ingredient_list[idx].flavor
-        texture = quantity * ingredient_list[idx].texture
-        calories = quantity * ingredient_list[idx].calories
-        total_capacity += capacity
-        total_durability += durability
-        total_flavor += flavor
-        total_texture += texture
-        total_calories += calories
+        total_capacity += quantity * ingredient_list[idx].capacity
+        total_durability += quantity * ingredient_list[idx].durability
+        total_flavor += quantity * ingredient_list[idx].flavor
+        total_texture += quantity * ingredient_list[idx].texture
+        total_calories += quantity * ingredient_list[idx].calories
 
     if desired_calories and total_calories != desired_calories:
         return 0
