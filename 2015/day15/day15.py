@@ -108,10 +108,7 @@ def part1(data: list[Ingredient], desired_calories: int | None = None) -> int:
     number_of_ingredient_types = len(data)
     max_ingredient_count = 100
     permutations = sums_to_target(length=number_of_ingredient_types, target_sum=max_ingredient_count)
-    max_score = 0
-    for permutation in permutations:
-        score = calculate_score(data, permutation, desired_calories)
-        max_score = max(score, max_score)
+    max_score = max(calculate_score(data, permutation, desired_calories) for permutation in permutations)
     return max_score
 
 
