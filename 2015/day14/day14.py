@@ -1,6 +1,5 @@
 import argparse
 import pathlib
-from pprint import pprint
 
 
 class Reindeer:
@@ -10,9 +9,12 @@ class Reindeer:
         self.speed_time = speed_time
         self.rest_time_required = rest_time_required
 
-        self.distance_traveled = 0
-        self.is_resting = False
-        self.timer = 0
+        self.distance_traveled: int
+        self.is_resting: bool
+        self.timer: int
+        self.points: int
+
+        self.reset()
 
     def tick(self) -> None:
         self.timer += 1
@@ -31,6 +33,15 @@ class Reindeer:
         if self.timer == self.rest_time_required:
             self.is_resting = False
             self.timer = 0
+
+    def reset(self) -> None:
+        self.distance_traveled = 0
+        self.is_resting = False
+        self.timer = 0
+        self.points = 0
+
+    def add_point(self) -> None:
+        self.points += 1
 
     def __repr__(self) -> str:
         return f"{self.name} traveled {self.distance_traveled}."
@@ -55,18 +66,28 @@ def parse(puzzle_input: str) -> list[Reindeer]:
 
 
 def part1(data: list[Reindeer], seconds: int = 2503) -> int:
-    pprint(data)
     for _ in range(seconds):
         for reindeer in data:
             reindeer.tick()
-    pprint(data)
 
     winning_distance = max(reindeer.distance_traveled for reindeer in data)
     return winning_distance
 
 
-def part2(data: list[Reindeer]) -> int:  # type: ignore[empty-body]
-    pass
+def part2(data: list[Reindeer], seconds: int = 2503) -> int:
+    for reindeer in data:
+        reindeer.reset()
+
+    for _ in range(seconds):
+        for reindeer in data:
+            reindeer.tick()
+        lead_distance = max(reindeer.distance_traveled for reindeer in data)
+        for reindeer in data:
+            if reindeer.distance_traveled == lead_distance:
+                reindeer.add_point()
+
+    winning_points = max(reindeer.points for reindeer in data)
+    return winning_points
 
 
 def solve(puzzle_input: str) -> tuple[int | None, int | None]:
