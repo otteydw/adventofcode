@@ -1,6 +1,5 @@
 import argparse
 import pathlib
-from pprint import pprint
 from typing import Iterator
 
 
@@ -13,38 +12,8 @@ class Ingredient:
         self.texture = texture
         self.calories = calories
 
-    # def score(self, qunatity: int) -> int:
-    #     return qunatity * (self.)
     def __repr__(self) -> str:
         return self.name
-
-
-# def find_permutations_sum_to_target(target_sum: int, number_of_values: int):
-#     # Generate all possible tuples of 4 integers where each integer is in range(101) (0 to 100)
-#     # itertools.product is equivalent to nested for-loops
-#     all_possible_values = product(range(target_sum + 1), repeat=number_of_values)
-
-#     # Filter the results to include only those where the sum is 100
-#     # permutations_list = [p for p in all_possible_values if sum(p) == target_sum]
-#     permutations_comp = (p for p in all_possible_values if sum(p) == target_sum)
-
-#     # return permutations_list
-#     return permutations_comp
-
-
-# def sums_to_target(
-#     length: int, target_sum: int, current_tuple: tuple[int, ...] = ()
-# ) -> Generator[tuple[int, ...], None, None]:
-#     """
-#     Generates all permutations of 'length' non-negative integers that sum to 'target_sum'.
-#     """
-#     if length == 1:
-#         yield current_tuple + (target_sum,)
-#     else:
-#         # Iterate from 0 up to the remaining sum for the current number
-#         for value in range(target_sum + 1):
-#             # Recursively call the function for the remaining length and remaining sum
-#             yield from sums_to_target(length - 1, target_sum - value, current_tuple + (value,))
 
 
 def sums_to_target(length: int, target_sum: int) -> Iterator[tuple[int, ...]]:
@@ -140,22 +109,17 @@ def calculate_score(
 
 
 def part1(data: list[Ingredient], desired_calories: int | None = None) -> int:
-    pprint(data)
     number_of_ingredient_types = len(data)
     max_ingredient_count = 100
-    print(f"Permutations for {number_of_ingredient_types} ingredient types:")
-    # permutations = find_permutations_sum_to_target(number_of_ingredient_types, max_ingredient_count)
     permutations = sums_to_target(length=number_of_ingredient_types, target_sum=max_ingredient_count)
     max_score = 0
-    # permutations=[(50,50),(44,56)]
     for permutation in permutations:
-        print(f"Calculating score for {permutation=}")
         score = calculate_score(data, permutation, desired_calories)
-        prev_max_score = max_score
+        # prev_max_score = max_score
         max_score = max(score, max_score)
-        if max_score != prev_max_score:
-            max_permutation = permutation
-    print(f"{max_score=} found at {max_permutation=}")
+    #     if max_score != prev_max_score:
+    #         max_permutation = permutation
+    # print(f"{max_score=} found at {max_permutation=}")
     return max_score
 
 
