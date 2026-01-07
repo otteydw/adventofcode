@@ -75,24 +75,33 @@ def parse(puzzle_input: str) -> list[Ingredient]:
     return ingredients
 
 
-def calculate_score(ingredient_list: list[Ingredient], quantities: tuple[int, ...]) -> int:
+def calculate_score(
+    ingredient_list: list[Ingredient], quantities: tuple[int, ...], desired_calories: int | None = None
+) -> int:
     # print()
     print(f"{ingredient_list=}, {quantities=}")
     total_capacity = 0
     total_durability = 0
     total_flavor = 0
     total_texture = 0
+    total_calories = 0
     for idx, quantity in enumerate(quantities):
         name = ingredient_list[idx].name
         capacity = quantity * ingredient_list[idx].capacity
         durability = quantity * ingredient_list[idx].durability
         flavor = quantity * ingredient_list[idx].flavor
         texture = quantity * ingredient_list[idx].texture
+        calories = quantity * ingredient_list[idx].calories
         print(f"{name=}, {capacity=}, {durability=}, {flavor=}, {texture=}")
         total_capacity += capacity
         total_durability += durability
         total_flavor += flavor
         total_texture += texture
+        total_calories += calories
+
+    if desired_calories and total_calories != desired_calories:
+        return 0
+
     total_capacity = max(0, total_capacity)
     total_durability = max(0, total_durability)
     total_flavor = max(0, total_flavor)
@@ -103,7 +112,7 @@ def calculate_score(ingredient_list: list[Ingredient], quantities: tuple[int, ..
     return score
 
 
-def part1(data: list[Ingredient]) -> int:
+def part1(data: list[Ingredient], desired_calories: int | None = None) -> int:
     pprint(data)
     number_of_ingredient_types = len(data)
     max_ingredient_count = 100
@@ -114,7 +123,7 @@ def part1(data: list[Ingredient]) -> int:
     # permutations=[(50,50),(44,56)]
     for permutation in permutations:
         print(f"Calculating score for {permutation=}")
-        score = calculate_score(data, permutation)
+        score = calculate_score(data, permutation, desired_calories)
         prev_max_score = max_score
         max_score = max(score, max_score)
         if max_score != prev_max_score:
@@ -123,8 +132,8 @@ def part1(data: list[Ingredient]) -> int:
     return max_score
 
 
-def part2(data: list[Ingredient]) -> int:  # type: ignore[empty-body]
-    pass
+def part2(data: list[Ingredient]) -> int:
+    return part1(data, desired_calories=500)
 
 
 def solve(puzzle_input: str) -> tuple[int | None, int | None]:
