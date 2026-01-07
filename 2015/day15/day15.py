@@ -1,7 +1,7 @@
 import argparse
 import pathlib
 from pprint import pprint
-from typing import Generator
+from typing import Iterator
 
 
 class Ingredient:
@@ -32,19 +32,47 @@ class Ingredient:
 #     return permutations_comp
 
 
-def sums_to_target(
-    length: int, target_sum: int, current_tuple: tuple[int, ...] = ()
-) -> Generator[tuple[int, ...], None, None]:
+# def sums_to_target(
+#     length: int, target_sum: int, current_tuple: tuple[int, ...] = ()
+# ) -> Generator[tuple[int, ...], None, None]:
+#     """
+#     Generates all permutations of 'length' non-negative integers that sum to 'target_sum'.
+#     """
+#     if length == 1:
+#         yield current_tuple + (target_sum,)
+#     else:
+#         # Iterate from 0 up to the remaining sum for the current number
+#         for value in range(target_sum + 1):
+#             # Recursively call the function for the remaining length and remaining sum
+#             yield from sums_to_target(length - 1, target_sum - value, current_tuple + (value,))
+
+
+def sums_to_target(length: int, target_sum: int) -> Iterator[tuple[int, ...]]:
     """
-    Generates all permutations of 'length' non-negative integers that sum to 'target_sum'.
+    Yield all tuples of `length` non-negative integers whose elements sum to
+    `target_sum`.
+
+    Each yielded tuple represents a composition of `target_sum` into exactly
+    `length` parts. Values are generated lazily and tuples are produced in
+    lexicographic order with respect to their elements.
+
+    Args:
+        length: The number of integers in each tuple. Must be >= 1.
+        target_sum: The total sum of the integers in each tuple. Must be >= 0.
+
+    Yields:
+        Tuples of length `length` containing non-negative integers that sum to
+        `target_sum`.
+
+    Raises:
+        RecursionError: If `length` is very large due to recursive depth.
     """
     if length == 1:
-        yield current_tuple + (target_sum,)
-    else:
-        # Iterate from 0 up to the remaining sum for the current number
-        for value in range(target_sum + 1):
-            # Recursively call the function for the remaining length and remaining sum
-            yield from sums_to_target(length - 1, target_sum - value, current_tuple + (value,))
+        yield (target_sum,)
+        return
+
+    for value in range(target_sum + 1):
+        yield from ((value,) + tail for tail in sums_to_target(length - 1, target_sum - value))
 
 
 def load_input(path: pathlib.Path) -> str:
@@ -78,7 +106,6 @@ def parse(puzzle_input: str) -> list[Ingredient]:
 def calculate_score(
     ingredient_list: list[Ingredient], quantities: tuple[int, ...], desired_calories: int | None = None
 ) -> int:
-    # print()
     print(f"{ingredient_list=}, {quantities=}")
     total_capacity = 0
     total_durability = 0
