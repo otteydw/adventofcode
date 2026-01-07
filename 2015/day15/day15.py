@@ -1,18 +1,19 @@
 import argparse
 import pathlib
+from dataclasses import dataclass
 from typing import Iterator
 
 
+@dataclass(frozen=True)
 class Ingredient:
-    def __init__(self, name: str, capacity: int, durability: int, flavor: int, texture: int, calories: int) -> None:
-        self.name = name
-        self.capacity = capacity
-        self.durability = durability
-        self.flavor = flavor
-        self.texture = texture
-        self.calories = calories
+    name: str
+    capacity: int
+    durability: int
+    flavor: int
+    texture: int
+    calories: int
 
-    def __repr__(self) -> str:
+    def __str__(self) -> str:
         return self.name
 
 
