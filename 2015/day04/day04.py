@@ -1,18 +1,19 @@
 import hashlib
-import os
-import sys
 
-def combine_secret_and_number(secret_key, number):
+
+def combine_secret_and_number(secret_key: str, number: int) -> str:
     return f"{secret_key}{number}"
 
-def get_hash(string):
-    return hashlib.md5(string.encode()).hexdigest()
 
-def is_mineable(hash, num_zeroes=5):
+def get_hash(s: str) -> str:
+    return hashlib.md5(s.encode()).hexdigest()
+
+
+def is_mineable(hash: str, num_zeroes: int = 5) -> bool:
     return hash[:num_zeroes] == "0" * num_zeroes
 
-def find_answer(secret_key, num_zeroes=5):
 
+def find_answer(secret_key: str, num_zeroes: int = 5) -> int:
     counter = 0
 
     while True:
@@ -22,8 +23,8 @@ def find_answer(secret_key, num_zeroes=5):
             return counter
         counter += 1
 
-if __name__ == "__main__":
 
+if __name__ == "__main__":
     SECRET = "yzbqklnj"
 
     print(f"5 zeroes: {find_answer(SECRET)}")
