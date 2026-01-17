@@ -1,20 +1,59 @@
 import argparse
 import pathlib
 
+CORRECT_SUE = {
+    "akitas": 0,
+    "cars": 2,
+    "cats": 7,
+    "children": 3,
+    "goldfish": 5,
+    "perfumes": 1,
+    "pomeranians": 3,
+    "samoyeds": 2,
+    "trees": 3,
+    "vizslas": 0,
+}
+
 
 def load_input(path: pathlib.Path) -> str:
     return pathlib.Path(path).read_text().strip()
 
 
-def parse(puzzle_input: str) -> list[str]:
-    return [line for line in puzzle_input.splitlines()]
+def parse(puzzle_input: str) -> list[dict[str, str | int]]:
+    people = []
+    for line in puzzle_input.splitlines():
+        # Sue 1: goldfish: 6, trees: 9, akitas: 0
+        person_name, items_string = line.split(": ", 1)
+        items_list = items_string.split(", ")
+        person: dict[str, str | int] = dict()
+        person["name"] = person_name
+        for item in items_list:
+            item_name, item_quantity = item.split(": ")
+            person[item_name] = int(item_quantity)
+        people.append(person)
+    return people
 
 
-def part1(data: list[str]) -> int:  # type: ignore[empty-body]
-    pass
+def match(person: dict[str, str | int]) -> bool:
+    for key in CORRECT_SUE:
+        if key in person and person[key] != CORRECT_SUE[key]:
+            return False
+    return True
 
 
-def part2(data: list[str]) -> int:  # type: ignore[empty-body]
+def part1(data: list[dict[str, str | int]]) -> int:
+    for person in data:
+        if match(person):
+            person_name = person["name"]
+            assert isinstance(person_name, str)
+            person_number_str = person_name.split()[1]
+            # assert person_number_str.isnumeric()
+            person_number = int(person_number_str)
+            return person_number
+    raise AssertionError("Unreachable")
+
+
+def part2(data: list[dict[str, str | int]]) -> int:  # type: ignore[empty-body]
     pass
 
 
