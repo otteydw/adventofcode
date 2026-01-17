@@ -46,7 +46,6 @@ def part1(data: list[dict[str, str | int]]) -> int:
         if match(person):
             person_name = person["name"]
             assert isinstance(person_name, str)
-            # person_number_str = person_name.split()[1]
             person_number = int(person_name.split()[1])
             return person_number
     raise AssertionError("Unreachable")
