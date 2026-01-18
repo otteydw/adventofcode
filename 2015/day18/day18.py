@@ -49,13 +49,24 @@ def parse(puzzle_input: str) -> list[str]:
     return [line for line in puzzle_input.splitlines()]
 
 
-def process_lights(grid: np.ndarray) -> np.ndarray:
+def force_corners_on(grid: np.ndarray) -> np.ndarray:
     GRID_HEIGHT = len(grid)
     GRID_WIDTH = len(grid[0])
     MAX_ROW = GRID_HEIGHT - 1
     MAX_COL = GRID_WIDTH - 1
 
-    print(f"Grid size of {GRID_HEIGHT}x{GRID_WIDTH}")
+    for coord in [(0, 0), (0, MAX_COL), (MAX_ROW, 0), (MAX_ROW, MAX_COL)]:
+        grid[coord[0]][coord[1]] = "#"
+    return grid
+
+
+def process_lights(grid: np.ndarray, corners_on: bool = False) -> np.ndarray:
+    GRID_HEIGHT = len(grid)
+    GRID_WIDTH = len(grid[0])
+    MAX_ROW = GRID_HEIGHT - 1
+    MAX_COL = GRID_WIDTH - 1
+
+    # print(f"Grid size of {GRID_HEIGHT}x{GRID_WIDTH}")
 
     original_grid = copy(grid)
 
@@ -69,22 +80,36 @@ def process_lights(grid: np.ndarray) -> np.ndarray:
             else:
                 if on_neighbors == 3:
                     grid[row_idx][column_idx] = "#"
+
+    if corners_on:
+        for coord in [(0, 0), (0, MAX_COL), (MAX_ROW, 0), (MAX_ROW, MAX_COL)]:
+            grid[coord[0]][coord[1]] = "#"
+
     return grid
 
 
 def part1(data: list[str], steps: int = 100) -> int:
     grid_array = data_to_2d_grid(data)
-    print(grid_array)
+    # print(grid_array)
 
     for _ in range(steps):
         grid_array = process_lights(grid_array)
 
-    print(grid_array)
+    # print(grid_array)
     return np.sum(grid_array == "#")
 
 
-def part2(data: list[str]) -> int:  # type: ignore[empty-body]
-    pass
+def part2(data: list[str], steps: int = 100) -> int:
+    grid_array = data_to_2d_grid(data)
+    # print(grid_array)
+
+    force_corners_on(grid_array)
+    for _ in range(steps):
+        grid_array = process_lights(grid_array, corners_on=True)
+        force_corners_on(grid_array)
+
+    # print(grid_array)
+    return np.sum(grid_array == "#")
 
 
 def solve(puzzle_input: str) -> tuple[int | None, int | None]:
