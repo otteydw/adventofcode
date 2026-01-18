@@ -2,6 +2,14 @@ import argparse
 import pathlib
 from collections import defaultdict
 from itertools import combinations
+from typing import Any, Generator, Iterable
+
+
+# Hopefully I will remember and use this generator in future AoC!
+def non_empty_subsets(iterable: Iterable[Any]) -> Generator[Any]:
+    items = list(iterable)
+    for r in range(1, len(items) + 1):
+        yield from combinations(items, r)
 
 
 def load_input(path: pathlib.Path) -> str:
@@ -13,24 +21,19 @@ def parse(puzzle_input: str) -> list[int]:
 
 
 def part1(data: list[int], eggnog: int = 150) -> int:
-    # print(data)
-
     counter = 0
     for number_in_combination in range(1, len(data) + 1):
         for combo in combinations(data, number_in_combination):
-            # print(f"{combo=}, {sum(combo)=}")
             if sum(combo) == eggnog:
-                # print("Increasing counter")
                 counter += 1
     return counter
 
 
 def part2(data: list[int], eggnog: int = 150) -> int:
     counter: dict[int, int] = defaultdict(int)
-    for number_in_combination in range(1, len(data) + 1):
-        for combo in combinations(data, number_in_combination):
-            if sum(combo) == eggnog:
-                counter[len(combo)] += 1
+    for combo in non_empty_subsets(data):
+        if sum(combo) == eggnog:
+            counter[len(combo)] += 1
     minimum_containers = min(counter)
     return counter[minimum_containers]
 
