@@ -1,20 +1,29 @@
 import argparse
 import pathlib
+from collections import defaultdict
 
 
 def load_input(path: pathlib.Path) -> str:
     return pathlib.Path(path).read_text().strip()
 
 
-def parse(puzzle_input: str) -> list[str]:
-    return [line for line in puzzle_input.splitlines()]
+def parse(puzzle_input: str) -> tuple[dict[str, set[str]], str]:
+    lines = puzzle_input.splitlines()
+    initial_string = lines[-1]
+    conversions = defaultdict(set)
+
+    for line in lines[:-2]:
+        from_string, to_string = line.split(" => ")
+        conversions[from_string].add(to_string)
+
+    return (conversions, initial_string)
 
 
-def part1(data: list[str]) -> int:  # type: ignore[empty-body]
+def part1(data: tuple[dict[str, set[str]], str]) -> int:  # type: ignore[empty-body]
     pass
 
 
-def part2(data: list[str]) -> int:  # type: ignore[empty-body]
+def part2(data: tuple[dict[str, set[str]], str]) -> int:  # type: ignore[empty-body]
     pass
 
 

@@ -18,10 +18,11 @@ def example2():
     return aoc.parse(puzzle_input)
 
 
-@pytest.mark.skip(reason="Not implemented")
 def test_parse_example1(example1):
     """Test that input is parsed properly."""
-    assert example1 == ...
+    conversions, initial_string = example1
+    assert conversions == {"H": set(["HO", "OH"]), "O": set(["HH"])}
+    assert initial_string == "HOH"
 
 
 @pytest.mark.skip(reason="Not implemented")
