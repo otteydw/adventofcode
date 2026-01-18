@@ -34,16 +34,31 @@ def parse(puzzle_input: str) -> list[dict[str, str | int]]:
     return people
 
 
-def match(person: dict[str, str | int]) -> bool:
+def match_part1(person: dict[str, str | int]) -> bool:
     for key in CORRECT_SUE:
         if key in person and person[key] != CORRECT_SUE[key]:
             return False
     return True
 
 
+def match_part2(person: dict[str, str | int]) -> bool:
+    for key, person_value in person.items():
+        if key in CORRECT_SUE:
+            correct_value = CORRECT_SUE[key]
+            assert isinstance(person_value, int)
+            assert isinstance(correct_value, int)
+            if key not in ["cats", "trees", "pomeranians", "goldfish"] and person_value != correct_value:
+                return False
+            elif key in ["cats", "trees"] and not (person_value > correct_value):
+                return False
+            elif key in ["pomeranians", "goldfish"] and not (person_value < correct_value):
+                return False
+    return True
+
+
 def part1(data: list[dict[str, str | int]]) -> int:
     for person in data:
-        if match(person):
+        if match_part1(person):
             person_name = person["name"]
             assert isinstance(person_name, str)
             person_number = int(person_name.split()[1])
@@ -51,8 +66,14 @@ def part1(data: list[dict[str, str | int]]) -> int:
     raise AssertionError("Unreachable")
 
 
-def part2(data: list[dict[str, str | int]]) -> int:  # type: ignore[empty-body]
-    pass
+def part2(data: list[dict[str, str | int]]) -> int:
+    for person in data:
+        if match_part2(person):
+            person_name = person["name"]
+            assert isinstance(person_name, str)
+            person_number = int(person_name.split()[1])
+            return person_number
+    raise AssertionError("Unreachable")
 
 
 def solve(puzzle_input: str) -> tuple[int | None, int | None]:

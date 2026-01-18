@@ -1,42 +1,52 @@
 import pathlib
 
 import day16 as aoc
-import pytest
 
 PUZZLE_DIR = pathlib.Path(__file__).parent
 
 
-@pytest.fixture
-def example1():
-    puzzle_input = aoc.load_input(PUZZLE_DIR / "example1.txt")
-    return aoc.parse(puzzle_input)
+def test_match2():
+    sue = {}
+    assert aoc.match_part2(sue)
 
+    # "cars": 2,
+    sue = {"cars": 2}
+    assert aoc.match_part2(sue)
 
-@pytest.fixture
-def example2():
-    puzzle_input = aoc.load_input(PUZZLE_DIR / "example2.txt")
-    return aoc.parse(puzzle_input)
+    sue = {"cars": 3}
+    assert not aoc.match_part2(sue)
 
+    sue = {"cars": 1}
+    assert not aoc.match_part2(sue)
 
-@pytest.mark.skip(reason="Not implemented")
-def test_parse_example1(example1):
-    """Test that input is parsed properly."""
-    assert example1 == ...
+    # cats and trees readings indicates that there are greater than that many
+    # "cats": 7,
+    sue = {"cats": 8}
+    assert aoc.match_part2(sue)
 
+    sue = {"cats": 7}
+    assert not aoc.match_part2(sue)
 
-@pytest.mark.skip(reason="Not implemented")
-def test_part1_example1(example1):
-    """Test part 1 on example input."""
-    assert aoc.part1(example1) == ...
+    sue = {"cats": 6}
+    assert not aoc.match_part2(sue)
 
+    # pomeranians and goldfish readings indicate that there are fewer than that many
+    # "goldfish": 5,
+    sue = {"goldfish": 6}
+    assert not aoc.match_part2(sue)
 
-@pytest.mark.skip(reason="Not implemented")
-def test_part2_example1(example1):
-    """Test part 2 on example input."""
-    assert aoc.part2(example1) == ...
+    sue = {"goldfish": 5}
+    assert not aoc.match_part2(sue)
 
+    sue = {"goldfish": 4}
+    assert aoc.match_part2(sue)
 
-@pytest.mark.skip(reason="Not implemented")
-def test_part2_example2(example2):
-    """Test part 2 on example input."""
-    assert aoc.part2(example2) == ...
+    # combos
+    sue = {"cars": 2, "cats": 8}
+    assert aoc.match_part2(sue)
+
+    sue = {"cars": 3, "cats": 8}  # cars is wrong
+    assert not aoc.match_part2(sue)
+
+    sue = {"cars": 2, "cats": 7}  # cats is wrong
+    assert not aoc.match_part2(sue)
