@@ -30,10 +30,10 @@ def test_part1_example1(example1):
     assert aoc.part1(example1, eggnog=25) == 4
 
 
-@pytest.mark.skip(reason="Not implemented")
+# @pytest.mark.skip(reason="Not implemented")
 def test_part2_example1(example1):
     """Test part 2 on example input."""
-    assert aoc.part2(example1) == ...
+    assert aoc.part2(example1, eggnog=25) == 3
 
 
 @pytest.mark.skip(reason="Not implemented")

@@ -1,5 +1,6 @@
 import argparse
 import pathlib
+from collections import defaultdict
 from itertools import combinations
 
 
@@ -24,8 +25,14 @@ def part1(data: list[int], eggnog: int = 150) -> int:
     return counter
 
 
-def part2(data: list[int]) -> int:  # type: ignore[empty-body]
-    pass
+def part2(data: list[int], eggnog: int = 150) -> int:
+    counter: dict[int, int] = defaultdict(int)
+    for number_in_combination in range(1, len(data) + 1):
+        for combo in combinations(data, number_in_combination):
+            if sum(combo) == eggnog:
+                counter[len(combo)] += 1
+    minimum_containers = min(counter)
+    return counter[minimum_containers]
 
 
 def solve(puzzle_input: str) -> tuple[int | None, int | None]:
