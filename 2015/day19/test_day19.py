@@ -25,10 +25,12 @@ def test_parse_example1(example1):
     assert initial_string == "HOH"
 
 
-@pytest.mark.skip(reason="Not implemented")
+# @pytest.mark.skip(reason="Not implemented")
 def test_part1_example1(example1):
     """Test part 1 on example input."""
-    assert aoc.part1(example1) == ...
+    conversions, initial_string = example1
+    assert aoc.part1(conversions, initial_string) == 4
+    assert aoc.part1(conversions, "HOHOHO") == 7
 
 
 @pytest.mark.skip(reason="Not implemented")
