@@ -17,6 +17,7 @@ dev = [
     "colorama",
     "matplotlib",
     "pytest>=9.0.1",
+    "pytest-json-report",
     "scikit-image[data]",
     "scipy",
     "tqdm"
