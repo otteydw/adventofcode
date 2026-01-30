@@ -39,7 +39,16 @@ def test_part2_example1(example1):
     assert aoc.part2(example1) == ...
 
 
-@pytest.mark.skip(reason="Not implemented")
+# @pytest.mark.skip(reason="Not implemented")
 def test_part2_example2(example2):
     """Test part 2 on example input."""
-    assert aoc.part2(example2) == ...
+    conversions, medicine_molecule = example2
+    assert aoc.part2(conversions, medicine_molecule) == 3
+    assert aoc.part2(conversions, "HOHOHO") == 6
+
+
+def test_part2_backwards_example2(example2):
+    """Test part 2 on example input."""
+    conversions, medicine_molecule = example2
+    assert aoc.part2backwards(conversions, medicine_molecule) == 3
+    assert aoc.part2backwards(conversions, "HOHOHO") == 6
