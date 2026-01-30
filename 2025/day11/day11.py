@@ -21,7 +21,7 @@ class Map:
             if seen_fft and seen_dac:
                 return 1
             else:
-                return 1
+                return 0
 
         if current == "fft":
             seen_fft = True
