@@ -38,12 +38,12 @@ jobs:
 
       - name: Install project dependencies
         if: steps.year-dirs.outputs.year_dirs != ''
-        run: uv sync --locked --dev
+        run: uv sync --locked --all-groups
 
       - name: Run tests in modified directories
         if: steps.year-dirs.outputs.year_dirs != ''
         run: |
           for dir in ${{ steps.year-dirs.outputs.year_dirs }}; do
             echo "==> Running tests in $dir"
-            (cd "$dir" && uv run pytest)
+            uv run pytest "$dir"
           done
