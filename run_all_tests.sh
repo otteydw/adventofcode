@@ -1,7 +1,45 @@
 #!/usr/bin/env bash
+set -euo pipefail
+
+usage() {
+    cat << EOF
+Usage: $0 [-x]
+
+Run pytest for all year directories (matching yearYYYY/ pattern).
+
+Options:
+    -x    Stop at first test failure (passes -x to pytest and exits script)
+
+Examples:
+    $0        Run all tests, continue on failures
+    $0 -x     Stop at first failure
+EOF
+    exit 1
+}
+
+exit_first=false
+
+while getopts "xh" opt; do
+    case $opt in
+        x) exit_first=true ;;
+        h) usage ;;
+        *) usage ;;
+    esac
+done
+
 for year in */; do
-    if [[ $year =~ ^[0-9]{4}/$ ]]; then
-        uv run --all-groups pytest "${year%/}" --json-report --json-report-file="results_${year%/}.json"
+    if [[ $year =~ ^year[0-9]{4}/$ ]]; then
+        year_num="${year#year}"
+        year_num="${year_num%/}"
+        pytest_args=(--json-report --json-report-file="results_${year_num}.json")
+        [[ $exit_first == true ]] && pytest_args+=(-x)
+
+        if ! uv run --all-groups pytest "${year%/}" "${pytest_args[@]}"; then
+            if [[ $exit_first == true ]]; then
+                total=$(jq -r '.summary.total // 0' "results_${year_num}.json")
+                [[ $total -gt 0 ]] && exit 1
+            fi
+        fi
     fi
 done
 
