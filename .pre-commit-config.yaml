@@ -5,7 +5,7 @@ repos:
     rev: v5.0.0
     hooks:
       - id: trailing-whitespace
-        exclude: ^2025/day06/example.*\.txt$
+        exclude: ^year2025/day06/example.*\.txt$
       - id: end-of-file-fixer
       - id: check-yaml
       - id: check-added-large-files
