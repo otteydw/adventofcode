@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 for year in */; do
     if [[ $year =~ ^[0-9]{4}/$ ]]; then
-        uv run pytest "${year%/}" --json-report --json-report-file="results_${year%/}.json"
+        uv run --all-groups pytest "${year%/}" --json-report --json-report-file="results_${year%/}.json"
     fi
 done
 

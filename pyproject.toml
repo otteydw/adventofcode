@@ -16,11 +16,18 @@ dependencies = [
 dev = [
     "colorama",
     "matplotlib",
+    "more_itertools",
+    "pandas",
+
     "pytest>=9.0.1",
     "pytest-json-report",
     "scikit-image[data]",
     "scipy",
     "tqdm"
+]
+
+2021_day05 = [
+    "parse"
 ]
 
 2025_day12 = [
