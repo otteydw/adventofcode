@@ -2,7 +2,7 @@
 set -euo pipefail
 
 usage() {
-    cat << EOF
+      cat << EOF
 Usage: $0 [-x]
 
 Run pytest for all year directories (matching yearYYYY/ pattern).
