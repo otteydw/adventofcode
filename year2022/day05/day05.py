@@ -35,7 +35,7 @@ class Supplies:
 
         boxes_df = pandas.DataFrame.transpose(pandas.read_fwf(tmp_filename)).fillna("")
         os.remove(tmp_filename)
-        boxes_df = boxes_df.replace("\[|\]", "", regex=True)
+        boxes_df = boxes_df.replace(r"\[|\]", "", regex=True)
         boxes_list = boxes_df.values.tolist()
 
         stripped_boxes = []
