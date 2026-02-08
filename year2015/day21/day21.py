@@ -1,9 +1,10 @@
 import argparse
 import pathlib
 from dataclasses import dataclass
-from itertools import chain, combinations, product
+from itertools import chain, product
 from math import inf
-from typing import Any
+
+from helpers.helpers import combinations_by_size_range
 
 
 @dataclass(frozen=True)
@@ -72,16 +73,6 @@ RINGS_MIN = 0
 RINGS_MAX = 2
 
 
-def combinations_of_range_of_items_from_list(
-    items_list: list[Any], min_items: int, max_items: int
-) -> list[tuple[Any, ...]]:
-    all_combinations = []
-    for r in range(min_items, max_items + 1):
-        combs = combinations(items_list, r)
-        all_combinations.extend(list(combs))
-    return all_combinations
-
-
 def load_input(path: pathlib.Path) -> str:
     return pathlib.Path(path).read_text().strip()
 
@@ -120,9 +111,9 @@ def simulate_battle(player: Player, boss: Player) -> str:
     return result
 
 
-WEAPON_COMBOS = combinations_of_range_of_items_from_list(WEAPONS, WEAPONS_MIN, WEAPONS_MAX)
-ARMOR_COMBOS = combinations_of_range_of_items_from_list(ARMOR, ARMOR_MIN, ARMOR_MAX)
-RING_COMBOS = combinations_of_range_of_items_from_list(RINGS, RINGS_MIN, RINGS_MAX)
+WEAPON_COMBOS = combinations_by_size_range(WEAPONS, WEAPONS_MIN, WEAPONS_MAX)
+ARMOR_COMBOS = combinations_by_size_range(ARMOR, ARMOR_MIN, ARMOR_MAX)
+RING_COMBOS = combinations_by_size_range(RINGS, RINGS_MIN, RINGS_MAX)
 
 
 def part1(data: tuple[int, int, int]) -> int:
