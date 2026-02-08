@@ -9,38 +9,33 @@ class Supplies:
         self.boxes, self.moves = self.load_from_file(filename)
 
     def load_from_file(self, filename):
-        tmp_filename = "tmpout.tmp"
         input_path = os.path.join(os.path.dirname(__file__), filename)
-        # tmp_output_path = os.path.join(os.path.dirname(__file__), tmp_filename)
+
+        boxes = []
+        moves = []
+        after_newline = False
+
+        with open(input_path) as input_file:
+            for line in input_file:
+                line_stripped = line.rstrip()
+                if line_stripped == "":
+                    after_newline = True
+                    continue
+                if after_newline:
+                    moves.append(line_stripped)
+
+                else:
+                    boxes.append(line_stripped)
+
+        boxes.reverse()
 
         with tempfile.NamedTemporaryFile(mode="w+t", delete_on_close=False, delete=False) as output_file:
-            tmp_filename = output_file.name
-            print(f"{tmp_filename=}")
-
-            boxes = []
-            moves = []
-            after_newline = False
-
-            with open(input_path) as input_file:
-                for line in input_file:
-                    line_stripped = line.rstrip()
-                    if line_stripped == "":
-                        after_newline = True
-                        continue
-                    if after_newline:
-                        moves.append(line_stripped)
-
-                    else:
-                        boxes.append(line_stripped)
-
-            boxes.reverse()
-            # with open(tmp_output_path, "w") as output_file:
             for line in boxes:
                 output_file.write(line + "\n")
 
             output_file.flush()
-            boxes_df = pandas.DataFrame.transpose(pandas.read_fwf(tmp_filename)).fillna("")
-            # os.remove(tmp_filename)
+            boxes_df = pandas.DataFrame.transpose(pandas.read_fwf(output_file.name)).fillna("")
+
         boxes_df = boxes_df.replace(r"\[|\]", "", regex=True)
         boxes_list = boxes_df.values.tolist()
 
