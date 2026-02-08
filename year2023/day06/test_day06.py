@@ -46,8 +46,8 @@ def test_part2_example2(example2):
 
 
 def test_run_race():
-    assert aoc.run_race(7, 0, 9) == False
-    assert aoc.run_race(7, 3, 9) == True
+    assert not aoc.run_race(7, 0, 9)
+    assert aoc.run_race(7, 3, 9)
 
 
 def test_ways_to_win():

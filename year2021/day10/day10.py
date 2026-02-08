@@ -1,3 +1,4 @@
+# mypy: ignore-errors
 import os
 import statistics
 
@@ -59,7 +60,7 @@ def total_syntax_error_score(filename):
 
 
 def is_incomplete(chunk):
-    return first_illegal_character(chunk) == None
+    return first_illegal_character(chunk) is None
 
 
 def autocomplete_score(completion_string):

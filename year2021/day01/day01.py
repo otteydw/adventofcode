@@ -1,3 +1,4 @@
+# mypy: ignore-errors
 import math
 import os
 
@@ -34,7 +35,7 @@ def count_sum_of_sliding_window_increases(list_depths, window_length=3):
 
     df_depths["rolling_sum"] = df_depths.rolling(window_length, min_periods=window_length).sum()
 
-    window_sums = [x for x in df_depths["rolling_sum"].values if math.isnan(x) == False]
+    window_sums = [x for x in df_depths["rolling_sum"].values if not math.isnan(x)]
 
     return count_depth_increases(window_sums)
 

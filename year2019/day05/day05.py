@@ -1,3 +1,4 @@
+# mypy: ignore-errors
 import argparse
 import copy
 import logging
@@ -295,7 +296,7 @@ def run_program(program: List) -> int:
 
     try:
         return diagnostic_value
-    except:
+    except:  # noqa E722
         return None
 
 

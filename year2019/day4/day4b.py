@@ -1,4 +1,5 @@
 #!/usr/bin/python3
+# mypy: ignore-errors
 
 # https://adventofcode.com/2019/day/4
 
@@ -41,12 +42,12 @@ def check_two_adjacent_same(password):
     return False
 
 
-def number_of_times_adjacent(myDigit, myInteger):
-    """Return the number of times a specific digit is adjacent within an integer"""
-    strDigit = str(myDigit)
-    strInteger = str(myInteger)
-    for i in range(0, len(strInteger) - 2):
-        dupe_counter = 0
+# def number_of_times_adjacent(myDigit, myInteger):
+#     """Return the number of times a specific digit is adjacent within an integer"""
+#     strDigit = str(myDigit)
+#     strInteger = str(myInteger)
+#     for i in range(0, len(strInteger) - 2):
+#         dupe_counter = 0
 
 
 # print(check_two_adjacent_same(111111))  # False
