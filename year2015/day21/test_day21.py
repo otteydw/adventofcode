@@ -25,6 +25,32 @@ def test_parse_example1(example1):
     assert example1 == ...
 
 
+def test_simulate_round():
+    player = aoc.Player("Player", 8, 5, 5)
+    boss = aoc.Player("Boss", 12, 7, 2)
+    aoc.simulate_round(player, boss)
+    assert boss.hp == 9
+    assert player.hp == 6
+
+
+def test_simulate_round_end():
+    player = aoc.Player("Player", 8, 5, 5)
+    boss = aoc.Player("Boss", 12, 7, 2)
+    for _ in range(3):
+        result = aoc.simulate_round(player, boss)
+        assert result is None
+
+    result = aoc.simulate_round(player, boss)
+    assert result == "player"
+
+
+def test_simulate_battle():
+    player = aoc.Player("Player", 8, 5, 5)
+    boss = aoc.Player("Boss", 12, 7, 2)
+
+    assert aoc.simulate_battle(player, boss) == "player"
+
+
 @pytest.mark.skip(reason="Not implemented")
 def test_part1_example1(example1):
     """Test part 1 on example input."""
