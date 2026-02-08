@@ -23,6 +23,7 @@ dev = [
     "pytest-json-report",
     "scikit-image[data]",
     "scipy",
+    "sympy",
     "tqdm"
 ]
 
