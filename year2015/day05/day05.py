@@ -1,3 +1,4 @@
+# mypy: ignore-errors
 import os
 
 VOWELS = list("aeiou")

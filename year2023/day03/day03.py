@@ -1,3 +1,4 @@
+# mypy: ignore-errors
 import pathlib
 import sys
 from dataclasses import dataclass

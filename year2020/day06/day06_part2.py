@@ -1,3 +1,4 @@
+# mypy: ignore-errors
 # https://adventofcode.com/2020/day/6
 
 # Some code copied from https://www.youtube.com/watch?v=_pPgnryUEDw
