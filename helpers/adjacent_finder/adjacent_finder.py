@@ -20,7 +20,7 @@ def adjacent_finder(npa: np.ndarray, position: tuple[int, int], steps: int = 1) 
             rangeX = range(0, npa.shape[0])
             rangeY = range(0, npa.shape[1])
 
-            (newX, newY) = (position[0] + dx, position[1] + dy)
+            newX, newY = (position[0] + dx, position[1] + dy)
 
             if (newX in rangeX) and (newY in rangeY) and (dx, dy) != (0, 0):
                 adjacent.append((newX, newY))

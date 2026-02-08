@@ -10,7 +10,7 @@ from scipy.optimize import Bounds, LinearConstraint, milp
 
 def to_list(s: str) -> list[int]:
     if isinstance(eval(s), int):
-        return [(eval(s))]
+        return [eval(s)]
     return list(eval(s))
 
 
