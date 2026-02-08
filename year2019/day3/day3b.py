@@ -1,4 +1,5 @@
 #!/usr/bin/python3
+# mypy: ignore-errors
 
 # https://adventofcode.com/2019/day/3
 

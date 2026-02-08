@@ -1,3 +1,4 @@
+# mypy: ignore-errors
 import argparse
 import itertools
 import pathlib

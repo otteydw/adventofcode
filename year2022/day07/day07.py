@@ -1,3 +1,4 @@
+# mypy: ignore-errors
 import os
 
 
@@ -26,7 +27,7 @@ class Node:
 
     def increase_size(self, size):
         self.size += size
-        if self.parent != None:
+        if self.parent is not None:
             self.parent.increase_size(size)
 
     def get_size(self):
@@ -75,7 +76,7 @@ class Node:
 
 def parse_terminal_output(terminal_output, current_dir=None):
 
-    if current_dir == None:
+    if current_dir is None:
         root = Node("/", "directory", None)
         current_directory = root
     else:

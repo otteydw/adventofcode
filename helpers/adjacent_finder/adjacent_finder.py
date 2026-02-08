@@ -1,4 +1,7 @@
-def adjacent_finder(npa, position, steps=1):
+import numpy as np
+
+
+def adjacent_finder(npa: np.ndarray, position: tuple[int, int], steps: int = 1) -> list[tuple[int, int]]:
     """Find adjacent coordinates (including diagonals) in a 2d numpy array
 
     Args:
