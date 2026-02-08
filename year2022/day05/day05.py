@@ -1,16 +1,16 @@
 import os
+import tempfile
+from typing import Any
 
 import pandas
 
 
 class Supplies:
-    def __init__(self, filename):
+    def __init__(self, filename: str):
         self.boxes, self.moves = self.load_from_file(filename)
 
-    def load_from_file(self, filename):
-        tmp_filename = "tmpout.tmp"
+    def load_from_file(self, filename: str) -> tuple[list[list[Any]], list[str]]:
         input_path = os.path.join(os.path.dirname(__file__), filename)
-        tmp_output_path = os.path.join(os.path.dirname(__file__), tmp_filename)
 
         boxes = []
         moves = []
@@ -29,13 +29,15 @@ class Supplies:
                     boxes.append(line_stripped)
 
         boxes.reverse()
-        with open(tmp_output_path, "w") as output_file:
+
+        with tempfile.NamedTemporaryFile(mode="w+t") as output_file:
             for line in boxes:
                 output_file.write(line + "\n")
 
-        boxes_df = pandas.DataFrame.transpose(pandas.read_fwf(tmp_filename)).fillna("")
-        os.remove(tmp_filename)
-        boxes_df = boxes_df.replace("\[|\]", "", regex=True)
+            output_file.flush()
+            boxes_df = pandas.DataFrame.transpose(pandas.read_fwf(output_file.name)).fillna("")
+
+        boxes_df = boxes_df.replace(r"\[|\]", "", regex=True)
         boxes_list = boxes_df.values.tolist()
 
         stripped_boxes = []
@@ -44,12 +46,12 @@ class Supplies:
             stripped_boxes.append(new_column)
         return stripped_boxes, moves
 
-    def process_moves(self, crane=9000):
+    def process_moves(self, crane: int = 9000) -> None:
         for move in self.moves:
-            move = move.split(" ")
-            quantity_to_move = int(move[1])
-            from_stack = int(move[3]) - 1
-            to_stack = int(move[5]) - 1
+            _move = move.split(" ")
+            quantity_to_move = int(_move[1])
+            from_stack = int(_move[3]) - 1
+            to_stack = int(_move[5]) - 1
 
             crates_to_move = []
             for _ in range(0, quantity_to_move):
@@ -60,7 +62,7 @@ class Supplies:
             for crate in crates_to_move:
                 self.boxes[to_stack].append(crate)
 
-    def see_top_crates(self):
+    def see_top_crates(self) -> str:
         top_crates = ""
         for stack in self.boxes:
             top_crates += stack[-1:][0]
