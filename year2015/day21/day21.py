@@ -120,10 +120,15 @@ def simulate_battle(player: Player, boss: Player) -> str:
     return result
 
 
+WEAPON_COMBOS = combinations_of_range_of_items_from_list(WEAPONS, WEAPONS_MIN, WEAPONS_MAX)
+ARMOR_COMBOS = combinations_of_range_of_items_from_list(ARMOR, ARMOR_MIN, ARMOR_MAX)
+RING_COMBOS = combinations_of_range_of_items_from_list(RINGS, RINGS_MIN, RINGS_MAX)
+
+
 def part1(data: tuple[int, int, int]) -> int:
-    weapon_combos = combinations_of_range_of_items_from_list(WEAPONS, WEAPONS_MIN, WEAPONS_MAX)
-    armor_combos = combinations_of_range_of_items_from_list(ARMOR, ARMOR_MIN, ARMOR_MAX)
-    ring_combos = combinations_of_range_of_items_from_list(RINGS, RINGS_MIN, RINGS_MAX)
+    # weapon_combos = combinations_of_range_of_items_from_list(WEAPONS, WEAPONS_MIN, WEAPONS_MAX)
+    # armor_combos = combinations_of_range_of_items_from_list(ARMOR, ARMOR_MIN, ARMOR_MAX)
+    # ring_combos = combinations_of_range_of_items_from_list(RINGS, RINGS_MIN, RINGS_MAX)
 
     # print("Weapon combos")
     # pprint(weapon_combos)
@@ -134,7 +139,7 @@ def part1(data: tuple[int, int, int]) -> int:
     # print("Ring combos")
     # pprint(ring_combos)
     cheapest_outfit = inf
-    outfit_combos = product(weapon_combos, armor_combos, ring_combos)
+    outfit_combos = product(WEAPON_COMBOS, ARMOR_COMBOS, RING_COMBOS)
     # loop=0
     for outfit_combo in outfit_combos:
         # pprint(outfit_combo)
@@ -165,8 +170,37 @@ def part1(data: tuple[int, int, int]) -> int:
     return cheapest_outfit
 
 
-def part2(data: tuple[int, int, int]) -> int:  # type: ignore[empty-body]
-    pass
+def part2(data: tuple[int, int, int]) -> int:
+    expensive_outfit = 0
+    outfit_combos = product(WEAPON_COMBOS, ARMOR_COMBOS, RING_COMBOS)
+    # loop=0
+    for outfit_combo in outfit_combos:
+        # pprint(outfit_combo)
+        flattened = list(chain.from_iterable(outfit_combo))
+        # pprint(list(flattened))
+        # print()
+        # loop+=1
+        # print(f"{loop=}")
+        # if loop==45:
+        # for item in outfit_combo:
+        #     print(item)
+        # import sys
+        # sys.exit()
+        outfit_cost = sum(item.cost for item in flattened)
+        outfit_damage = sum(item.damage for item in flattened)
+        outfit_armor = sum(item.armor for item in flattened)
+        print(f"{outfit_cost=}, {outfit_damage=}, {outfit_armor=}")
+
+        if outfit_cost > expensive_outfit:
+            player = Player("Player", hp=100, damage=outfit_damage, armor=outfit_armor)
+            boss = Player("Boss", *data)
+
+            winner = simulate_battle(player, boss)
+            if winner == "boss":
+                expensive_outfit = outfit_cost
+
+    # assert isinstance(cheapest_outfit, int)
+    return expensive_outfit
 
 
 def solve(puzzle_input: str) -> tuple[int | None, int | None]:
