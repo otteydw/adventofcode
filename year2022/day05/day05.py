@@ -1,14 +1,15 @@
 import os
 import tempfile
+from typing import Any
 
 import pandas
 
 
 class Supplies:
-    def __init__(self, filename):
+    def __init__(self, filename: str):
         self.boxes, self.moves = self.load_from_file(filename)
 
-    def load_from_file(self, filename):
+    def load_from_file(self, filename: str) -> tuple[list[list[Any]], list[str]]:
         input_path = os.path.join(os.path.dirname(__file__), filename)
 
         boxes = []
@@ -45,12 +46,12 @@ class Supplies:
             stripped_boxes.append(new_column)
         return stripped_boxes, moves
 
-    def process_moves(self, crane=9000):
+    def process_moves(self, crane: int = 9000) -> None:
         for move in self.moves:
-            move = move.split(" ")
-            quantity_to_move = int(move[1])
-            from_stack = int(move[3]) - 1
-            to_stack = int(move[5]) - 1
+            _move = move.split(" ")
+            quantity_to_move = int(_move[1])
+            from_stack = int(_move[3]) - 1
+            to_stack = int(_move[5]) - 1
 
             crates_to_move = []
             for _ in range(0, quantity_to_move):
@@ -61,7 +62,7 @@ class Supplies:
             for crate in crates_to_move:
                 self.boxes[to_stack].append(crate)
 
-    def see_top_crates(self):
+    def see_top_crates(self) -> str:
         top_crates = ""
         for stack in self.boxes:
             top_crates += stack[-1:][0]
