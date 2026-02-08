@@ -29,7 +29,7 @@ class Supplies:
 
         boxes.reverse()
 
-        with tempfile.NamedTemporaryFile(mode="w+t", delete_on_close=False, delete=False) as output_file:
+        with tempfile.NamedTemporaryFile(mode="w+t") as output_file:
             for line in boxes:
                 output_file.write(line + "\n")
 
