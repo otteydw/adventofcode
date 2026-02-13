@@ -1,0 +1,49 @@
+name: Python Tests
+
+on: [push, pull_request]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # required for tj-actions/changed-files
+
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version-file: "pyproject.toml"
+
+      - name: Get all changed files
+        id: changed-files
+        uses: tj-actions/changed-files@v44
+
+      - name: Determine unique year directories
+        id: year-dirs
+        run: |
+          year_dirs=$(for file in ${{ steps.changed-files.outputs.all_changed_files }}; do
+            # Extract the year part of the path (e.g., "2023/day01/file.py" -> "2023")
+            year=$(echo "$file" | cut -d'/' -f1)
+            # Check if the extracted part is a 4-digit number (a year)
+            if [[ "$year" =~ ^[0-9]{4}$ ]]; then
+              echo "$year"
+            fi
+          done | sort -u)
+          echo "year_dirs=$year_dirs" >> $GITHUB_OUTPUT
+
+      - name: Install uv
+        if: steps.year-dirs.outputs.year_dirs != ''
+        uses: astral-sh/setup-uv@v7
+
+      - name: Install project dependencies
+        if: steps.year-dirs.outputs.year_dirs != ''
+        run: uv sync --locked --all-groups
+
+      - name: Run tests in modified directories
+        if: steps.year-dirs.outputs.year_dirs != ''
+        run: |
+          for dir in ${{ steps.year-dirs.outputs.year_dirs }}; do
+            echo "==> Running tests in $dir"
+            uv run pytest "$dir"
+          done
