@@ -1,0 +1,14 @@
+.github/workflows/pytest.yml
+  h_16148b258796cf 11,22-25,27-45,47-58,61,65,68-75,77-79
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.20",
+  "base_commit_sha": "3e460a4614c596cc963fe6ecca982585b95c6c90",
+  "prompts": {},
+  "humans": {
+    "h_16148b258796cf": {
+      "author": "Daniel W. Ottey <dan@bluefrogs.us>"
+    }
+  }
+}
