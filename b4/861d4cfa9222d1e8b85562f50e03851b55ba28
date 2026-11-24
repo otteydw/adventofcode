@@ -1,0 +1,18 @@
+.github/workflows/pytest.yml
+  h_16148b258796cf 3-9
+pyproject.toml
+  h_16148b258796cf 6
+uv.lock
+  h_16148b258796cf 2-3
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.20",
+  "base_commit_sha": "b4861d4cfa9222d1e8b85562f50e03851b55ba28",
+  "prompts": {},
+  "humans": {
+    "h_16148b258796cf": {
+      "author": "Daniel W. Ottey <dan@bluefrogs.us>"
+    }
+  }
+}
