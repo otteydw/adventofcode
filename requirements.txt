@@ -1,7 +1,0 @@
-colorama
-more_itertools
-numpy
-pyflakes
-pytest
-rich
-tqdm
