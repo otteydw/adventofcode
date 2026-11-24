@@ -1,0 +1,86 @@
+name: Python Tests
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version-file: "pyproject.toml"
+
+      - name: Get all changed files
+        id: changed-files
+        uses: tj-actions/changed-files@v44
+
+      - name: Determine test scope
+        id: test-scope
+        env:
+          CHANGED_FILES: ${{ steps.changed-files.outputs.all_changed_files }}
+        run: |
+          set -euo pipefail
+
+          mode=targeted
+          years=()
+          changed_file_count=0
+
+          for file in $CHANGED_FILES; do
+            changed_file_count=$((changed_file_count + 1))
+
+            # Markdown-only changes do not require tests.
+            [[ "$file" == *.md ]] && continue
+
+            if [[ "$file" =~ ^(year[0-9]{4})/ ]]; then
+              year="${BASH_REMATCH[1]}"
+              if [[ ! " ${years[*]} " =~ " ${year} " ]]; then
+                years+=("$year")
+              fi
+            else
+              mode=full
+            fi
+          done
+
+          # If no changed files were detected, run the full suite conservatively.
+          if [[ "$changed_file_count" -eq 0 ]]; then
+            mode=full
+          elif [[ "$mode" != full && "${#years[@]}" -eq 0 ]]; then
+            mode=skip
+          fi
+
+          echo "mode=$mode" >> "$GITHUB_OUTPUT"
+          echo "years=${years[*]}" >> "$GITHUB_OUTPUT"
+          echo "Test scope: $mode ${years[*]}"
+
+      - name: Install uv
+        if: steps.test-scope.outputs.mode != 'skip'
+        uses: astral-sh/setup-uv@v7
+
+      - name: Install project dependencies
+        if: steps.test-scope.outputs.mode != 'skip'
+        run: uv sync --locked --all-groups
+
+      - name: Run full test suite
+        if: steps.test-scope.outputs.mode == 'full'
+        run: ./run_all_tests.sh -x
+
+      - name: Run tests in modified years
+        if: steps.test-scope.outputs.mode == 'targeted'
+        env:
+          YEARS: ${{ steps.test-scope.outputs.years }}
+        run: |
+          for year in $YEARS; do
+            echo "==> Running tests in $year"
+            uv run pytest "$year"
+          done
