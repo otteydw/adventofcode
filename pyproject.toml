@@ -16,18 +16,48 @@ dependencies = [
 dev = [
     "colorama",
     "matplotlib",
+    "more_itertools",
+    "pandas",
     "pytest>=9.0.1",
+    "pytest-json-report",
     "scikit-image[data]",
     "scipy",
+    "sympy",
     "tqdm"
+]
+
+2021_day05 = [
+    "parse"
 ]
 
 2025_day12 = [
     "polyomino"
 ]
 
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["helpers"]
+
 [tool.ruff.lint]
 ignore = [
     "D100", # Missing docstring in public module
     "D103", # Missing docstring in public function
+]
+
+[tool.mypy]
+exclude = "^.*/test_.*\\.py$"
+check_untyped_defs = true
+disallow_any_generics = true
+disallow_incomplete_defs = true
+disallow_untyped_defs = true
+warn_redundant_casts = true
+warn_unused_ignores = true
+explicit_package_bases = true
+
+[tool.pytest.ini_options]
+norecursedirs = [
+    "template",
 ]
